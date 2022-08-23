@@ -1,0 +1,18 @@
+rule bcftools_reheader:
+    input:
+        vcf="a.bcf",
+        ## new header, can be omitted if "samples" is set
+        header="header.txt",
+        ## file containing new sample names, can be omitted if "header" is set
+        samples="samples.tsv",
+    output:
+        "a.reheader.bcf",
+    log:
+        "reheader.log",
+    params:
+        uncompressed_bcf=False,
+        extra="",  # optional parameters for bcftools reheader
+        view_extra="",  # optional parameters for bcftools view
+    threads: 2
+    wrapper:
+        "file:../../reheader"

@@ -1,0 +1,13 @@
+rule star_fusion:
+    input:
+        fastq1 = "reads/reads_1.fq.gz",
+        fastq2 = "reads/reads_1.fq.gz",
+        index = "/cluster/facility/yzhang/WorkSpace/data/ctat_genome_lib_build_dir"
+    output:
+        directory("result")
+    params:
+        extra = ""
+    log:
+        "logs/test.log"
+    wrapper:
+        "file:../../star-fusion"

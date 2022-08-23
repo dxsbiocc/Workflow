@@ -1,0 +1,14 @@
+rule bcftools_mpileup:
+    input:
+        alignments="mapped/{sample}.bam",
+        ref="genome.fasta",  # this can be left out if --no-reference is in options
+        index="genome.fasta.fai",
+    output:
+        pileup="pileups/{sample}.pileup.bcf",
+    params:
+        uncompressed_bcf=False,
+        extra="--max-depth 100 --min-BQ 15",
+    log:
+        "logs/bcftools_mpileup/{sample}.log",
+    wrapper:
+        "file:../../mpileup"

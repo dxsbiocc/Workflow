@@ -1,0 +1,18 @@
+name: "bwa mem"
+description: 
+  Bwa-mem2 is the next version of the bwa-mem algorithm in bwa. 
+  It produces alignment identical to bwa and is ~1.3-3.1x faster depending on the use-case, 
+  dataset and the running machine. Optional sorting using samtools or picard.
+authors:
+  - dengxsh
+input:
+  - FASTQ file(s)
+  - reference genome
+output:
+  - SAM/BAM file
+notes: |
+  * The `extra` param allows for additional arguments for bwa-mem.
+  * The `sorting` param allows to enable sorting, and can be either 'none', 'samtools' or 'picard'.
+  * The `sort_extra` allows for extra arguments for samtools/picard
+  * The `tmp_dir` param allows to define path to the temp dir.
+  * For more inforamtion see, http://bio-bwa.sourceforge.net/bwa.shtml

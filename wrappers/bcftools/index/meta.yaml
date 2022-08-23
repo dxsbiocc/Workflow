@@ -1,0 +1,8 @@
+name: bcftools index
+description: Index vcf/bcf file.
+url: http://www.htslib.org/doc/bcftools.html#index
+authors:
+  - Jan Forster
+  - Filipe G. Vieira
+notes: |
+  * The `extra` param allows for additional program arguments (not `--threads`, `-o/--output`).

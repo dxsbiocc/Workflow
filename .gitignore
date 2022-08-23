@@ -1,0 +1,10 @@
+# ignore directory
+.idea/
+.vscode/
+*.logs/
+*.snakemake/
+*.ipynb_checkpoints/
+
+# ignore files
+*.DS_Store
+*.log

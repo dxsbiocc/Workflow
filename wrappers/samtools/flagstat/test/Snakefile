@@ -1,0 +1,11 @@
+rule samtools_flagstat:
+    input:
+        "mapped/{sample}.bam",
+    output:
+        "mapped/{sample}.bam.flagstat",
+    log:
+        "{sample}.log",
+    params:
+        extra = "",  # optional params string
+    wrapper:
+        "file:../../flagstat"

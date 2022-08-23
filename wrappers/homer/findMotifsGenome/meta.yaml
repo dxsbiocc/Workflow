@@ -1,0 +1,11 @@
+name: "Homer findMotifsGenome"
+description: >
+  Program will find de novo and known motifs in regions in the genome. For more information, please see the `documentation <http://homer.ucsd.edu/homer/ngs/annotation.html>`_.
+authors:
+  - dengxsh
+input:
+  - peak or BED file
+  - reference genome file
+output:
+  - directory
+  - various output files
