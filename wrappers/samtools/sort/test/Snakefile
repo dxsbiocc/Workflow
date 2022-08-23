@@ -1,0 +1,12 @@
+rule samtools_sort:
+    input:
+        "mapped/{sample}.bam",
+    output:
+        "mapped/{sample}.sorted.bam",
+    log:
+        "{sample}.log",
+    params:
+        extra="-m 4G",
+    threads: 8
+    wrapper:
+        "file:../../sort"

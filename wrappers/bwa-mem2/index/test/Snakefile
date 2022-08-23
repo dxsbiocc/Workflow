@@ -1,0 +1,13 @@
+genome = "test"
+
+rule bwa_index:
+    input:
+        f"{genome}.fa",
+    output:
+        idx=multiext(f"{genome}", ".amb", ".ann", ".bwt", ".pac", ".sa"),
+    log:
+        f"logs/bwa_index/{genome}.log",
+    params:
+        algorithm="bwtsw",
+    wrapper:
+        "file:///Users/dengxsh/Documents/WorkSpace/VSCode/snakemake_wrappers/bioinformatics/bwa/index"

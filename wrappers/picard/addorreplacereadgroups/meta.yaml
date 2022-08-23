@@ -1,0 +1,13 @@
+name: picard AddOrReplaceReadGroups
+description: Add or replace read groups with picard tools.
+authors:
+  - Johannes Köster
+input:
+  - bam file
+output:
+  - bam file with added or replaced read groups
+notes: |
+  * The `java_opts` param allows for additional arguments to be passed to the java compiler, e.g. "-XX:ParallelGCThreads=10" (not for `-XmX` or `-Djava.io.tmpdir`, since they are handled automatically).
+  * The `extra` param allows for additional program arguments.
+  * `--TMP_DIR` is automatically set by `resources.tmpdir`
+  * For more information see, https://broadinstitute.github.io/picard/command-line-overview.html#AddOrReplaceReadGroups

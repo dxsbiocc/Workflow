@@ -1,0 +1,42 @@
+rule star_pe_multi:
+    input:
+        # use a list for multiple fastq files for one sample
+        # usually technical replicates across lanes/flowcells
+        fastq1 = ["reads/{sample}_R1.1.fastq", "reads/{sample}_R1.2.fastq"],
+        # paired end reads needs to be ordered so each item in the two lists match
+        fastq2 = ["reads/{sample}_R2.1.fastq", "reads/{sample}_R2.2.fastq"],  #optional
+        # path to STAR reference genome index
+        index = "../../index/test/genome",
+    output:
+        # see STAR manual for additional output files
+        aln = "pe/{sample}/pe_aligned.bam",
+        log = "pe/{sample}/Log.out",
+        sj = "pe/{sample}/SJ.out.tab",
+    log:
+        "logs/pe/{sample}.log",
+    params:
+        # optional parameters
+        extra = "--outSAMattrRGline ID:{sample} SM:{sample}",
+    threads: 8
+    wrapper:
+        "file:../../align"
+
+
+# rule star_se:
+#     input:
+#         fastq1 = "reads/{sample}_R1.1.fastq",
+#         # path to STAR reference genome index
+#         index = "genome",
+#     output:
+#         # see STAR manual for additional output files
+#         aln = "{sample}_se_aligned.bam",
+#         log = "se/{sample}/Log.out",
+#         log_final = "se/{sample}/Log.final.out",
+#     log:
+#         "logs/se/{sample}.log",
+#     params:
+#         # optional parameters
+#         extra = "--outSAMtype BAM Unsorted",
+#     threads: 8
+#     wrapper:
+#         "file:../../align"
