@@ -1,0 +1,34 @@
+# -------------------- input data --------------------
+data:
+  # sample information
+  sample_file: ""
+  # genome files
+  genome: hg19
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
+  db: "../data"
+
+# ------------------- output folder ------------------
+workdir: null
+# ------------------ wrapper folder ------------------
+wrappers: "file:../wrappers"
+# --------------- programs parameters ----------------
+parameters:
+  fastp:
+    extra: "-g -q 30 -u 40 -n 15"
+  bowtie2:
+    sort: samtools
+    extra: "--local --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
+  picard:
+    MarkDuplicates: "--REMOVE_DUPLICATES true"
+  trimmomatic:
+    trimmer: ["LEADING:20", "TRAILING:20", "SLIDINGWINDOW:4:15", "MINLEN:25"]
+    extra: "ILLUMINACLIP::2:15:4:4:true"
+    compression_level: "-9"
+    mem: 1024
+  
+# ----------------- control argument -----------------
+control:
+  adapters: "Nextera"  # Truseq、Nextera
+  spike_in: false
