@@ -24,7 +24,6 @@ parameters:
     MarkDuplicates: "--REMOVE_DUPLICATES true"
   trimmomatic:
     trimmer: ["LEADING:20", "TRAILING:20", "SLIDINGWINDOW:4:15", "MINLEN:25"]
-    extra: "ILLUMINACLIP::2:15:4:4:true"
     compression_level: "-9"
     mem: 1024
   

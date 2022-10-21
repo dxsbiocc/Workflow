@@ -28,9 +28,9 @@ def get_wrapper(*args):
 def get_adapter(method='fastp'):
     """get adapter path"""
     if config['control']['adapters'] == 'Truseq':
-        adapt_file = os.path.join(config["data"]["db"], "/adapters", "Truseq3.PE.fa")
+        adapt_file = os.path.join(config["data"]["db"], "adapters", "Truseq3.PE.fa")
     elif config['control']['adapters'] == 'Nextera':
-        adapt_file = os.path.join(config["data"]["db"], "/adapters", "NexteraPE-PE.fa")
+        adapt_file = os.path.join(config["data"]["db"], "adapters", "NexteraPE-PE.fa")
     else:
         raise ValueError('%s not support!' % config['control']['adapters'])
 
@@ -43,4 +43,3 @@ def get_adapter(method='fastp'):
     else:
         raise ValueError(f'{method} not support!')
     return pat
-    
