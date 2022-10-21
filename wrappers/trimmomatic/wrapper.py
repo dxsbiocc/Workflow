@@ -11,6 +11,7 @@
 # ============================================================
 
 
+import os
 from snakemake.shell import shell
 from snakemake_wrapper_utils.java import get_java_opts
 from snakemake_wrapper_utils.base import WrapperBase
@@ -31,6 +32,7 @@ class Wrapper(WrapperBase):
         if num == 1:
             input_files, output_files = [self.snakemake.input[0]], [self.snakemake.output[0]]
             self.type = 'SE'
+            path = os.path.dirname(self.snakemake.output[0])
         else:
             input_files = [self.snakemake.input.fq1, self.snakemake.input.fq2]
             output_files = [
@@ -40,6 +42,9 @@ class Wrapper(WrapperBase):
                 self.snakemake.output.fq2_unpaired,
             ]
             self.type = 'PE'
+            path = os.path.commonpath(output_files)
+        if not os.path.exists(path):
+            os.makedirs(path)
 
         self.trimmomatic_threads, input_threads, output_threads = self.distribute_threads(
             input_files, output_files, self.snakemake.threads
