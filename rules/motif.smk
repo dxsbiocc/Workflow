@@ -19,4 +19,4 @@ rule find_motifs:
     log:
         "logs/findMotifs_{sample}.log"
     wrapper:
-        get_wrapper("findMotifsGenome")
+        get_wrapper('homer', "findMotifsGenome")

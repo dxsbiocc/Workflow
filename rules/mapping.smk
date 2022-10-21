@@ -42,7 +42,7 @@ rule mark_duplicates:
     resources:
         mem_mb = 1024,
     wrapper:
-        get_wrapper('markduplicates')
+        get_wrapper('picard', 'markduplicates')
 
 # index bam
 rule cons_index:
