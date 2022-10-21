@@ -12,7 +12,7 @@ rule macs2_narrow:
                  "_summits.bed"
                  )
     log:
-        "logs/macs2_callpeak_narrow.log"
+        "logs/macs2_{sample}_callpeak_narrow.log"
     params:
         extra = "-f BAMPE -g hs -q 0.01 -B --SPMR --keep-dup all"
     wrapper:
@@ -36,7 +36,7 @@ rule macs2_broad:
                  "_peaks.gappedPeak"
                  )
     log:
-        "logs/macs2_callpeak_broad.log"
+        "logs/macs2_{sample}_callpeak_broad.log"
     params:
         extra = "-f BAMPE -g hs --broad --broad-cutoff 0.1 -B --SPMR --keep-dup all"
     wrapper:

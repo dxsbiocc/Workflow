@@ -6,7 +6,7 @@ rule rm_chrM:
     log:
         "logs/dedup_rmChrM_{sample}.log"
     shell:
-        f"samtools view -h {input} | grep -v chrM | samtools view -bS | samtools sort -@ 4 -o {output}"
+        "samtools view -h {input} | grep -v chrM | samtools view -bS | samtools sort -@ 4 -o {output}"
 
 rule shift:
     input:
@@ -14,7 +14,7 @@ rule shift:
     output:
         "dedup/{sample}.shift.bam"
     log:
-        "logs/dedup_deeptools_shift.log"
+        "logs/dedup_{sample}_shift.log"
     threads:
         4
     params:

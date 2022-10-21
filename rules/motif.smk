@@ -4,7 +4,7 @@ rule get_peak:
     output:
         "macs2/narrow/{sample}_homer_peaks.txt"
     shell:
-        """awk '{{print $4"\t"$1"\t"$2"\t"$3"\t""+"}}' {} > {}""".format(input, output)
+        """awk '{{print $4"\t"$1"\t"$2"\t"$3"\t""+"}}' {input} > {output}"""
     
 
 rule find_motifs:
@@ -12,7 +12,7 @@ rule find_motifs:
         peak = "macs2/narrow/{sample}_homer_peaks.txt",
         genome = config['data']['ref']
     output:
-        directory("motifs/{sample}/")
+        protected("motifs/{sample}/")
     params:
         extra = "-size 200"
     threads: 2

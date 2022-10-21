@@ -28,7 +28,7 @@ rule bowtie2:
 # remove dupliactes
 rule mark_duplicates:
     input:
-        bams = protected("bowtie2/{sample}.sort.bam"),
+        bams = "bowtie2/{sample}.sort.bam",
     # optional to specify a list of BAMs; this has the same effect
     # of marking duplicates on separate read groups for a sample
     # and then merging

@@ -1,7 +1,7 @@
 # -------------------- input data --------------------
 data:
   # sample information
-  sample_file: ""
+  sample_file: "../example/sample_list.txt"
   # genome files
   genome: hg19
   ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa

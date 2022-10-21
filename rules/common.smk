@@ -3,26 +3,12 @@ from snakemake.utils import validate
 from snakemake.utils import min_version
 
 
-###### Config file and sample sheets #####
-configfile: "config/config.yaml"
-
-# validate(config, schema="../schemas/config.schema.yaml")
-
-samples = pd.read_csv(config["samples"])
-# validate(samples, schema="../schemas/samples.schema.yaml")
-
-
-
-# ------------------ Wildcard constraints ------------------ #
-wildcard_constraints:
-    sample = "|".join(samples.index),
-
 # -------------------- Other Parameters -------------------- #
 genoem_size = {
-    'hg19': 2864785220
-    'hg38': 2913022398
-    'mm10': 2652783500
-    'mm9': 2620345972
+    'hg19': 2864785220,
+    'hg38': 2913022398,
+    'mm10': 2652783500,
+    'mm9': 2620345972,
 }
 genome = config['data']['genome']
 total_chrom_size = genoem_size[genome]
@@ -30,10 +16,10 @@ total_chrom_size = genoem_size[genome]
 # -------------------- Helper functions -------------------- #
 def get_fastq(wildcards):
     """Get fastq files of given sample-unit."""
-    fastqs = units.loc[(wildcards.sample, wildcards.unit), ["fq1", "fq2"]].dropna()
+    fastqs = samples.loc[wildcards.sample, ["fastq1", "fastq2"]].dropna()
     if len(fastqs) == 2:
-        return [fastqs.fq1, fastqs.fq2]
-    return [fastqs.fq1]
+        return [fastqs.fastq1, fastqs.fastq2]
+    return [fastqs.fastq1]
 
 def get_wrapper(*args):
     """Get wrappers path"""

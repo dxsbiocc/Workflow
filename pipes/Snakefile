@@ -1,0 +1,33 @@
+import os
+import pandas as pd
+from snakemake.utils import min_version
+# snakemake built-in report function requires min version 5.1
+min_version("5.1.0")
+
+configfile: "../config/config.yaml"
+
+#read the sample file using pandas lib (sample names+ fastq names) and crezate index using the sample name
+samples = pd.read_csv(config['data']["sample_file"], sep='\t', index_col=0)
+
+# ------------------ Wildcard constraints ------------------ #
+wildcard_constraints:
+    sample = "|".join(samples.index),
+
+if not config.get('workdir'):
+    config['workdir'] = os.getcwd()
+# work dir
+workdir: config['workdir']
+# ---------------------- include rules --------------------- #
+include: "../rules/common.smk"
+include: "../rules/qc.smk"
+include: "../rules/mapping.smk"
+include: "../rules/filtering.smk"
+include: "../rules/callpeak.smk"
+include: "../rules/motif.smk"
+
+
+rule all:
+    input:
+        expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
+        expand("dedup/{sample}.shift.sort.bam", sample=samples.index),
+        expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index)
