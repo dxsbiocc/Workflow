@@ -62,9 +62,6 @@ class Wrapper(WrapperBase):
         else:
             raise ValueError("Unexpected value for params.sort ({})".format(sort))
 
-        # summary
-        self.summary = self.snakemake.output[0].split('.')[0] + '.summary'
-
     def run(self):
         shell(
             "(bowtie2"
@@ -72,7 +69,6 @@ class Wrapper(WrapperBase):
             " {self.reads} "
             " -x {self.index}"
             " {self.extra} "
-            "{self.summary}"
             "| " + self.pipe_cmd + ") {self.log}"
         )
 
