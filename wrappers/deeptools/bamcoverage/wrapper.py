@@ -22,9 +22,9 @@ class Wrapper(WrapperBase):
 
     def parser(self):
         out_ext = self.snakemake.output[0].split('.')[-1]
-        if out_ext in ['.bw', '.bigwig', '.bigWig']:
+        if out_ext in ['bw', 'bigwig', 'bigWig']:
             self.out_format = 'bigwig'
-        elif out_ext in ['.bedgraph', '.bedGraph']:
+        elif out_ext in ['bedgraph', 'bedGraph']:
             self.out_format = 'bedgraph'
         else:
              raise TypeError('Output extension should be one of ["bw", "bigwig", "bigWig", "bedgraph", "bedGraph"]')
