@@ -5,9 +5,9 @@ rule rm_chrM:
         "dedup/{sample}.rmChrM.bam"
     log:
         "logs/dedup_rmChrM_{sample}.log"
-    shell:
-        "(samtools view -h {input} | grep -v chrM | samtools view -bS | samtools sort -@ 4 -o {output}) &"
-        "(samtools index {output})"
+    run:
+        shell("(samtools view -h {input} | grep -v chrM | samtools view -bS | samtools sort -@ 4 -o {output})")
+        shell("(samtools index {output})")
 
 rule shift:
     input:
