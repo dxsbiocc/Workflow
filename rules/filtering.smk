@@ -21,7 +21,7 @@ rule shift:
         # optional parameters
         extra = ""
     wrapper:
-        get_wrapper("alignmentSieve")
+        get_wrapper("deeptools", "alignmentSieve")
 
 rule shift_sort:
     input:
