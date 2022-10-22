@@ -40,19 +40,20 @@ class Wrapper(WrapperBase):
                 self.snakemake.output.fq2_unpaired,
             ]
             self.type = 'PE'
+        self.inputs = input_files
+        self.outputs = output_files
+        # self.trimmomatic_threads, input_threads, output_threads = self.distribute_threads(
+        #     input_files, output_files, self.snakemake.threads
+        # )
 
-        self.trimmomatic_threads, input_threads, output_threads = self.distribute_threads(
-            input_files, output_files, self.snakemake.threads
-        )
+        # self.inputs = " ".join([
+        #     self.compose_input_gz(filename, input_threads) for filename in input_files
+        # ])
 
-        self.inputs = " ".join([
-            self.compose_input_gz(filename, input_threads) for filename in input_files
-        ])
-
-        self.outputs = " ".join([
-            self.compose_output_gz(filename, output_threads, compression_level)
-            for filename in output_files
-        ])
+        # self.outputs = " ".join([
+        #     self.compose_output_gz(filename, output_threads, compression_level)
+        #     for filename in output_files
+        # ])
 
     def run(self):
         shell(
