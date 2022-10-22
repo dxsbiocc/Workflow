@@ -23,8 +23,13 @@ workdir: config['workdir']
 rule all:
     input:
         expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
-        expand("dedup/{sample}.shift.sort.bam", sample=samples.index),
-        expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index)
+        "dedup/{sample}.cons.bam.bai",
+        "dedup/{sample}.shift.sort.bam.bai",
+        "macs2/narrow/{sample}__peaks.narrowPeak",
+        "macs2/broad/{sample}__peaks.narrowPeak",
+        "macs2/bigwig/{sample}.cpm.norm.bw",
+        "macs2/narrow/{sample}_homer_peaks.txt",
+        "motifs/{sample}"
 
 rule make_some_files:
     output:

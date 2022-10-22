@@ -12,7 +12,7 @@ rule find_motifs:
         peak = "macs2/narrow/{sample}_homer_peaks.txt",
         genome = config['data']['ref']
     output:
-        protected("motifs/{sample}/")
+        directory("motifs/{sample}/")
     params:
         extra = "-size 200"
     threads: 2
