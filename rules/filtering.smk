@@ -30,7 +30,7 @@ rule shift_sort:
     output:
         "dedup/{sample}.shift.sort.bam"
     log:
-        "log/dedup_{sample}_shift.sort.log",
+        "logs/dedup_{sample}_shift.sort.log",
     params:
         extra="-m 4G",
     threads: 8

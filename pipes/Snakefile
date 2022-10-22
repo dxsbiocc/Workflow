@@ -20,6 +20,12 @@ if not config.get('workdir'):
 workdir: config['workdir']
 
 # --------------------- make directories ------------------- #
+rule all:
+    input:
+        expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
+        expand("dedup/{sample}.shift.sort.bam", sample=samples.index),
+        expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index)
+
 rule make_some_files:
     output:
         protected("{folder}"),
@@ -32,11 +38,3 @@ include: "../rules/mapping.smk"
 include: "../rules/filtering.smk"
 include: "../rules/callpeak.smk"
 include: "../rules/motif.smk"
-
-
-rule all:
-    input:
-        expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
-        expand("trimmed/{sample}.{unit}.unpaired.fastq.gz", sample=samples.index, unit=['R1', 'R2']),
-        expand("dedup/{sample}.shift.sort.bam", sample=samples.index),
-        expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index)

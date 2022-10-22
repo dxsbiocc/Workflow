@@ -12,7 +12,7 @@ rule macs2_narrow:
                  "_summits.bed"
                  )
     log:
-        "log/macs2_{sample}_callpeak_narrow.log"
+        "logs/macs2_{sample}_callpeak_narrow.log"
     params:
         extra = "-f BAMPE -g hs -q 0.01 -B --SPMR --keep-dup all"
     wrapper:
@@ -36,7 +36,7 @@ rule macs2_broad:
                  "_peaks.gappedPeak"
                  )
     log:
-        "log/macs2_{sample}_callpeak_broad.log"
+        "logs/macs2_{sample}_callpeak_broad.log"
     params:
         extra = "-f BAMPE -g hs --broad --broad-cutoff 0.1 -B --SPMR --keep-dup all"
     wrapper:
@@ -56,6 +56,6 @@ rule bamCoverage:
         extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize' + str(total_chrom_size),
     threads: 1
     log: 
-        'log/deeptools_bamcoverage_{sample}.log'
+        'logs/deeptools_bamcoverage_{sample}.log'
     wrapper:
         get_wrapper('deeptools', 'bamcoverage')

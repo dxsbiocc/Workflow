@@ -42,9 +42,9 @@ class Wrapper(WrapperBase):
             self.type = 'PE'
         self.inputs = input_files
         self.outputs = output_files
-        # self.trimmomatic_threads, input_threads, output_threads = self.distribute_threads(
-        #     input_files, output_files, self.snakemake.threads
-        # )
+        self.trimmomatic_threads, input_threads, output_threads = self.distribute_threads(
+            input_files, output_files, self.snakemake.threads
+        )
 
         # self.inputs = " ".join([
         #     self.compose_input_gz(filename, input_threads) for filename in input_files
@@ -56,6 +56,10 @@ class Wrapper(WrapperBase):
         # ])
 
     def run(self):
+        print("trimmomatic {self.type} -threads {self.trimmomatic_threads} {self.java_opts} {self.extra} "\
+            "{self.inputs} {self.outputs} "\
+            "{self.trimmer} "\
+            "{self.log}")
         shell(
             "trimmomatic {self.type} -threads {self.trimmomatic_threads} {self.java_opts} {self.extra} "
             "{self.inputs} {self.outputs} "
