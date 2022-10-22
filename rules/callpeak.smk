@@ -7,6 +7,8 @@ rule macs2_narrow:
         #         https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/macs2/callpeak.html.
         multiext("macs2/narrow/{sample}",
                  "_peaks.xls",   ### required
+                 "_treat_pileup.bdg",
+                 "_control_lambda.bdg",
                  ### optional output files
                  "_peaks.narrowPeak",
                  "_summits.bed"
@@ -53,7 +55,7 @@ rule bamCoverage:
         'macs2/bigwig/{sample}.cpm.norm.bw'
     params:
         # Optional parameters.
-        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize' + str(total_chrom_size),
+        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize ' + str(total_chrom_size),
     threads: 1
     log: 
         'logs/deeptools_bamcoverage_{sample}.log'

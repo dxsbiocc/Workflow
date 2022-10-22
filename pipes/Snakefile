@@ -25,8 +25,8 @@ rule all:
         expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
         expand("dedup/{sample}.cons.bam.bai", sample=samples.index),
         expand("dedup/{sample}.shift.sort.bam.bai", sample=samples.index),
-        expand("macs2/narrow/{sample}__peaks.narrowPeak", sample=samples.index),
-        expand("macs2/broad/{sample}__peaks.narrowPeak", sample=samples.index),
+        expand("macs2/narrow/{sample}_peaks.narrowPeak", sample=samples.index),
+        expand("macs2/broad/{sample}_peaks.broadPeak", sample=samples.index),
         expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
         expand("macs2/narrow/{sample}_homer_peaks.txt", sample=samples.index),
         expand("motifs/{sample}", sample=samples.index)
