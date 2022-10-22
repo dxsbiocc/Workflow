@@ -8,10 +8,11 @@ configfile: "../config/config.yaml"
 
 #read the sample file using pandas lib (sample names+ fastq names) and crezate index using the sample name
 samples = pd.read_csv(config['data']["sample_file"], sep='\t', index_col=0)
-
+folders =['trimmed', 'dedup', 'macs2', 'macs2/bigwig', 'motifs']
 # ------------------ Wildcard constraints ------------------ #
 wildcard_constraints:
     sample = "|".join(samples.index),
+    folder = "|".join(folders)
 
 if not config.get('workdir'):
     config['workdir'] = os.getcwd()
@@ -28,6 +29,13 @@ include: "../rules/motif.smk"
 
 rule all:
     input:
+        directory(expand("{folder}", folder=folder)),
         expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
         expand("dedup/{sample}.shift.sort.bam", sample=samples.index),
         expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index)
+
+checkpoint make_some_files:
+    output:
+        directory(expand("{folder}", folder=folder)),
+    shell:
+        "mkdir {folder}"
