@@ -1,6 +1,6 @@
 rule fastp:
     input:
-        reads = unpack(get_fastq),
+        reads = get_fastq,
     output:
         trimmed = ["trimmed/{sample}.clean.R1.fq.gz", "trimmed/{sample}.clean.R2.fq.gz"],
         # Unpaired reads separately

@@ -14,12 +14,19 @@ genome = config['data']['genome']
 total_chrom_size = genoem_size[genome]
 
 # -------------------- Helper functions -------------------- #
+# def get_fastq(wildcards):
+#     """Get fastq files of given sample-unit."""
+#     fastqs = samples.loc[wildcards.sample, ["fastq1", "fastq2"]].dropna()
+#     if len(fastqs) == 2:
+#         return {'fq1': fastqs.fastq1, 'fq2': fastqs.fastq2}
+#     return {'fq1': fastqs.fastq1}
+
 def get_fastq(wildcards):
     """Get fastq files of given sample-unit."""
     fastqs = samples.loc[wildcards.sample, ["fastq1", "fastq2"]].dropna()
     if len(fastqs) == 2:
-        return {'fq1': fastqs.fastq1, 'fq2': fastqs.fastq2}
-    return {'fq1': fastqs.fastq1}
+        return [fastqs.fastq1, fastqs.fastq2]
+    return [fastqs.fastq1]
 
 def get_wrapper(*args):
     """Get wrappers path"""
