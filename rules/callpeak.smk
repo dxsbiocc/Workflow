@@ -53,7 +53,7 @@ rule bamCoverage:
         'macs2/bigwig/{sample}.cpm.norm.bw'
     params:
         # Optional parameters.
-        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize' + '{total_chrom_size}',
+        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize' + str(total_chrom_size),
     threads: 1
     log: 
         'log/deeptools_bamcoverage_{sample}.log'

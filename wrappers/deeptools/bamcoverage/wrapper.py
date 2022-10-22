@@ -38,7 +38,7 @@ class Wrapper(WrapperBase):
             "--numberOfProcessors {self.snakemake.threads} "
             "{self.extra} "
             ") "
-            "{log}"
+            "{self.log}"
         )
 
 

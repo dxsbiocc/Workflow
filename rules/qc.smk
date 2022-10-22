@@ -26,8 +26,8 @@ rule trimmomatic:
     input:
         unpack(get_fastq),
     output:
-        fq1 = "trimmed/{sample}.clean.R1.fq.gz",
-        fq2 = "trimmed/{sample}.clean.R2.fq.gz",
+        fq1 = protected("trimmed/{sample}.clean.R1.fq.gz"),
+        fq2 = protected("trimmed/{sample}.clean.R2.fq.gz"),
         # reads where trimming entirely removed the mate
         fq1_unpaired = "trimmed/{sample}.R1.unpaired.fastq.gz",
         fq2_unpaired = "trimmed/{sample}.R2.unpaired.fastq.gz"
