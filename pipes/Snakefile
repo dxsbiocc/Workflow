@@ -18,6 +18,13 @@ if not config.get('workdir'):
     config['workdir'] = os.getcwd()
 # work dir
 workdir: config['workdir']
+
+# --------------------- make directories ------------------- #
+rule make_some_files:
+    output:
+        "{folder}",
+    shell:
+        "mkdir {output}"
 # ---------------------- include rules --------------------- #
 include: "../rules/common.smk"
 include: "../rules/qc.smk"
@@ -29,13 +36,6 @@ include: "../rules/motif.smk"
 
 rule all:
     input:
-        directory(expand("{folder}", folder=folder)),
         expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
         expand("dedup/{sample}.shift.sort.bam", sample=samples.index),
         expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index)
-
-checkpoint make_some_files:
-    output:
-        directory(expand("{folder}", folder=folder)),
-    shell:
-        "mkdir {folder}"
