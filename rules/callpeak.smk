@@ -1,4 +1,4 @@
-rule macs2_narrow:
+rule macs2Narrow:
     input:
         treatment = "dedup/{sample}.shift.sort.bam",   # required: treatment sample(s)
     output:
@@ -20,7 +20,7 @@ rule macs2_narrow:
     wrapper:
         get_wrapper('macs2', 'callpeak')
 
-rule macs2_broad:
+rule macs2Broad:
     input:
         treatment = "dedup/{sample}.shift.sort.bam",   # required: treatment sample(s)
     output:
@@ -44,20 +44,12 @@ rule macs2_broad:
     wrapper:
         get_wrapper('macs2', 'callpeak')
 
-
-rule bamCoverage:
+rule annotatePeaks:
     input:
-        # Required input.
-        'dedup/{sample}.shift.sort.bam',
+        peakfile = "macs2/narrow/{sample}_peaks.narrowPeak",
+        sample = '{sample}',
+        gtf = config['data']['gtf']
     output:
-        # Required output.
-        # Output file format should be one of ['bw', 'bigwig', 'bigWig', 'bedgraph', 'bedGraph'].
-        'macs2/bigwig/{sample}.cpm.norm.bw'
-    params:
-        # Optional parameters.
-        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize ' + str(total_chrom_size),
-    threads: 1
-    log: 
-        'logs/deeptools_bamcoverage_{sample}.log'
-    wrapper:
-        get_wrapper('deeptools', 'bamcoverage')
+        directory('macs2/anno')
+    script:
+        get_script('annoPeaks.R')

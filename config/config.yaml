@@ -13,6 +13,7 @@ data:
 workdir: null
 # ------------------ wrapper folder ------------------
 wrappers: "file:../wrappers"
+scripts: "../scripts"
 # --------------- programs parameters ----------------
 parameters:
   fastp:

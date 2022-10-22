@@ -22,18 +22,31 @@ workdir: config['workdir']
 # --------------------- make directories ------------------- #
 rule all:
     input:
+        # trimmed adapter
         expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
+        # mapping and remove duplicates
         expand("dedup/{sample}.cons.bam.bai", sample=samples.index),
+        # shift 9bp
         expand("dedup/{sample}.shift.sort.bam.bai", sample=samples.index),
+        # callpeak
         expand("macs2/narrow/{sample}_peaks.narrowPeak", sample=samples.index),
         expand("macs2/broad/{sample}_peaks.broadPeak", sample=samples.index),
+        # convert to bigwig
         expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
+        # bw data quality
+        expand("macs2/matrix/{sample}.{pos}.matrix.gz", sample=samples.index, pos=['tss', 'genebody')
+        expand("macs2/matrix/{sample}.{pos}.heatmap.png", sample=samples.index, pos=['tss', 'genebody'])
+        expand("macs2/matrix/{sample}.genebody.profile.png", sample=samples.index)
+        # extract peaks
         expand("macs2/narrow/{sample}_homer_peaks.txt", sample=samples.index),
+        # motify analysis
         expand("motifs/{sample}", sample=samples.index)
+        # peak annotate
+        directory("macs2/anno")
 
 # ---------------------- include rules --------------------- #
 include: "../rules/common.smk"
-include: "../rules/qc.smk"
+include: "../rules/trimmed.smk"
 include: "../rules/mapping.smk"
 include: "../rules/filtering.smk"
 include: "../rules/callpeak.smk"

@@ -32,6 +32,9 @@ def get_wrapper(*args):
     """Get wrappers path"""
     return os.path.join(config['wrappers'], *args)
 
+def get_script(script):
+    return os.path.join(config['scripts'], script)
+
 def get_adapter(method='fastp'):
     """get adapter path"""
     if config['control']['adapters'] == 'Truseq':
