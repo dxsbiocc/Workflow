@@ -51,7 +51,7 @@ rule annotatePeaks:
     output:
         expand('macs2/anno/{{sample}}.peakAnno.{ext}', ext=['pdf', 'txt'])
     params:
-        sample = '{wildcards.sample}',
+        sample = lambda wildcards: '{}'.format(wildcards.sample),
         output = config['workdir'] + "/macs2/anno/"
     script:
         get_script('annoPeaks.R')
