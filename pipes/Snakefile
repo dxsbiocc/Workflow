@@ -41,7 +41,7 @@ rule all:
         # motify analysis
         expand("motifs/{sample}", sample=samples.index),
         # peak annotate
-        expand('macs2/anno/{{sample}}.peakAnno.{ext}', ext=['pdf', 'txt'])
+        expand('macs2/anno/{sample}.peakAnno.{ext}', sample=samples.index, ext=['pdf', 'txt'])
 
 # ---------------------- include rules --------------------- #
 include: "../rules/common.smk"
