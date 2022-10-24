@@ -47,9 +47,11 @@ rule macs2Broad:
 rule annotatePeaks:
     input:
         peakfile = "macs2/narrow/{sample}_peaks.narrowPeak",
-        sample = '{sample}',
         gtf = config['data']['gtf']
     output:
-        directory('macs2/anno')
+        expand('macs2/anno/{{sample}}.peakAnno.{ext}', ext=['pdf', 'txt'])
+    params:
+        sample = '{wildcards.sample}',
+        output = config['workdir'] + "/anno/"
     script:
         get_script('annoPeaks.R')

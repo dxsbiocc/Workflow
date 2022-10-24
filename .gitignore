@@ -4,6 +4,8 @@
 *.logs/
 *.snakemake/
 *.ipynb_checkpoints/
+pipes/.snakemake/
+pipes/*/
 
 # ignore files
 *.DS_Store

@@ -19,7 +19,9 @@ if not config.get('workdir'):
 # work dir
 workdir: config['workdir']
 
-# --------------------- make directories ------------------- #
+# ------------------------- run rules ---------------------- #
+report: "report/workflow.rst"
+
 rule all:
     input:
         # trimmed adapter

@@ -17,7 +17,7 @@ rule bamCoverage:
 
 rule TSSEnrichment:
     input:
-        bigwig = relues.bamCoverage.output
+        bigwig = rules.bamCoverage.output,
         bed = config['data']['gtf']
     output:
         matrix_gz = "macs2/matrix/{sample}.tss.matrix.gz",   # required
@@ -46,7 +46,7 @@ rule plotTSSHeatmap:
 
 rule genbodyEnrichment:
     input:
-        bigwig = relues.bamCoverage.output
+        bigwig = rules.bamCoverage.output,
         bed = config['data']['gtf']
     output:
         matrix_gz = "macs2/matrix/{sample}.genebody.matrix.gz",   # required

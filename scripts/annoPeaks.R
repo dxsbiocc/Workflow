@@ -4,11 +4,10 @@ if (!require("ChIPseeker", quietly = TRUE)) BiocManager::install("ChIPseeker")
 if (!require("GenomicFeatures", quietly = TRUE)) BiocManager::install("GenomicFeatures")
 
 # library
-library(optparse)
-library(ChIPseeker)
-library(GenomicFeatures)
+suppressMessages(library(ChIPseeker))
+suppressMessages(library(GenomicFeatures))
 
-annotate_peaks <- function (peakfile, sample, gtf, out_anno) {
+annotate_peaks <- function (peakfile, gtf, sample, out_anno) {
   if (!dir.exists(out_anno))
       dir.create(out_anno)
   outfile <- file.path(out_anno, sample)
@@ -17,11 +16,11 @@ annotate_peaks <- function (peakfile, sample, gtf, out_anno) {
   peak <- readPeakFile(peakfile = peakfile, header = FALSE)
   peakAnno <- annotatePeak(peak = peak, TxDb = tx, assignGenomicAnnotation = TRUE)
 
-  pdf(file = paste0(outfile, '.peakNonotation.pdf'))
-  plotAnnoPie(peakAnno, main = paste0(outfile, "\nDistribution of Peaks"), line = -8)
+  pdf(file = paste0(outfile, '.peakAnno.pdf'))
+  plotAnnoPie(peakAnno, main = paste0(sample, "\nDistribution of Peaks"), line = -8)
   dev.off()
 
   write.table(as.data.frame(peakAnno@anno), file = paste0(outfile, '.peakAnno.txt'), sep = '\t', row.names = FALSE)
 }
 
-annotate_peaks(nakemake@input[['peakfile']], nakemake@input[['sample']], nakemake@input[['gtf']], snakemake@output[[1]])
+annotate_peaks(snakemake@input[['peakfile']], snakemake@input[['gtf']], snakemake@params[['sample']], snakemake@params[['output']])
