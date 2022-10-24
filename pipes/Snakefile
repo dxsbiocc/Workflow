@@ -36,8 +36,8 @@ rule all:
         # convert to bigwig
         expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
         # bw data quality
-        expand("macs2/matrix/{pos}.heatmap.png", pos=['tss', 'genebody']),
-        expand("macs2/matrix/{pos}.profile.png", pos=['tss', 'genebody']),
+        expand("macs2/matrix/{pos}.matrix.gz", pos=['tss', 'genebody']),
+        expand("macs2/matrix/{pos}.{types}.png", pos=['tss', 'genebody'], types = ['heatmap', 'profile']),
         # extract peaks
         expand("macs2/narrow/{sample}_homer_peaks.txt", sample=samples.index),
         # motify analysis

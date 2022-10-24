@@ -28,12 +28,12 @@
 
 
 # Using external rules in the main Snakefile (minimal Snakefile)
-RULES=Snakefile.smk
+RULES=Snakefile
 # Or with all rules included in one snakemake file:
 #RULES=Snakefile.smk
 
 # config file to be edited
-CONFIG=../cinfig/config.yaml
+CONFIG=../config/config.yaml
 
 # slurm directive by rule (can be edited if needed)
 CLUSTER_CONFIG=cluster.yaml
