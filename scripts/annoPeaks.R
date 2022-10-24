@@ -14,7 +14,7 @@ annotate_peaks <- function (peakfile, gtf, sample, out_anno) {
 
   tx <- makeTxDbFromGFF(file = gtf)
   peak <- readPeakFile(peakfile = peakfile, header = FALSE)
-  peakAnno <- annotatePeak(peak = peak, TxDb = tx, assignGenomicAnnotation = TRUE)
+  suppressWarnings(peakAnno <- annotatePeak(peak = peak, TxDb = tx, assignGenomicAnnotation = TRUE))
 
   pdf(file = paste0(outfile, '.peakAnno.pdf'))
   plotAnnoPie(peakAnno, main = paste0(sample, "\nDistribution of Peaks"), line = -8)
