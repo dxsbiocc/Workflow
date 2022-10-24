@@ -38,7 +38,7 @@ CONFIG=../config/config.yaml
 # slurm directive by rule (can be edited if needed)
 CLUSTER_CONFIG=cluster.yaml
 # sbatch directive to pass to snakemake
-CLUSTER='sbatch --mem={cluster.mem} -t {cluster.time} -c {cluster.cores} -J {cluster.jobname} --nodelist={cluster.nodelist} -o logs/{cluster.out}'
+CLUSTER='sbatch --mem={cluster.mem} -t {cluster.time} -c {cluster.cores} -J {cluster.jobname} --nodelist={cluster.nodelist} -o logs/{cluster.out} -e logs/{cluster.error}'
 # Maximum number of jobs to be submitted at a time (see cluster limitation)
 MAX_JOBS=500
 
@@ -54,13 +54,13 @@ mkdir -p logs
 # With samples
 snakemake --configfile $CONFIG -s $RULES --dag | dot -Tpdf > dag.pdf
 # Only rules
-snakemake --configfile $CONFIG -s $RULES --rulegraph | dot -Tpdf > dag_rules.pdf
+# snakemake --configfile $CONFIG -s $RULES --rulegraph | dot -Tpdf > dag_rules.pdf
 
 # Dry run (simulation)
-snakemake --configfile $CONFIG -s $RULES -np -j $MAX_JOBS --cluster-config $CLUSTER_CONFIG --cluster "$CLUSTER" >snakemake_dryrun.out
+# snakemake --configfile $CONFIG -s $RULES -np -j $MAX_JOBS --cluster-config $CLUSTER_CONFIG --cluster "$CLUSTER" >snakemake_dryrun.out
 
 # Full run (if everething is ok: uncomment it)
-#snakemake --configfile $CONFIG -s $RULES -p -j $MAX_JOBS --cluster-config $CLUSTER_CONFIG --cluster "$CLUSTER"
+snakemake --configfile $CONFIG -s $RULES -p -j $MAX_JOBS --cluster-config $CLUSTER_CONFIG --cluster "$CLUSTER"
 
 # If latency problem add to the run:
 # --latency-wait 60
