@@ -1,28 +1,11 @@
-rule bamCoverage:
-    input:
-        # Required input.
-        'dedup/{sample}.shift.sort.bam',
-    output:
-        # Required output.
-        # Output file format should be one of ['bw', 'bigwig', 'bigWig', 'bedgraph', 'bedGraph'].
-        'macs2/bigwig/{sample}.cpm.norm.bw'
-    params:
-        # Optional parameters.
-        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize ' + str(total_chrom_size),
-    threads: 1
-    log: 
-        'logs/{sample}_deeptools_bamcoverage.log'
-    wrapper:
-        get_wrapper('deeptools', 'bamcoverage')
-
 rule TSSEnrichment:
     input:
-        bigwig = rules.bamCoverage.output,
+        bigwig = expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
         bed = config['data']['gtf']
     output:
-        matrix_gz = "macs2/matrix/{sample}.tss.matrix.gz",   # required
+        matrix_gz = "macs2/matrix/tss.matrix.gz",   # required
     log:
-        "logs/{sample}_deeptools_compute_tss_matrix.log"
+        "logs/deeptools_compute_tss_matrix.log"
     params:
         # required argument, choose "scale-regions" or "reference-point"
         command="reference-point",
@@ -35,23 +18,40 @@ rule plotTSSHeatmap:
     input:
          rules.TSSEnrichment.output.matrix_gz
     output:
-        heatmap_img="macs2/matrix/{sample}.tss.heatmap.png",  # required
+        heatmap_img="macs2/matrix/tss.heatmap.png",  # required
     log:
-        "logs/{sample}_deeptools_TSS_heatmap.log"
+        "logs/deeptools_TSS_heatmap.log"
     params:
         # optional parameters
         extra = "--plotType=fill --colorMap Reds "
     wrapper:
         get_wrapper("deeptools", "plotheatmap")
 
+rule plotTSSProfile:
+    input:
+        rules.TSSEnrichment.output.matrix_gz
+    output:
+        plot_img="macs2/matrix/tss.profile.png",  # required
+    log:
+        "logs/deeptools_TSS_profile.log"
+    params:
+        # optional parameters
+        extra = "--plotType=fill "
+        "--perGroup "
+        "--colors red yellow blue "
+        "--dpi 150 "
+    wrapper:
+        get_wrapper("deeptools", "plotprofile")
+
+
 rule genbodyEnrichment:
     input:
-        bigwig = rules.bamCoverage.output,
+        bigwig = expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
         bed = config['data']['gtf']
     output:
-        matrix_gz = "macs2/matrix/{sample}.genebody.matrix.gz",   # required
+        matrix_gz = "macs2/matrix/genebody.matrix.gz",   # required
     log:
-        "logs/{sample}_deeptools_compute_genebody_matrix.log"
+        "logs/deeptools_compute_genebody_matrix.log"
     params:
         # required argument, choose "scale-regions" or "reference-point"
         command="scale-regions",
@@ -65,9 +65,9 @@ rule plotBodyHeatmap:
     input:
          rules.genbodyEnrichment.output.matrix_gz
     output:
-        heatmap_img = "macs2/matrix/{sample}.genebody.heatmap.png",  # required
+        heatmap_img = "macs2/matrix/genebody.heatmap.png",  # required
     log:
-        "logs/{sample}_deeptools_genebody_heatmap.log"
+        "logs/deeptools_genebody_heatmap.log"
     params:
         # optional parameters
         extra = "--plotType=fill --colorMap Reds "
@@ -75,13 +75,13 @@ rule plotBodyHeatmap:
         get_wrapper("deeptools", "plotheatmap")
 
 
-rule plotProfile:
+rule ploGenebodytProfile:
     input:
         rules.genbodyEnrichment.output.matrix_gz
     output:
-        plot_img="macs2/matrix/{sample}.genebody.profile.png",  # required
+        plot_img="macs2/matrix/genebody.profile.png",  # required
     log:
-        "logs/{sample}_deeptools_genebody_profile.log"
+        "logs/deeptools_genebody_profile.log"
     params:
         # optional parameters
         extra = "--plotType=fill "

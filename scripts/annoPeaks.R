@@ -12,7 +12,7 @@ annotate_peaks <- function (peakfile, gtf, sample, out_anno) {
       dir.create(out_anno)
   outfile <- file.path(out_anno, sample)
 
-  tx <- makeTxDbFromGFF(file = gtf)
+  suppressWarnings(tx <- makeTxDbFromGFF(file = gtf))
   peak <- readPeakFile(peakfile = peakfile, header = FALSE)
   suppressWarnings(peakAnno <- annotatePeak(peak = peak, TxDb = tx, assignGenomicAnnotation = TRUE))
 
