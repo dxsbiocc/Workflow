@@ -40,10 +40,9 @@ rule all:
         # motify analysis
         expand("motifs/{sample}", sample=samples.index),
         # peak annotate
-        expand('macs2/anno/{sample}.peakAnno.{ext}', sample=samples.index, ext=['pdf', 'txt'])
+        expand('macs2/anno/{sample}.peakAnno.{ext}', sample=samples.index, ext=['pdf', 'txt']),
         # bw data quality
-        expand("macs2/matrix/{pos}.matrix.gz", pos=['tss', 'genebody']),
-        expand("macs2/matrix/{pos}.{types}.png", pos=['tss', 'genebody'], types = ['heatmap', 'profile']),
+        expand("macs2/matrix/{pos}.{types}.png", pos=['tss', 'genebody'], types=['heatmap', 'profile']),
 
 # ---------------------- include rules --------------------- #
 include: "../rules/common.smk"
@@ -51,5 +50,5 @@ include: "../rules/trimmed.smk"
 include: "../rules/mapping.smk"
 include: "../rules/filtering.smk"
 include: "../rules/callpeak.smk"
-include: "../rules/quality.smk"
 include: "../rules/motif.smk"
+include: "../rules/quality.smk"
