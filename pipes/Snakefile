@@ -35,15 +35,15 @@ rule all:
         expand("macs2/broad/{sample}_peaks.broadPeak", sample=samples.index),
         # convert to bigwig
         expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
-        # bw data quality
-        expand("macs2/matrix/{pos}.matrix.gz", pos=['tss', 'genebody']),
-        expand("macs2/matrix/{pos}.{types}.png", pos=['tss', 'genebody'], types = ['heatmap', 'profile']),
         # extract peaks
         expand("macs2/narrow/{sample}_homer_peaks.txt", sample=samples.index),
         # motify analysis
         expand("motifs/{sample}", sample=samples.index),
         # peak annotate
         expand('macs2/anno/{sample}.peakAnno.{ext}', sample=samples.index, ext=['pdf', 'txt'])
+        # bw data quality
+        expand("macs2/matrix/{pos}.matrix.gz", pos=['tss', 'genebody']),
+        expand("macs2/matrix/{pos}.{types}.png", pos=['tss', 'genebody'], types = ['heatmap', 'profile']),
 
 # ---------------------- include rules --------------------- #
 include: "../rules/common.smk"
