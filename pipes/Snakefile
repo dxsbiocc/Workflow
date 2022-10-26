@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from snakemake.utils import min_version
 # snakemake built-in report function requires min version 5.1
-min_version("5.1.0")
+min_version("7.12.0")
 
 configfile: "../config/config.yaml"
 
