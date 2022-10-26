@@ -10,9 +10,8 @@ configfile: "../config/config.yaml"
 samples = pd.read_csv(config['data']["sample_file"], sep='\t', index_col=0)
 folders =['trimmed', 'dedup', 'macs2', 'macs2/bigwig', 'motifs']
 # ------------------ Wildcard constraints ------------------ #
-wildcard_constraints:
-    sample = "|".join(samples.index),
-    folder = "|".join(folders)
+# wildcard_constraints:
+#     sample = "|".join(samples.index)
 
 if not config.get('workdir'):
     config['workdir'] = os.getcwd()
