@@ -2,6 +2,8 @@ rule bamCoverage:
     input:
         # Required input.
         'dedup/{sample}.shift.sort.bam',
+        # must index
+        'dedup/{sample}.shift.sort.bam.bai'
     output:
         # Required output.
         # Output file format should be one of ['bw', 'bigwig', 'bigWig', 'bedgraph', 'bedGraph'].
@@ -14,7 +16,7 @@ rule bamCoverage:
         'logs/{sample}_deeptools_bamcoverage.log'
     wrapper:
         get_wrapper('deeptools', 'bamcoverage')
-        
+
 rule TSSEnrichment:
     input:
         bigwig = expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
