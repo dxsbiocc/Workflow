@@ -1,3 +1,20 @@
+rule bamCoverage:
+    input:
+        # Required input.
+        'dedup/{sample}.shift.sort.bam',
+    output:
+        # Required output.
+        # Output file format should be one of ['bw', 'bigwig', 'bigWig', 'bedgraph', 'bedGraph'].
+        'macs2/bigwig/{sample}.cpm.norm.bw'
+    params:
+        # Optional parameters.
+        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize ' + str(total_chrom_size),
+    threads: 1
+    log: 
+        'logs/{sample}_deeptools_bamcoverage.log'
+    wrapper:
+        get_wrapper('deeptools', 'bamcoverage')
+        
 rule TSSEnrichment:
     input:
         bigwig = expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),

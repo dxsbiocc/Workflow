@@ -32,7 +32,7 @@ class Wrapper(WrapperBase):
     def run(self):
         shell(
             "( bamCoverage "
-            "--bam {self.snakemake.input} "
+            "--bam {self.snakemake.input[0]} "
             "--outFileName {self.snakemake.output} "
             "--outFileFormat {self.out_format} "
             "--numberOfProcessors {self.snakemake.threads} "
