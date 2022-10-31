@@ -25,7 +25,7 @@ class Wrapper(WrapperBase):
 
     def run(self):
         shell(
-            "(alignmentSieve  --ATACshift "
+            "(alignmentSieve {self.extra} "
             "--numberOfProcessors {self.snakemake.threads} "
             "--bam {self.snakemake.input[0]} "
             "-o {self.snakemake.output} "

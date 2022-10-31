@@ -1,6 +1,6 @@
 rule macs2Narrow:
     input:
-        treatment = "dedup/{sample}.shift.sort.bam",   # required: treatment sample(s)
+        treatment = "dedup/{sample}.filtered.bam",   # required: treatment sample(s)
     output:
         # all output-files must share the same basename and only differ by it's extension
         # Usable extensions (and which tools they implicitly call) are listed here:
@@ -22,7 +22,7 @@ rule macs2Narrow:
 
 rule macs2Broad:
     input:
-        treatment = "dedup/{sample}.shift.sort.bam",   # required: treatment sample(s)
+        treatment = "dedup/{sample}.filtered.bam",   # required: treatment sample(s)
     output:
         # all output-files must share the same basename and only differ by it's extension
         # Usable extensions (and which tools they implicitly call) are listed here:

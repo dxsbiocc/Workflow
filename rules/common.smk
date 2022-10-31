@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from snakemake.utils import validate
 from snakemake.utils import min_version
@@ -12,6 +13,8 @@ genoem_size = {
 }
 genome = config['data']['genome']
 total_chrom_size = genoem_size[genome]
+# blacklist
+blacklist = os.path.join(config['data']['db'], 'blacklist', f'{genome}.blacklist.bed')
 
 # -------------------- Helper functions -------------------- #
 # def get_fastq(wildcards):

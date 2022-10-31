@@ -1,16 +1,16 @@
 rule bamCoverage:
     input:
         # Required input.
-        'dedup/{sample}.shift.sort.bam',
+        'dedup/{sample}.filtered.bam',
         # must index
-        'dedup/{sample}.shift.sort.bam.bai'
+        'dedup/{sample}.filtered.bam.bai'
     output:
         # Required output.
         # Output file format should be one of ['bw', 'bigwig', 'bigWig', 'bedgraph', 'bedGraph'].
-        'macs2/bigwig/{sample}.cpm.norm.bw'
+        'macs2/bigwig/{sample}.norm.bw'
     params:
         # Optional parameters.
-        extra = '--binSize 10 --normalizeUsing CPM --effectiveGenomeSize ' + str(total_chrom_size),
+        extra = '--binSize 10 --normalizeUsing RPGC --effectiveGenomeSize ' + str(total_chrom_size),
     threads: 1
     log: 
         'logs/{sample}_deeptools_bamcoverage.log'
@@ -19,7 +19,7 @@ rule bamCoverage:
 
 rule TSSEnrichment:
     input:
-        bigwig = expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
+        bigwig = expand("macs2/bigwig/{sample}.norm.bw", sample=samples.index),
         bed = config['data']['gtf']
     output:
         matrix_gz = "macs2/matrix/tss.matrix.gz",   # required
@@ -62,7 +62,6 @@ rule plotTSSProfile:
     wrapper:
         get_wrapper("deeptools", "plotprofile")
 
-
 rule genbodyEnrichment:
     input:
         bigwig = expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
@@ -79,7 +78,6 @@ rule genbodyEnrichment:
     wrapper:
         get_wrapper("deeptools", "computematrix")
 
-
 rule plotBodyHeatmap:
     input:
          rules.genbodyEnrichment.output.matrix_gz
@@ -92,7 +90,6 @@ rule plotBodyHeatmap:
         extra = "--plotType=fill --colorMap Reds "
     wrapper:
         get_wrapper("deeptools", "plotheatmap")
-
 
 rule ploGenebodytProfile:
     input:

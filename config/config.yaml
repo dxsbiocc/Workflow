@@ -6,6 +6,7 @@ data:
   genome: hg19
   ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
   index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
+  ecoli: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/e.coli/e.coli
   gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
   db: "../data"
 
@@ -17,16 +18,20 @@ scripts: "../scripts"
 # --------------- programs parameters ----------------
 parameters:
   fastp:
-    extra: "-g -q 30 -u 40 -n 15"
+    extra: "-g -q 5 -u 40 -n 15"
   bowtie2:
     sort: samtools
-    extra: "--local --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
+    extra: "--end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
   picard:
     MarkDuplicates: "--REMOVE_DUPLICATES true"
   trimmomatic:
     trimmer: ["LEADING:20", "TRAILING:20", "SLIDINGWINDOW:4:15", "MINLEN:25"]
     compression_level: "-9"
     mem: 1024
+  alignmentSieve:
+    mapq: 30
+    flag: 2
+    shift: "--ATACshift"
   
 # ----------------- control argument -----------------
 control:

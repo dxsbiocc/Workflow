@@ -8,7 +8,6 @@ configfile: "../config/config.yaml"
 
 #read the sample file using pandas lib (sample names+ fastq names) and crezate index using the sample name
 samples = pd.read_csv(config['data']["sample_file"], sep='\t', index_col=0)
-folders =['trimmed', 'dedup', 'macs2', 'macs2/bigwig', 'motifs']
 # ------------------ Wildcard constraints ------------------ #
 # wildcard_constraints:
 #     sample = "|".join(samples.index)
@@ -19,21 +18,25 @@ if not config.get('workdir'):
 workdir: config['workdir']
 
 # ------------------------- run rules ---------------------- #
-report: "report/workflow.rst"
+# report: "report/workflow.rst"
 
 rule all:
     input:
         # trimmed adapter
         expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=samples.index, unit=['R1', 'R2']),
+        # spikein
+        expand("bowtie2/{sample}.spikein.bam", sample=samples.index),
+        # stats
+        expand("bowtie2/{sample}.sort.stats.txt", sample=samples.index),
         # mapping and remove duplicates
         expand("dedup/{sample}.cons.bam.bai", sample=samples.index),
         # shift 9bp
-        expand("dedup/{sample}.shift.sort.bam.bai", sample=samples.index),
+        expand("dedup/{sample}.filtered.bam.bai", sample=samples.index),
         # callpeak
         expand("macs2/narrow/{sample}_peaks.narrowPeak", sample=samples.index),
         expand("macs2/broad/{sample}_peaks.broadPeak", sample=samples.index),
         # convert to bigwig
-        expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
+        expand("macs2/bigwig/{sample}.norm.bw", sample=samples.index),
         # extract peaks
         expand("macs2/narrow/{sample}_homer_peaks.txt", sample=samples.index),
         # motify analysis
