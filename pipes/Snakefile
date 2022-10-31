@@ -27,7 +27,7 @@ rule all:
         # spikein
         expand("bowtie2/{sample}.spikein.bam", sample=samples.index),
         # stats
-        expand("bowtie2/{sample}.sort.stats.txt", sample=samples.index),
+        expand("bowtie2/stats/{sample}.{stats}", sample=samples.index, stats=['stats', 'idxstats', 'flagstats']),
         # mapping and remove duplicates
         expand("dedup/{sample}.cons.bam.bai", sample=samples.index),
         # shift 9bp

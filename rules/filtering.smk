@@ -39,20 +39,3 @@ rule filterChrM:
     run:
         shell("(samtools view -h {input} | grep -v chrM | samtools view -bS | samtools sort -@ 4 -o {output})")
         shell("(samtools index {output})")
-    
-rule idxstats:
-    input:
-        rules.filterChrM.output
-    output:
-        "dedup/stats/{sample}.idxstats"
-    shell:
-        "samtools idxstats {input} > {output}"
-
-rule flagstat:
-    input:
-        rules.filterChrM.output
-    output:
-        "dedup/stats/{sample}.flagstats"
-    threads: 4
-    shell:
-        "samtools flagstat -@ {threads} ${input} > {output}"

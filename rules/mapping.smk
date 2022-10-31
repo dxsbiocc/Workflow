@@ -52,11 +52,36 @@ rule stats:
     input:
         rules.bowtie2.output
     output:
-        "bowtie2/{sample}.sort.stats.txt"
+        "bowtie2/stats/{sample}.stats"
     log:
         "logs/{sample}_stats.log",
     wrapper:
         get_wrapper('samtools', 'stats')
+
+rule idxstats:
+    input:
+        rules.bowtie2.output
+    output:
+        "bowtie2/stats/{sample}.idxstats"
+    log:
+        "logs/{sample}_idxstats.log",
+    params:
+        extra = "",  # optional params string
+    wrapper:
+        get_wrapper('samtools', 'idxstats')
+
+rule flagstat:
+    input:
+        rules.bowtie2.output
+    output:
+        "bowtie2/stats/{sample}.flagstats"
+    threads: 4
+    log:
+        "logs/{sample}_flagstat.log",
+    params:
+        extra = "",  # optional params string
+    wrapper:
+        get_wrapper('samtools', 'flagstat')
 
 # remove dupliactes
 rule mark_duplicates:
