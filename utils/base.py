@@ -11,6 +11,7 @@
 # ============================================================
 
 
+import os
 from abc import ABCMeta, abstractmethod
 
 
@@ -18,6 +19,7 @@ class WrapperBase(metaclass=ABCMeta):
 
     def __init__(self, snakemake) -> None:
         self.snakemake = snakemake
+        self.mkdirs()
         # common parameters
         self.extra = snakemake.params.get("extra", "")
         self.tmp = snakemake.params.get("tmp_dir", "/tmp/")
@@ -25,6 +27,13 @@ class WrapperBase(metaclass=ABCMeta):
         self.log = snakemake.log_fmt_shell(stdout=True, stderr=True)
         self.parser()
         self.run()
+
+    def mkdirs(self):
+        """Make sure the folder has been created"""
+        for file in self.snakemake.output:
+            dirname = os.path.dirname(os.path.abspath(file))
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
     
     @abstractmethod
     def parser(self):

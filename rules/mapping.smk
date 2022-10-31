@@ -53,7 +53,7 @@ rule spikein:
 
 rule stats:
     input:
-        rules.bowtie2.output
+        bam = rules.bowtie2.output
     output:
         "bowtie2/stats/{sample}.stats"
     log:
@@ -63,7 +63,7 @@ rule stats:
 
 rule idxstats:
     input:
-        rules.bowtie2.output
+        bam = rules.bowtie2.output
     output:
         "bowtie2/stats/{sample}.idxstats"
     log:
@@ -75,7 +75,7 @@ rule idxstats:
 
 rule flagstat:
     input:
-        rules.bowtie2.output
+        bam = rules.bowtie2.output
     output:
         "bowtie2/stats/{sample}.flagstats"
     threads: 4
