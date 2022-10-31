@@ -3,7 +3,7 @@ rule bamCoverage:
         # Required input.
         'dedup/{sample}.filtered.bam',
         # must index
-        'dedup/{sample}.filtered.bam.bai'
+        # 'dedup/{sample}.filtered.bam.bai'
     output:
         # Required output.
         # Output file format should be one of ['bw', 'bigwig', 'bigWig', 'bedgraph', 'bedGraph'].
@@ -64,7 +64,7 @@ rule plotTSSProfile:
 
 rule genbodyEnrichment:
     input:
-        bigwig = expand("macs2/bigwig/{sample}.cpm.norm.bw", sample=samples.index),
+        bigwig = expand("macs2/bigwig/{sample}.norm.bw", sample=samples.index),
         bed = config['data']['gtf']
     output:
         matrix_gz = "macs2/matrix/genebody.matrix.gz",   # required

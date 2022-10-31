@@ -31,7 +31,7 @@ rule all:
         # mapping and remove duplicates
         expand("dedup/{sample}.cons.bam.bai", sample=samples.index),
         # shift 9bp
-        expand("dedup/{sample}.filtered.bam.bai", sample=samples.index),
+        expand("dedup/{sample}.filtered.bam", sample=samples.index),
         # callpeak
         expand("macs2/narrow/{sample}_peaks.narrowPeak", sample=samples.index),
         expand("macs2/broad/{sample}_peaks.broadPeak", sample=samples.index),
