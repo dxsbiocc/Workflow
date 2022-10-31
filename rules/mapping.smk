@@ -27,7 +27,10 @@ rule bowtie2:
 
 rule spikein:
     input:
-        rules.bowtie2.input.reads,
+        reads = [
+            "trimmed/{sample}.clean.R1.fq.gz", 
+            "trimmed/{sample}.clean.R2.fq.gz"
+        ],
         index = multiext(
             config['data']["ecoli"],
             ".1.bt2",
