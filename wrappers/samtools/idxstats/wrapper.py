@@ -30,7 +30,7 @@ class Wrapper(WrapperBase):
 
     def run(self):
         # index
-        if not os.path.exists(self.snakemake.input.bam + '.bai'):
+        if not os.path.exists('{self.snakemake.input.bam}.bai'):
             shell("samtools index {self.snakemake.input.bam} ")
         
         shell(
