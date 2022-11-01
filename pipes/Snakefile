@@ -19,6 +19,9 @@ workdir: config['workdir']
 
 # ------------------------- run rules ---------------------- #
 # report: "report/workflow.rst"
+# local
+localrules:
+    stats, idxstats, flagstat
 
 rule all:
     input:
