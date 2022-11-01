@@ -1,6 +1,7 @@
 rule shift:
     input:
-         rules.mark_duplicates.output.bam
+         rules.mark_duplicates.output.bam,
+         rules.cons_index.output
     output:
         "dedup/{sample}.shift.bam"
     log:

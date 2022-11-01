@@ -11,6 +11,7 @@
 # ============================================================
 
 
+import os
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
 
@@ -24,8 +25,12 @@ class Wrapper(WrapperBase):
         pass
 
     def run(self):
+        # index
+        if not os.path.exists(self.snakemake.input[0] + '.bai'):
+            shell("samtools index {self.snakemake.input.bam} ")
+
         shell(
-            "(alignmentSieve {self.extra} "
+            "(alignmentSieve "
             "--numberOfProcessors {self.snakemake.threads} "
             "--bam {self.snakemake.input[0]} "
             "-o {self.snakemake.output} "
