@@ -57,9 +57,20 @@ rule stats:
     output:
         "bowtie2/stats/{sample}.stats"
     log:
-        "logs/{sample}_stats.log",
+        "logs/samtools_stats_{sample}.log",
     wrapper:
         get_wrapper('samtools', 'stats')
+
+rule plotBamStats:
+    input:
+        stats = rules.stats.output,
+        gc = GC
+    output:
+        directory("bowtie2/plot/{sample}")
+    log:
+        "logs/samtools_stats_plot_{sample}.log"
+    wrapper:
+        get_wrapper('samtools', 'plot-bamstats')
 
 rule idxstats:
     input:
@@ -67,7 +78,7 @@ rule idxstats:
     output:
         "bowtie2/stats/{sample}.idxstats"
     log:
-        "logs/{sample}_idxstats.log",
+        "logs/samtools_idxstats_{sample}.log",
     params:
         extra = "",  # optional params string
     wrapper:
@@ -80,7 +91,7 @@ rule flagstat:
         "bowtie2/stats/{sample}.flagstats"
     threads: 4
     log:
-        "logs/{sample}_flagstat.log",
+        "logs/samtools_flagstat_{sample}.log",
     params:
         extra = "",  # optional params string
     wrapper:

@@ -17,6 +17,6 @@ rule find_motifs:
         extra = "-size 200"
     threads: 2
     log:
-        "logs/{sample}_findMotifs.log"
+        "logs/findMotifs_{sample}.log"
     wrapper:
         get_wrapper('homer', "findMotifsGenome")

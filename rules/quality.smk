@@ -10,10 +10,10 @@ rule bamCoverage:
         'macs2/bigwig/{sample}.norm.bw'
     params:
         # Optional parameters.
-        extra = '--binSize 10 --normalizeUsing RPGC --effectiveGenomeSize ' + str(total_chrom_size),
+        extra = '--binSize 10 --normalizeUsing RPGC --effectiveGenomeSize ' + str(CHROM_SIZE),
     threads: 1
     log: 
-        'logs/{sample}_deeptools_bamcoverage.log'
+        'logs/deeptools_bamcoverage_{sample}.log'
     wrapper:
         get_wrapper('deeptools', 'bamcoverage')
 

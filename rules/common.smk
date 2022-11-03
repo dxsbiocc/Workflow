@@ -5,16 +5,19 @@ from snakemake.utils import min_version
 
 
 # -------------------- Other Parameters -------------------- #
-genoem_size = {
+genome_size = {
     'hg19': 2864785220,
     'hg38': 2913022398,
     'mm10': 2652783500,
     'mm9': 2620345972,
 }
 genome = config['data']['genome']
-total_chrom_size = genoem_size[genome]
+# chrom size
+CHROM_SIZE = genome_size[genome]
 # blacklist
-blacklist = os.path.join(config['data']['db'], 'blacklist', f'{genome}.blacklist.bed')
+BLACKLIST = os.path.join(config['data']['db'], 'blacklist', f'{genome}.blacklist.bed')
+# GC
+GC = os.path.join(config['data']['db'], 'GC', f'{genome}.gc')
 
 # -------------------- Helper functions -------------------- #
 # def get_fastq(wildcards):

@@ -1,0 +1,11 @@
+rule plotBamStats:
+    input:
+        stats = "stats.txt",
+        gc = "../../../../data/GC/hg19.gc"
+    output:
+        directory("plot/")
+    log:
+        "logs/plot-bamstats.log"
+    wrapper:
+        "file:../../plot-bamstats"
+    

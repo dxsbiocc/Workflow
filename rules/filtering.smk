@@ -5,7 +5,7 @@ rule shift:
     output:
         "dedup/{sample}.shift.bam"
     log:
-        "logs/dedup_{sample}_shift.log"
+        "logs/dedup_shift_{sample}.log"
     threads:
         4
     params:
@@ -13,7 +13,7 @@ rule shift:
         extra = "{shift} --samFlagInclude {flag} --blackListFileName {bl} --minMappingQuality {mapq}".format(
             shift=config['parameters']['alignmentSieve']['shift'],
             flag=config['parameters']['alignmentSieve']['flag'],
-            bl=blacklist,
+            bl=BLACKLIST,
             mapq=config['parameters']['alignmentSieve']['mapq'],
         )
     wrapper:
@@ -25,7 +25,7 @@ rule shift_sort:
     output:
         "dedup/{sample}.shift.sort.bam"
     log:
-        "logs/dedup_{sample}_shift.sort.log",
+        "logs/dedup_shift_sort_{sample}.log",
     params:
         extra="-m 4G",
     threads: 8

@@ -48,6 +48,8 @@ rule all:
         expand('macs2/anno/{sample}.peakAnno.{ext}', sample=samples.index, ext=['pdf', 'txt']),
         # bw data quality
         expand("macs2/matrix/{pos}.{types}.png", pos=['tss', 'genebody'], types=['heatmap', 'profile']),
+        # get stats
+        "report/stats.csv",
 
 # ---------------------- include rules --------------------- #
 include: "../rules/common.smk"
@@ -57,3 +59,4 @@ include: "../rules/filtering.smk"
 include: "../rules/callpeak.smk"
 include: "../rules/motif.smk"
 include: "../rules/quality.smk"
+include: "../rules/report.smk"
