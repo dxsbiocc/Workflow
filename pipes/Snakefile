@@ -17,6 +17,16 @@ if not config.get('workdir'):
 # work dir
 workdir: config['workdir']
 
+# ---------------------- include rules --------------------- #
+include: "../rules/common.smk"
+include: "../rules/trimmed.smk"
+include: "../rules/mapping.smk"
+include: "../rules/filtering.smk"
+include: "../rules/callpeak.smk"
+include: "../rules/motif.smk"
+include: "../rules/quality.smk"
+include: "../rules/report.smk"
+
 # ------------------------- run rules ---------------------- #
 # report: "report/workflow.rst"
 # local
@@ -50,13 +60,3 @@ rule all:
         expand("macs2/matrix/{pos}.{types}.png", pos=['tss', 'genebody'], types=['heatmap', 'profile']),
         # get stats
         "report/stats.csv",
-
-# ---------------------- include rules --------------------- #
-include: "../rules/common.smk"
-include: "../rules/trimmed.smk"
-include: "../rules/mapping.smk"
-include: "../rules/filtering.smk"
-include: "../rules/callpeak.smk"
-include: "../rules/motif.smk"
-include: "../rules/quality.smk"
-include: "../rules/report.smk"
