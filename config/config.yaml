@@ -1,3 +1,5 @@
+# --------------------- pipeline ---------------------
+pipeline: "Cut&Tag"  # Chip-seq、ATAC-seq
 # -------------------- input data --------------------
 data:
   # sample information
@@ -8,13 +10,13 @@ data:
   index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
   ecoli: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/e.coli/e.coli
   gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
-  db: "../data"
+  db: "local"
 
 # ------------------- output folder ------------------
 workdir: null
 # ------------------ wrapper folder ------------------
-wrappers: "file:../wrappers"
-scripts: "../scripts"
+wrappers: "local"
+scripts: "local"
 # --------------- programs parameters ----------------
 parameters:
   fastp:
@@ -35,5 +37,6 @@ parameters:
   
 # ----------------- control argument -----------------
 control:
-  adapters: "Nextera"  # Truseq、Nextera
+  adapters: "Nextera"  # Truseq、Nextera, use in cut&tag
   spike_in: false
+  paired: true

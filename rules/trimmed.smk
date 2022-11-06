@@ -2,7 +2,7 @@ rule fastp:
     input:
         reads = get_fastq,
     output:
-        trimmed = ["trimmed/{sample}.clean.R1.fq.gz", "trimmed/{sample}.clean.R2.fq.gz"],
+        trimmed = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
         # Unpaired reads separately
         # unpaired1 = "fastp/{sample}.u1.fastq",
         # unpaired2 = "fastp/{sample}.u2.fastq",

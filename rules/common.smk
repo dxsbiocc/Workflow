@@ -14,10 +14,21 @@ genome_size = {
 genome = config['data']['genome']
 # chrom size
 CHROM_SIZE = genome_size[genome]
+# database path
+PATH = os.path.abspath(os.path.dirname(__file__))
+if config['data']['db'] == 'local':
+    DATABASE = os.path.join(PATH, '../data')
 # blacklist
-BLACKLIST = os.path.join(config['data']['db'], 'blacklist', f'{genome}.blacklist.bed')
+BLACKLIST = os.path.join(DATABASE, 'blacklist', f'{genome}.blacklist.bed')
 # GC
-GC = os.path.join(config['data']['db'], 'GC', f'{genome}.gc')
+GC = os.path.join(DATABASE, 'GC', f'{genome}.gc')
+# paired
+if config['control']['paired']:
+    RUN = ['R1', 'R2']
+else:
+    RUN = ['R1']
+
+SPIKEIN = True if config['control']['spike_in'] else False
 
 # -------------------- Helper functions -------------------- #
 # def get_fastq(wildcards):
@@ -34,19 +45,23 @@ def get_fastq(wildcards):
         return [fastqs.fastq1, fastqs.fastq2]
     return [fastqs.fastq1]
 
-def get_wrapper(*args):
+def get_wrapper(*args, local=True):
     """Get wrappers path"""
-    return os.path.join(config['wrappers'], *args)
+    if local:
+        abspath = os.path.join(PATH, '../wrappers', *args)
+        return "file://{}".format(abspath)
+    else:
+        raise ValueError("Please use local version!")
 
 def get_script(script):
-    return os.path.join(config['scripts'], script)
+    return os.path.join(PATH, '../scripts', script)
 
 def get_adapter(method='fastp'):
     """get adapter path"""
     if config['control']['adapters'] == 'Truseq':
-        adapt_file = os.path.join(config["data"]["db"], "adapters", "Truseq3.PE.fa")
+        adapt_file = os.path.join(DATABASE, "adapters", "Truseq3.PE.fa")
     elif config['control']['adapters'] == 'Nextera':
-        adapt_file = os.path.join(config["data"]["db"], "adapters", "NexteraPE-PE.fa")
+        adapt_file = os.path.join(DATABASE, "adapters", "NexteraPE-PE.fa")
     else:
         raise ValueError('%s not support!' % config['control']['adapters'])
 
