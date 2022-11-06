@@ -15,7 +15,7 @@ genome = config['data']['genome']
 # chrom size
 CHROM_SIZE = genome_size[genome]
 # database path
-PATH = os.path.abspath(os.path.dirname(__file__))
+PATH = os.path.abspath(os.getcwd())
 if config['data']['db'] == 'local':
     DATABASE = os.path.join(PATH, '../data')
 # blacklist
