@@ -2,8 +2,10 @@
 pipeline: "Cut&Tag"  # Chip-seq、ATAC-seq
 # -------------------- input data --------------------
 data:
-  # sample information
+  # sample list
   sample_file: "../example/sample_list.txt"
+  # sample info, json file
+  sample_info: null
   # genome files
   genome: hg19
   ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa

@@ -18,6 +18,8 @@ CHROM_SIZE = genome_size[genome]
 PATH = os.path.abspath(os.getcwd())
 if config['data']['db'] == 'local':
     DATABASE = os.path.join(PATH, '../data')
+else:
+    DATABASE = config['data']['db']
 # blacklist
 BLACKLIST = os.path.join(DATABASE, 'blacklist', f'{genome}.blacklist.bed')
 # GC
@@ -44,6 +46,20 @@ def get_fastq(wildcards):
     if len(fastqs) == 2:
         return [fastqs.fastq1, fastqs.fastq2]
     return [fastqs.fastq1]
+
+def get_control_bam(wildcards):
+    if SAMPLE_MAP:
+        sp = "dedup/{}.filtered.bam".format(SAMPLE_MAP[wildcards.pair])
+    else:
+        sp = ""
+    return sp
+    
+def get_bigwig(wildcards):
+    if SAMPLE_MAP:
+        sp_list = ["macs2/bigwig/{}.norm.bw".format(wildcards.pair), "macs2/bigwig/{}.norm.bw".format(SAMPLE_MAP[wildcards.pair])]
+    else:
+        sp_list = "macs2/bigwig/{}.norm.bw".format(wildcards.pair)
+    return sp
 
 def get_wrapper(*args, local=True):
     """Get wrappers path"""

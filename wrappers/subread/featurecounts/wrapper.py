@@ -27,15 +27,15 @@ class Wrapper(WrapperBase):
 
         self.fasta = self.snakemake.input.get("fasta", "")
         if self.fasta:
-            self.fasta = f"-G {fasta}"
+            self.fasta = f"-G {self.fasta}"
 
         self.chr_names = self.snakemake.input.get("chr_names", "")
         if self.chr_names:
-            self.chr_names = f"-A {chr_names}"
+            self.chr_names = f"-A {self.chr_names}"
 
         self.r_path = self.snakemake.params.get("r_path", "")
         if self.r_path:
-            self.r_path = f"--Rpath {r_path}"
+            self.r_path = f"--Rpath {self.r_path}"
 
     def run(self):
         with tempfile.TemporaryDirectory() as tmpdir:

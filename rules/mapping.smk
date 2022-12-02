@@ -14,37 +14,36 @@ rule bowtie2:
     output:
         "bowtie2/{sample}.sort.bam",
     log:
-        "logs/{sample}_bowtie2.summary",
+        "logs/bowtie2_{sample}.summary",
     params:
         extra = config['parameters']['bowtie2']['extra'],  # optional parameters
         sort = config['parameters']['bowtie2']['sort']
     threads: 8  # Use at least two threads
     wrapper:
         get_wrapper("bowtie2", "align")
-        
-if SPIKEIN:
-    rule spikein:
-        input:
-            reads = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
-            index = multiext(
-                config['data']["ecoli"],
-                ".1.bt2",
-                ".2.bt2",
-                ".3.bt2",
-                ".4.bt2",
-                ".rev.1.bt2",
-                ".rev.2.bt2",
-            ),
-        output:
-            "bowtie2/{sample}.spikein.bam",
-        log:
-            "logs/{sample}_bowtie2_spikein.summary",
-        params:
-            extra = "--end-to-end --very-sensitive --no-overlap --no-dovetail --no-mixed --no-discordant --phred33 -I 10 -X 700",  # optional parameters
-            sort = "none"
-        threads: 8  # Use at least two threads
-        wrapper:
-            get_wrapper("bowtie2", "align")
+
+rule spikein:
+    input:
+        reads = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
+        index = multiext(
+            config['data']["ecoli"],
+            ".1.bt2",
+            ".2.bt2",
+            ".3.bt2",
+            ".4.bt2",
+            ".rev.1.bt2",
+            ".rev.2.bt2",
+        ),
+    output:
+        "bowtie2/{sample}.spikein.bam",
+    log:
+        "logs/bowtie2_{sample}_spikein.summary",
+    params:
+        extra = "--end-to-end --very-sensitive --no-overlap --no-dovetail --no-mixed --no-discordant --phred33 -I 10 -X 700",  # optional parameters
+        sort = "none"
+    threads: 8  # Use at least two threads
+    wrapper:
+        get_wrapper("bowtie2", "align")
 
 rule stats:
     input:
