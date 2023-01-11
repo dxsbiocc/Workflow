@@ -36,7 +36,7 @@ rule plotTSSHeatmap:
     input:
          rules.TSSEnrichment.output.matrix_gz
     output:
-        heatmap_img="macs2/matrix/{pair}.tss.heatmap.png",  # required
+        heatmap_img="macs2/matrix/{pair}.tss.heatmap.pdf",  # required
     log:
         "logs/deeptools_TSS_heatmap_{pair}.log"
     params:
@@ -49,14 +49,14 @@ rule plotTSSProfile:
     input:
         rules.TSSEnrichment.output.matrix_gz
     output:
-        plot_img="macs2/matrix/{pair}.tss.profile.png",  # required
+        plot_img="macs2/matrix/{pair}.tss.profile.pdf",  # required
     log:
         "logs/deeptools_TSS_profile_{pair}.log"
     params:
         # optional parameters
         extra = "--plotType=fill "
         "--perGroup "
-        "--colors red yellow blue "
+        # "--colors red yellow blue "
         "--dpi 150 "
     wrapper:
         get_wrapper("deeptools", "plotprofile")
@@ -81,7 +81,7 @@ rule plotBodyHeatmap:
     input:
          rules.genbodyEnrichment.output.matrix_gz
     output:
-        heatmap_img = "macs2/matrix/{pair}.genebody.heatmap.png",  # required
+        heatmap_img = "macs2/matrix/{pair}.genebody.heatmap.pdf",  # required
     log:
         "logs/deeptools_genebody_heatmap_{pair}.log"
     params:
@@ -94,14 +94,14 @@ rule ploGenebodytProfile:
     input:
         rules.genbodyEnrichment.output.matrix_gz
     output:
-        plot_img="macs2/matrix/{pair}.genebody.profile.png",  # required
+        plot_img="macs2/matrix/{pair}.genebody.profile.pdf",  # required
     log:
         "logs/deeptools_genebody_profile_{pair}.log"
     params:
         # optional parameters
         extra = "--plotType=fill "
         "--perGroup "
-        "--colors red yellow blue "
+        # "--colors red yellow blue "
         "--dpi 150 "
     wrapper:
         get_wrapper("deeptools", "plotprofile")

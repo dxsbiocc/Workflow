@@ -31,6 +31,8 @@ else:
     RUN = ['R1']
 
 SPIKEIN = True if config['control']['spike_in'] else False
+SHIFT = True if config['control']['shift'] else False
+COLORS = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6"]
 
 # -------------------- Helper functions -------------------- #
 # def get_fastq(wildcards):
@@ -59,7 +61,7 @@ def get_bigwig(wildcards):
         sp_list = ["macs2/bigwig/{}.norm.bw".format(wildcards.pair), "macs2/bigwig/{}.norm.bw".format(SAMPLE_MAP[wildcards.pair])]
     else:
         sp_list = "macs2/bigwig/{}.norm.bw".format(wildcards.pair)
-    return sp
+    return sp_list
 
 def get_wrapper(*args, local=True):
     """Get wrappers path"""

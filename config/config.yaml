@@ -42,3 +42,4 @@ control:
   adapters: "Nextera"  # Truseq、Nextera, use in cut&tag
   spike_in: false
   paired: true
+  shift: false
