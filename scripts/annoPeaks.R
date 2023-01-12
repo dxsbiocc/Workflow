@@ -7,7 +7,7 @@ if (!require("GenomicFeatures", quietly = TRUE)) BiocManager::install("GenomicFe
 suppressMessages(library(ChIPseeker))
 suppressMessages(library(GenomicFeatures))
 
-annotate_peaks <- function (peakfile, gtf, sample, out_anno) {
+annotate_peaks <- function(peakfile, gtf, sample, out_anno) {
   if (!dir.exists(out_anno))
       dir.create(out_anno)
   outfile <- file.path(out_anno, sample)

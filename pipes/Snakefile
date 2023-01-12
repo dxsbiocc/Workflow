@@ -18,8 +18,8 @@ else:
     PAIRS = SAMPLES
 
 # ------------------ Wildcard constraints ------------------ #
-# wildcard_constraints:
-#     sample = "|".join(samples.index)
+wildcard_constraints:
+    pair = "|".join(PAIRS)
 
 if not config.get('workdir'):
     config['workdir'] = os.getcwd()
@@ -67,6 +67,6 @@ rule all:
         # peak annotate
         expand('macs2/anno/{pair}.peakAnno.{ext}', pair=PAIRS, ext=['pdf', 'txt']),
         # bw data quality
-        expand("macs2/matrix/{pair}.{pos}.{types}.png", pair=PAIRS, pos=['tss', 'genebody'], types=['heatmap', 'profile']),
+        expand("macs2/matrix/{pair}.{pos}.{types}.pdf", pair=PAIRS, pos=['tss', 'genebody'], types=['heatmap', 'profile']),
         # get stats
         "report/stats.csv",

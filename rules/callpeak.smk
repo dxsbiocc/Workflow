@@ -56,4 +56,4 @@ rule annotatePeaks:
         sample = lambda wildcards: '{}'.format(wildcards.pair),
         output = config['workdir'] + "/macs2/anno/"
     script:
-        get_script('annoPeaks.R')
+        get_wrapper('scripts', 'annoPeaks')
