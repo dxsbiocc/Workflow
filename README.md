@@ -1,6 +1,6 @@
 # Workflow
 
-## introduction
+## Introduction
 
 The snakemake analysis workflow for Epigenomic analysis, Such as
 
@@ -23,3 +23,9 @@ example files in `example`, you need to modify `sample_info.json` and `sample_li
 ```sh
 snakemake -s Snakefile --profile ../config/slurm
 ```
+
+## Notes
+
+1. change directory to `pipe`
+2. default running in conda env, most of the packages and software no need to install mannually
+3. python script `get_stats.py` need package `pandas`
