@@ -21,6 +21,7 @@ example files in `example`, you need to modify `sample_info.json` and `sample_li
 #### Running
 
 ```sh
+cd pipe
 snakemake -s Snakefile --profile ../config/slurm
 ```
 

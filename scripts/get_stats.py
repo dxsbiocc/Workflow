@@ -39,18 +39,24 @@ def main(snakemake):
         'Sample', 'TotalReads', 'UniqueMapping', 'MappingRate', 'MappedSpikein', 
         'MappingRateSpikein', 'DuplicationRate', 'LibrarySize', 'FilteredReads', 'FRiP'
     ]
-    file_list = []
-    for infiles in [snakemake.params.sample_list, snakemake.input.summary, snakemake.input.spikein, 
-                    snakemake.input.metric, snakemake.input.bam, snakemake.input.peak]:
-        file_list.append(sorted(infiles))
-    
+
+    frip = {}
+    for files in zip(*[sorted(files) for files in [snakemake.input.bam, snakemake.input.peak]]):
+        pair = files[0].split('/')[-1].split('.')[0]
+        frip[pair] = get_FRiP(files[0], files[1])
+
     res = []
+    file_list = [sorted(files) for files in [snakemake.params.sample_list, snakemake.input.summary, 
+                                                snakemake.input.spikein, snakemake.input.metric]]
     for files in zip(*file_list):
         record = [files[0]]
         record.extend(get_mapping(files[1]))
         record.extend(get_mapping(files[2], spikein=True))
         record.extend(get_metric(files[3]))
-        record.extend(get_FRiP(files[4], files[5]))
+        if (files[0] in frip):
+            record.extend(frip[files[0]])
+        else:
+            record.extend(['-', '-'])
         res.append(record)
 
     data = pd.DataFrame(res, columns=columns)
