@@ -1,0 +1,12 @@
+rule minimap2_index:
+    input:
+        target="target/{input1}.fasta"
+    output:
+        "{input1}.mmi"
+    log:
+        "logs/minimap2_index/{input1}.log"
+    params:
+        extra=""  # optional additional args
+    threads: 3
+    wrapper:
+        "file:../../../minimap2/index"

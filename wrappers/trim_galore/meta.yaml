@@ -1,0 +1,16 @@
+name: trim_galore
+description: |
+  Trim single or paired-end reads using trim_galore.
+authors:
+  - dengxsh
+input:
+  - one (single-end) or two (paired-end) fastq files (can be gzip compressed)
+output:
+  - one/two trimmed (paired-end) fastq files
+  - one/two trimming reports
+params:
+  - extra: additional parameters
+notes: |
+  * It is expected that the fastqc Snakemake wrapper be used in place
+    of the `--fastqc` option.
+  * All output files must be placed in the same directory.

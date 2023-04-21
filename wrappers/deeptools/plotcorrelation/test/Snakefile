@@ -1,0 +1,18 @@
+rule deeptools_plotcorrelation:
+    input:
+        # Required input.
+        'scores_per_bin.npz',
+    output:
+        img = 'heatmap_SpearmanCorr_readCounts.pdf',
+        matrix = 'SpearmanCorr_readCounts.tab'
+    params:
+        # Optional parameters.
+        extra = '--skipZeros --whatToPlot heatmap --colorMap RdYlBu --plotNumbers',
+        cor = 'spearman',
+        title = 'Spearman Correlation of Read Counts',
+        labels = [],
+    threads: 1
+    log: 
+        'logs/deeptools_plotcorrelation.log'
+    wrapper: 
+        'file:../../../deeptools/plotcorrelation'
