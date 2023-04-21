@@ -1,0 +1,12 @@
+name: samtools faidx
+description: index reference sequence in FASTA format from reference sequence.
+authors:
+  - Michael Chambers
+  - Filipe G. Vieira
+input:
+  - reference sequence file (.fa)
+output:
+  - indexed reference sequence file (.fai)
+notes: |
+  * The `extra` param allows for additional program arguments (not `-o`).
+  * For more information see, http://www.htslib.org/doc/samtools-faidx.html

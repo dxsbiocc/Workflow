@@ -5,4 +5,3 @@ channels:
 dependencies:
   - picard =2.27
   - samtools =1.15
-  - snakemake-wrapper-utils ==0.1.3

@@ -1,0 +1,37 @@
+import os
+import json
+import pandas as pd
+from snakemake.utils import min_version
+# snakemake built-in report function requires min version 5.1
+min_version("7.12.0")
+
+configfile: "../config/config.yaml"
+
+# workflow dir
+PATH = config.root_dir
+
+if not config.get('workdir'):
+    config['workdir'] = os.getcwd()
+# workdir
+workdir: config['workdir']
+
+#read the sample file using pandas lib (sample names+ fastq names) and crezate index using the sample name
+samples = pd.read_csv(config['data']['sample_file'], sep='\t', index_col=0)
+SAMPLES = samples.index
+if config['data']['sample_info']:
+    SAMPLE_MAP = json.load(open(config['data']['sample_info']))
+    PAIRS = list(SAMPLE_MAP.keys())
+else:
+    SAMPLE_MAP = None
+    PAIRS = SAMPLES
+
+# ------------------ Wildcard constraints ------------------ #
+wildcard_constraints:
+    pair = "|".join(PAIRS)
+
+# ---------------------- include rules --------------------- #
+# ATAC-seq、Cut&Tag
+include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
+# DNA-seq
+
+# RNA-seq

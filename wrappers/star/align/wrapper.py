@@ -76,7 +76,7 @@ class Wrapper(WrapperBase):
             self.stdout = "SAM"
         # fastq file
         fq1 = self.snakemake.input.get("fastq1", None)
-        assert fq1 is not None, "input-> fastq1 is a required input parameter"
+        assert fq1, "input-> fastq1 is a required input parameter"
         fq1 = [fq1] if isinstance(fq1, str) else fq1
 
         fq2 = self.snakemake.input.get("fastq2", None)

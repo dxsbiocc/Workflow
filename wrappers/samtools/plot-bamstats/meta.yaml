@@ -1,0 +1,7 @@
+name: plot-bamstats
+description: Visualize graphically for samtools stats output using plot-bamstats.
+authors:
+  - dengxsh
+notes: |
+  * The `extra` param allows for additional program arguments (not `-@/--threads`).
+  * For more information see, http://www.htslib.org/doc/samtools-stats.html

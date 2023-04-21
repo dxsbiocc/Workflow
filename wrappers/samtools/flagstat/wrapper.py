@@ -31,7 +31,7 @@ class Wrapper(WrapperBase):
         shell(
             "samtools flagstat"
             " {self.samtools_opts} {self.extra}"
-            " {self.snakemake.input[0]} > {self.snakemake.output[0]}"
+            " {self.snakemake.input.bam} > {self.snakemake.output[0]}"
             " {self.log}"
         )
 

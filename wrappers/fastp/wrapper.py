@@ -5,8 +5,8 @@
 # Author      : dengxsh 
 # Version     : 1.0
 # Contact     : 920466915@qq.com
-# Copyright   : Copyright (c) 2022, dengxsh
 # License     : MIT
+# Copyright   : Copyright (c) 2022, dengxsh
 # Description : The role of the current file 
 # ============================================================
 

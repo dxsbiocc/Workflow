@@ -1,0 +1,12 @@
+name: seqtk-subsample
+description: |
+  Subsample reads from single or paired FASTQ files
+authors:
+  - dengxsh
+input:
+  - paired fastq files (can be gzip compressed)
+output:
+  - subsampled paired fastq files (gzip compressed)
+params:
+  - n: number  or fraction of reads after subsampling
+  - seed: seed to initialize a pseudorandom number generator

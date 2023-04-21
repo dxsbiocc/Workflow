@@ -69,7 +69,6 @@ class Wrapper(WrapperBase):
             " {self.reads} "
             " -x {self.index}"
             " {self.extra} "
-            "{self.log}.summary"
             "| " + self.pipe_cmd + ") {self.log}"
         )
 

@@ -30,7 +30,6 @@ class Wrapper(WrapperBase):
         # bed file
         bed = self.snakemake.input.get("bed", "")
         self.bed = f"-t {bed}" if bed else ""
-
         # region
         self.region = self.snakemake.params.get("region", "")
 

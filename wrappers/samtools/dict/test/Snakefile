@@ -1,0 +1,10 @@
+rule genome_dict:
+    input:
+        "genome.fa",
+    output:
+        "genome.dict",
+    log:
+        "logs/create_dict.log",
+    cache: True
+    wrapper:
+        "file:../../../samtools/dict"

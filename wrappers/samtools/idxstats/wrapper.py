@@ -11,6 +11,7 @@
 # ============================================================
 
 
+import os
 from snakemake.shell import shell
 from snakemake_wrapper_utils.samtools import get_samtools_opts
 from snakemake_wrapper_utils.base import WrapperBase
@@ -28,6 +29,10 @@ class Wrapper(WrapperBase):
         self.log = self.snakemake.log_fmt_shell(stdout=False, stderr=True)
 
     def run(self):
+        # index
+        if not os.path.exists('{self.snakemake.input.bam}.bai'):
+            shell("samtools index {self.snakemake.input.bam} ")
+        
         shell(
             "samtools idxstats {self.samtools_opts} {self.extra}"
             " {self.snakemake.input.bam} > {self.snakemake.output[0]}"

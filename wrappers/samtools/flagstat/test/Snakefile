@@ -1,6 +1,6 @@
 rule samtools_flagstat:
     input:
-        "mapped/{sample}.bam",
+        bam = "mapped/{sample}.bam",
     output:
         "mapped/{sample}.bam.flagstat",
     log:
