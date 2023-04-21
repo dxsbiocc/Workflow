@@ -7,6 +7,14 @@ min_version("7.12.0")
 
 configfile: "../config/config.yaml"
 
+# workflow dir
+PATH = config.root_dir
+
+if not config.get('workdir'):
+    config['workdir'] = os.getcwd()
+# workdir
+workdir: config['workdir']
+
 #read the sample file using pandas lib (sample names+ fastq names) and crezate index using the sample name
 samples = pd.read_csv(config['data']['sample_file'], sep='\t', index_col=0)
 SAMPLES = samples.index
@@ -21,52 +29,9 @@ else:
 wildcard_constraints:
     pair = "|".join(PAIRS)
 
-if not config.get('workdir'):
-    config['workdir'] = os.getcwd()
-# work dir
-workdir: config['workdir']
-
 # ---------------------- include rules --------------------- #
-include: "../rules/common.smk"
-include: "../rules/trimmed.smk"
-include: "../rules/mapping.smk"
-include: "../rules/filtering.smk"
-include: "../rules/callpeak.smk"
-include: "../rules/motif.smk"
-include: "../rules/quality.smk"
-include: "../rules/report.smk"
+# ATAC-seq、Cut&Tag
+include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
+# DNA-seq
 
-# ------------------------- run rules ---------------------- #
-# report: "report/workflow.rst"
-# local
-localrules:
-    stats, idxstats, flagstat
-
-rule all:
-    input:
-        # trimmed adapter
-        expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=SAMPLES, unit=['R1', 'R2']),
-        # spikein
-        expand("bowtie2/{sample}.spikein.bam", sample=SAMPLES),
-        # stats
-        expand("bowtie2/stats/{sample}.{stats}", sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
-        expand("bowtie2/plot/{sample}", sample=SAMPLES),
-        # mapping and remove duplicates
-        expand("dedup/{sample}.cons.bam.bai", sample=SAMPLES),
-        # shift 9bp
-        expand("dedup/{sample}.filtered.bam", sample=SAMPLES),
-        # callpeak
-        expand("macs2/narrow/{pair}_peaks.narrowPeak", pair=PAIRS),
-        expand("macs2/broad/{pair}_peaks.broadPeak", pair=PAIRS),
-        # convert to bigwig
-        expand("macs2/bigwig/{sample}.norm.bw", sample=SAMPLES),
-        # extract peaks
-        expand("macs2/narrow/{pair}_homer_peaks.txt", pair=PAIRS),
-        # motify analysis
-        expand("motifs/{pair}", pair=PAIRS),
-        # peak annotate
-        expand('macs2/anno/{pair}.peakAnno.{ext}', pair=PAIRS, ext=['pdf', 'txt']),
-        # bw data quality
-        expand("macs2/matrix/{pair}.{pos}.{types}.pdf", pair=PAIRS, pos=['tss', 'genebody'], types=['heatmap', 'profile']),
-        # get stats
-        "report/stats.csv",
+# RNA-seq

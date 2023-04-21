@@ -1,5 +1,6 @@
 # --------------------- pipeline ---------------------
 pipeline: "Cut&Tag"  # Chip-seq、ATAC-seq
+verbose: false
 # -------------------- input data --------------------
 data:
   # sample list
@@ -17,29 +18,59 @@ data:
 # ------------------- output folder ------------------
 workdir: null
 # ------------------ wrapper folder ------------------
+root_dir: ""  # must be set
 wrappers: "local"
 scripts: "local"
 # --------------- programs parameters ----------------
 parameters:
+  # trimming
   fastp:
     extra: "-g -q 30 -u 50 -n 15 -l 36 -w 4"
-  bowtie2:
-    sort: samtools
-    extra: "--end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
-  picard:
-    MarkDuplicates: "--REMOVE_DUPLICATES true"
   trimmomatic:
     trimmer: ["LEADING:20", "TRAILING:20", "SLIDINGWINDOW:4:15", "MINLEN:25"]
     compression_level: "-9"
     mem: 1024
-  alignmentSieve:
+  cutadapt:
+    extra: "--minimum-length 1 -q 20"
+  trim_galore:
+    extra: "--illumina -q 20"
+  # mapping
+  bowtie2:
+    sort: samtools
+    extra: "--end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
+  bwa:
+    extra: "-R '@RG\\tID:{sample}\\tSM:{sample}'"
+    sort: "samtools",  # Can be 'none', 'samtools' or 'picard'.
+    sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
+    sort_extra: ""
+  hisat2:
+    extra: ""
+  star:
+    extra: "--outSAMtype BAM SortedByCoordinate"
+  minimap2:
+    extra: "-x map-pb"
+    sorting: "coordinate"
+    sort_extra: ""
+  # dedup
+  picard:
+    markduplicates: "--REMOVE_DUPLICATES true"
+  alignmentsieve:
     mapq: 30
     flag: 2
     shift: "--ATACshift"
-  
+  gatk:
+    baserecalibrator: ""
+    applybqsr: ""
+  macs2:
+    atac: "--shift -75 --extsize 150 --nomodel --call-summits --nolambda --keep-dup all -p 0.01"  # TCGA ATAC-seq parameters
+    chip: ""
+
 # ----------------- control argument -----------------
 control:
-  adapters: "Nextera"  # Truseq、Nextera, use in cut&tag
+  adapters: "Nextera"      # Truseq(Illumina)、Nextera, use in cut&tag
+  trimming: "fastp"        # choose: fastp(default)、cutadapt、trimmomatic and trim_galore
+  mapping: "bwa"           # bowtie2、hisat2、star、minimap2
+  dedup: "markduplicates"  # sambamba
   spike_in: false
   paired: true
   shift: false

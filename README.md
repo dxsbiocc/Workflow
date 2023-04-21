@@ -12,7 +12,8 @@ The snakemake analysis workflow for Epigenomic analysis, Such as
 
 #### Config
 
-config file in `config/config.yaml`, Choose the right parameters.
+1. copy the file `utils/base.py` to package `snakemake_wrapper_utils` installed directory.
+2. config file in `config/config.yaml`, Choose the right parameters.
 
 #### Sample data
 
