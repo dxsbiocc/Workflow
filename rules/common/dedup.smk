@@ -1,9 +1,9 @@
 rule markduplicates:
     input:
-        bams = "mapped/{sample}.sorted.bam",
+        bams = "mapped/{sample}/{sample}.sorted.bam",
     output:
-        bam = "dedup/{sample}.rmdup.bam",
-        metrics = "dedup/{sample}.metrics.txt",
+        bam = "dedup/{sample}/{sample}.rmdup.bam",
+        metrics = "dedup/{sample}/{sample}.metrics.txt",
     log:
         "logs/dedup/markduplicates_{sample}.log",
     params:
@@ -15,9 +15,9 @@ rule markduplicates:
 
 rule sambamba:
     input:
-        "mapped/{sample}.bam"
+        "mapped/{sample}/{sample}.bam"
     output:
-        "dedup/{sample}.rmdup.bam"
+        "dedup/{sample}/{sample}.rmdup.bam"
     params:
         extra = ""  # optional parameters
     log:

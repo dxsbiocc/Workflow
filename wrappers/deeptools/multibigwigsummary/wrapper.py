@@ -11,6 +11,7 @@
 # ============================================================
 
 
+import os
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
 
@@ -30,7 +31,11 @@ class Wrapper(WrapperBase):
         
         raw_count = self.snakemake.output.get('raw_count')
         self.optional += f'--outRawCounts {raw_count} ' if raw_count else ''
-        print(self.optional)
+
+        labels = self.snakemake.params.get("labels", "")
+        if labels:
+            labels = ' '.join([os.path.basename(label).replace(' ', '-') for label in labels])
+            self.optional_output += f" --labels {labels} "
 
     def run(self):
         shell(

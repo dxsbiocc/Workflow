@@ -1,0 +1,31 @@
+# --------------------- pipeline ---------------------
+pipeline: "ATAC-seq"
+verbose: false
+
+# -------------------- input data --------------------
+data:
+  genome: hg19
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
+
+# --------------- programs parameters ----------------
+parameters:
+  bwa:
+    extra: "-R '@RG\\tID:{sample}\\tSM:{sample}'"
+    sort: "samtools",  # Can be 'none', 'samtools' or 'picard'.
+    sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
+    sort_extra: ""
+  alignmentsieve:
+    mapq: 30
+    flag: 2
+    shift: "--ATACshift"
+  macs2:
+    atac: "--bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 --shift -75 --extsize 150 --nomodel --call-summits --nolambda"
+    chip: "--bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 "
+
+# ---------------- control parameters ----------------
+control:
+  mapping: "bwa"           # bowtie2、hisat2、star、minimap2
+  paired: true
+  star_two_step: true

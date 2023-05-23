@@ -37,12 +37,13 @@ class Wrapper(WrapperBase):
             )
 
         # Check that four output files were supplied
-        m = len(self.snakemake.output)
+        output = self.snakemake.output.trimmed + self.snakemake.output.report
+        m = len(output)
         assert m == 2 * n, "Output must contain 2/4 files. Given: %r." % m
 
         # Check that all output files are in the same directory
-        self.out_dir = os.path.dirname(self.snakemake.output[0])
-        for file_path in self.snakemake.output[1:]:
+        self.out_dir = os.path.dirname(output[0])
+        for file_path in output[1:]:
             assert self.out_dir == os.path.dirname(file_path), (
                 "trim_galore can only output files to a single directory."
                 " Please indicate only one directory for the output files."

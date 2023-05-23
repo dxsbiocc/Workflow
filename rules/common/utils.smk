@@ -19,8 +19,10 @@ else:
 # reference
 REFERENCE = config['data']['ref']
 INDEX = config['data']['index']
+GTF = config['data']['gtf']
 MAPPING = config['control']['mapping']
 TRIMMING = config['control']['trimming']
+DEDUP = config['control']['dedup']
 # ------------------------- modules ------------------------ #
 # define modules
 module trimmed_workflow:
@@ -72,7 +74,7 @@ def get_dedup(rule_name):
 def get_fastq(wildcards):
     """Get fastq files of given sample-unit."""
     fastqs = samples.loc[wildcards.sample, ["fastq1", "fastq2"]].dropna()
-    if len(fastqs) == 2:
+    if config['control']['paired']:
         return [fastqs.fastq1, fastqs.fastq2]
     return [fastqs.fastq1]
 

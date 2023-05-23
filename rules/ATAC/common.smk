@@ -30,19 +30,25 @@ SHIFT = True if config['control']['shift'] else False
 #     if len(fastqs) == 2:
 #         return {'fq1': fastqs.fastq1, 'fq2': fastqs.fastq2}
 #     return {'fq1': fastqs.fastq1}
-def get_control_bam(wildcards):
-    if SAMPLE_MAP:
-        sp = "dedup/{}.filtered.bam".format(SAMPLE_MAP[wildcards.pair])
-    else:
-        sp = ""
-    return sp
+def get_paired_bam(wildcards):
+    paired = {'treatment': 'dedup/{pair}/{pair}.filtered.bam'}
+    if SAMPLE_MAP.get(wildcards.pair):
+        paired['control'] = "dedup/{sp}/{sp}.filtered.bam".format(sp=SAMPLE_MAP[wildcards.pair])
+    return paired
     
 def get_bigwig(wildcards):
-    if SAMPLE_MAP:
-        sp_list = [
-            "macs2/bigwig/{}.norm.bw".format(wildcards.control), 
-            *["macs2/bigwig/{}.norm.bw".format(sp) for sp in CONTROL[wildcards.control]]
-        ]
-    else:
-        sp_list = "macs2/bigwig/{}.norm.bw".format(wildcards.control)
+    sp_list = ["macs2/bigwig/{}.norm.bw".format(wildcards.control)]
+    if CONTROL.get(wildcards.control):
+        sp_list.extend(["macs2/bigwig/{}.norm.bw".format(sp) for sp in CONTROL[wildcards.control]])
     return sp_list
+
+def get_macs2(sample, narrow=True):
+    if not narrow:
+        return MACS2_BAM + " -g hs --broad --broad-cutoff 0.05 -B --SPMR --keep-dup all"
+    if MACS2_MAP:
+        if 'atac' in MACS2_MAP[sample].lower():
+            return MACS2_BAM + config['parameters']['macs2']['atac']
+        elif 'chip' in MACS2_MAP[sample].lower():
+            return MACS2_BAM + config['parameters']['macs2']['chip']
+    else:
+        return MACS2_BAM + config['parameters']['macs2']['atac']

@@ -31,7 +31,11 @@ wildcard_constraints:
 
 # ---------------------- include rules --------------------- #
 # ATAC-seq、Cut&Tag
-include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
+if config['pipeline'] in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:
+    include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
 # DNA-seq
-
+if config['pipeline'] in ['WGS', 'WES']:
+    include: os.path.join(PATH, "rules/DNA/DNA.smk")
 # RNA-seq
+if config['pipeline'] == 'RNA-seq':
+    include: os.path.join(PATH, "rules/RNA/RNA.smk")

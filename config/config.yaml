@@ -54,16 +54,9 @@ parameters:
   # dedup
   picard:
     markduplicates: "--REMOVE_DUPLICATES true"
-  alignmentsieve:
-    mapq: 30
-    flag: 2
-    shift: "--ATACshift"
   gatk:
     baserecalibrator: ""
     applybqsr: ""
-  macs2:
-    atac: "--shift -75 --extsize 150 --nomodel --call-summits --nolambda --keep-dup all -p 0.01"  # TCGA ATAC-seq parameters
-    chip: ""
 
 # ----------------- control argument -----------------
 control:

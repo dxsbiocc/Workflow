@@ -11,6 +11,7 @@
 # ============================================================
 
 
+import os
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
 
@@ -29,6 +30,10 @@ class Wrapper(WrapperBase):
             self.optional_output += f" --outFileSortedRegions {out_region} "
         if out_matrix:
             self.optional_output += f" --outFileNameMatrix {out_matrix} "
+        labels = self.snakemake.params.get("labels", "")
+        if labels:
+            labels = ' '.join([os.path.basename(label).replace(' ', '-') for label in labels])
+            self.optional_output += f" --samplesLabel {labels} "
 
     def run(self):
         shell(

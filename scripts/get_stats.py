@@ -64,4 +64,9 @@ def main(snakemake):
 
 
 if __name__ == '__main__':
-    main(snakemake)
+    try:
+        main(snakemake)
+    except Exception as e:
+        print(e, file=snakemake.log)
+    else:
+        print("Everything is OK!", file=snakemake.log)

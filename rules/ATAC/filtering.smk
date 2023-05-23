@@ -4,7 +4,7 @@ if SHIFT:
             rules.mark_duplicates.output.bam,
             rules.cons_index.output
         output:
-            "dedup/{sample}.shift.bam"
+            "dedup/{sample}/{sample}.shift.bam"
         log:
             "logs/dedup_shift_{sample}.log"
         threads:
@@ -25,7 +25,7 @@ else:
             rules.mark_duplicates.output.bam,
             rules.cons_index.output
         output:
-            "dedup/{sample}.shift.bam"
+            "dedup/{sample}/{sample}.shift.bam"
         log:
             "logs/dedup_no_shift_{sample}.log"
         threads:
@@ -38,9 +38,9 @@ else:
 
 rule shift_sort:
     input:
-        "dedup/{sample}.shift.bam"
+        "dedup/{sample}/{sample}.shift.bam"
     output:
-        "dedup/{sample}.shift.sort.bam"
+        "dedup/{sample}/{sample}.shift.sort.bam"
     log:
         "logs/dedup_shift_sort_{sample}.log",
     params:
@@ -53,7 +53,7 @@ rule filterChrM:
     input:
         rules.shift_sort.output,
     output:
-        "dedup/{sample}.filtered.bam"
+        "dedup/{sample}/{sample}.filtered.bam"
     run:
         shell("(samtools view -h {input} | grep -v chrM | samtools view -bS -F 0x4 -q 30 | samtools sort -@ 4 -o {output})")
         shell("(samtools index {output})")

@@ -64,7 +64,7 @@ class Wrapper(WrapperBase):
         }
         default_value = ""
         for k, v in params.items():
-            if not re.match(k + r"\b", self.extra):
+            if k not in self.extra:
                 default_value += f" {k} {v}"
         self.extra += default_value
         # extra patameters
@@ -75,13 +75,12 @@ class Wrapper(WrapperBase):
         else:
             self.stdout = "SAM"
         # fastq file
-        fq1 = self.snakemake.input.get("fastq1", None)
+        reads = self.snakemake.input.get("reads")
+        fq1 = [r for r in reads if '.clean.R1.fq.gz' in r]
         assert fq1, "input-> fastq1 is a required input parameter"
-        fq1 = [fq1] if isinstance(fq1, str) else fq1
-
-        fq2 = self.snakemake.input.get("fastq2", None)
+        
+        fq2 = [r for r in reads if '.clean.R2.fq.gz' in r]
         if fq2:
-            fq2 = [fq2] if isinstance(fq2, str) else fq2
             assert len(fq1) == len(fq2), \
                 "input-> equal number of files required for fq1 and fastq2"
         # input string
@@ -122,6 +121,8 @@ class Wrapper(WrapperBase):
                 shell("cat {tmpdir}/ReadsPerGene.out.tab > {self.snakemake.output.reads_per_gene:q}")
             if self.snakemake.output.get("chim_junc"):
                 shell("cat {tmpdir}/Chimeric.out.junction > {self.snakemake.output.chim_junc:q}")
+            if self.snakemake.output.get("chim_junc_sam"):
+                shell("cat {tmpdir}/Chimeric.out.sam > {self.snakemake.output.chim_junc_sam:q}")
             if self.snakemake.output.get("sj"):
                 shell("cat {tmpdir}/SJ.out.tab > {self.snakemake.output.sj:q}")
             if self.snakemake.output.get("log"):

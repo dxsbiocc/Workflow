@@ -1,0 +1,23 @@
+# --------------------- pipeline ---------------------
+pipeline: "RNA-seq"
+verbose: false
+
+# -------------------- input data --------------------
+data:
+  genome: hg19
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
+
+# --------------- programs parameters ----------------
+parameters:
+  star:
+    extra: "--outSAMtype BAM SortedByCoordinate --twopassMode Basic --quantMode GeneCounts --chimOutType WithinBAM HardClip"
+    read_length: 101
+
+# ---------------- control parameters ----------------
+control:
+  trimming: "fastp"
+  mapping: "star"           # bowtie2、hisat2、star、minimap2
+  paired: true
+  star_two_step: true

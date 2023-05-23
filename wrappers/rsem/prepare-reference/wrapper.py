@@ -1,7 +1,14 @@
-__author__ = "Brett Copeland"
-__copyright__ = "Copyright 2021, Brett Copeland"
-__email__ = "brcopeland@ucsd.edu"
-__license__ = "MIT"
+# -*- encoding: utf-8 -*-
+# ============================================================
+# File        : wrapper.py
+# Time        : 2023/04/21 14:49:21
+# Author      : dengxsh
+# Version     : 1.0
+# Contact     : 920466915@qq.com
+# License     : MIT
+# Copyright   : Copyright (c) 2022, dengxsh
+# Description : The role of the current file 
+# ============================================================
 
 
 import os

@@ -32,12 +32,12 @@ class Wrapper(WrapperBase):
             input_files, output_files = [self.snakemake.input[0]], [self.snakemake.output[0]]
             self.type = 'SE'
         else:
-            input_files = [self.snakemake.input.fq1, self.snakemake.input.fq2]
+            input_files = self.snakemake.input
             output_files = [
-                self.snakemake.output.fq1,
-                self.snakemake.output.fq1_unpaired,
-                self.snakemake.output.fq2,
-                self.snakemake.output.fq2_unpaired,
+                self.snakemake.output.trimmed[0], 
+                self.snakemake.output.unpaired[0],
+                self.snakemake.output.trimmed[1],
+                self.snakemake.output.unpaired[1],
             ]
             self.type = 'PE'
         self.inputs = input_files

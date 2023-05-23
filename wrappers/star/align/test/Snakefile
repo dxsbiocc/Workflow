@@ -54,7 +54,8 @@ rule star_pe_multi:
         # see STAR manual for additional output files
         aln = "result/aligned.bam",
         log = "result/Log.out",
-        sj = "result/SJ.out.tab",
+        chim_junc = "result/Chimeric.out.junction",
+        chim_junc_sam = "result/Chimeric.out.sam"
     log:
         "logs/pe/{sample}.log",
     params:

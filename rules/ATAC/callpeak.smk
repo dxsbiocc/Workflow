@@ -1,7 +1,6 @@
 rule macs2Narrow:
     input:
-        treatment = "dedup/{pair}.filtered.bam",   # required: treatment sample(s)
-        control = get_control_bam
+        unpack(get_paired_bam)
     output:
         # all output-files must share the same basename and only differ by it's extension
         # Usable extensions (and which tools they implicitly call) are listed here:
@@ -17,14 +16,13 @@ rule macs2Narrow:
     log:
         "logs/macs2_callpeak_narrow_{pair}.log"
     params:
-        extra = "-f BAMPE -g hs -q 0.01 -B --SPMR --keep-dup all"
+        extra = lambda wildcards: get_macs2(wildcards, True),
     wrapper:
         get_wrapper('macs2', 'callpeak')
 
 rule macs2Broad:
     input:
-        treatment = "dedup/{pair}.filtered.bam",   # required: treatment sample(s)
-        control = get_control_bam
+        unpack(get_paired_bam)
     output:
         # all output-files must share the same basename and only differ by it's extension
         # Usable extensions (and which tools they implicitly call) are listed here:
@@ -42,7 +40,7 @@ rule macs2Broad:
     log:
         "logs/macs2_callpeak_broad_{pair}.log"
     params:
-        extra = "-f BAMPE -g hs --broad --broad-cutoff 0.1 -B --SPMR --keep-dup all"
+        extra = lambda wildcards: get_macs2(wildcards, False)
     wrapper:
         get_wrapper('macs2', 'callpeak')
 
@@ -52,8 +50,10 @@ rule annotatePeaks:
         gtf = config['data']['gtf']
     output:
         expand('macs2/anno/{{pair}}.peakAnno.{ext}', ext=['pdf', 'txt'])
+    log:
+        "logs/peak_anno_{pair}.log"
     params:
         sample = lambda wildcards: '{}'.format(wildcards.pair),
         output = config['workdir'] + "/macs2/anno/"
-    script:
+    wrapper:
         get_wrapper('scripts', 'annoPeaks')

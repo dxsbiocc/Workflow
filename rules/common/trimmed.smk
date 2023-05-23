@@ -22,11 +22,9 @@ rule trimmomatic:
     input:
         get_fastq,
     output:
-        fq1 = "trimmed/{sample}.clean.R1.fq.gz",
-        fq2 = "trimmed/{sample}.clean.R2.fq.gz",
+        trimmed = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
         # reads where trimming entirely removed the mate
-        fq1_unpaired = "trimmed/{sample}.R1.unpaired.fastq.gz",
-        fq2_unpaired = "trimmed/{sample}.R2.unpaired.fastq.gz"
+        unpaired = expand("trimmed/{{sample}}.unpaired.{run}.fq.gz", run=RUN),
     log:
         "logs/trimmed/trimmomatic_{sample}.log"
     params:
@@ -46,8 +44,7 @@ rule cutadapt:
     input:
         get_fastq,
     output:
-        fastq1 = "trimmed/{sample}.clean.R1.fq.gz",
-        fastq2 = "trimmed/{sample}.clean.R2.fq.gz",
+        trimmed = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
         qc = "trimmed/report/{sample}.qc.txt",
     params:
         # https://cutadapt.readthedocs.io/en/stable/guide.html#adapter-types
@@ -64,10 +61,8 @@ rule trim_galore:
     input:
         get_fastq,
     output:
-        "trimmed/{sample}.clean.R1.fq.gz",
-        "trimmed/{sample}.R1.trimming_report.txt",
-        "trimmed/{sample}.clean.R1.fq.gz",
-        "trimmed/{sample}.R2.trimming_report.txt",
+        trimmed = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
+        report = expand("trimmed/{{sample}}.trimming_report.{run}.fq.gz", run=RUN),
     params:
         extra = config['parameters']['trim_galore']['extra'],
     log:

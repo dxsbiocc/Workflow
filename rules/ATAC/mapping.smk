@@ -12,7 +12,7 @@ rule bowtie2:
             ".rev.2.bt2",
         ),
     output:
-        "bowtie2/{sample}.sort.bam",
+        "bowtie2/{sample}/{sample}.sort.bam",
     log:
         "logs/bowtie2_{sample}.summary",
     params:
@@ -35,7 +35,7 @@ rule spikein:
             ".rev.2.bt2",
         ),
     output:
-        "bowtie2/{sample}.spikein.bam",
+        "bowtie2/{sample}/{sample}.spikein.bam",
     log:
         "logs/bowtie2_{sample}_spikein.summary",
     params:
@@ -94,13 +94,13 @@ rule flagstat:
 # remove dupliactes
 rule mark_duplicates:
     input:
-        bams = "bowtie2/{sample}.sort.bam",
+        bams = "bowtie2/{sample}/{sample}.sort.bam",
     # optional to specify a list of BAMs; this has the same effect
     # of marking duplicates on separate read groups for a sample
     # and then merging
     output:
-        bam = "dedup/{sample}.cons.bam",
-        metrics = "dedup/{sample}.metrics.txt",
+        bam = "dedup/{sample}/{sample}.cons.bam",
+        metrics = "dedup/{sample}/{sample}.metrics.txt",
     log:
         "logs/picard_dedup_{sample}.log",
     params:
@@ -113,9 +113,9 @@ rule mark_duplicates:
 # index bam
 rule cons_index:
     input:
-        "dedup/{sample}.cons.bam",
+        "dedup/{sample}/{sample}.cons.bam",
     output:
-        "dedup/{sample}.cons.bam.bai",
+        "dedup/{sample}/{sample}.cons.bam.bai",
     log:
         "logs/samtools_index_{sample}.log",
     params:

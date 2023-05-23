@@ -2,10 +2,23 @@ from collections import defaultdict
 
 if SAMPLE_MAP:
     CONTROL = defaultdict(list)
-    for k, v in pairs.items():
-        CONTROL[v].append(k)
+    for k, v in SAMPLE_MAP.items():
+        if v:
+            CONTROL[v].append(k)
+        else:
+            CONTROL[k] = []
 else:
-    CONTROL = {k : '', for k in PAIRS}
+    CONTROL = {k : '' for k in PAIRS}
+
+if config['control']['paired']:
+    MACS2_BAM = '-f BAMPE '
+else:
+    MACS2_BAM = '-f BAM '
+
+# macs2 parameters
+MACS2_MAP = {}
+if 'type' in samples.columns:
+    MACS2_MAP = samples['type'].to_dict()
 
 
 include: os.path.join(PATH, "rules/common/utils.smk")
@@ -30,16 +43,16 @@ localrules:
 rule all:
     input:
         # trimmed adapter
-        expand("trimmed/{sample}.clean.{unit}.fq.gz", sample=SAMPLES, unit=['R1', 'R2']),
+        expand("trimmed/{sample}/{sample}.clean.{unit}.fq.gz", sample=SAMPLES, unit=['R1', 'R2']),
         # spikein
-        expand("bowtie2/{sample}.spikein.bam", sample=SAMPLES),
+        expand("bowtie2/{sample}/{sample}.spikein.bam", sample=SAMPLES),
         # stats
         expand("bowtie2/stats/{sample}.{stats}", sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
         expand("bowtie2/plot/{sample}", sample=SAMPLES),
         # mapping and remove duplicates
-        expand("dedup/{sample}.cons.bam.bai", sample=SAMPLES),
+        expand("dedup/{sample}/{sample}.cons.bam.bai", sample=SAMPLES),
         # shift 9bp
-        expand("dedup/{sample}.filtered.bam", sample=SAMPLES),
+        expand("dedup/{sample}/{sample}.filtered.bam", sample=SAMPLES),
         # callpeak
         expand("macs2/narrow/{pair}_peaks.narrowPeak", pair=PAIRS),
         expand("macs2/broad/{pair}_peaks.broadPeak", pair=PAIRS),
@@ -53,5 +66,7 @@ rule all:
         expand('macs2/anno/{pair}.peakAnno.{ext}', pair=PAIRS, ext=['pdf', 'txt']),
         # bw data quality
         expand("macs2/matrix/{control}.{pos}.{types}.pdf", control=CONTROL.keys(), pos=['tss', 'genebody'], types=['heatmap', 'profile']),
+        # correlation heatmap
+        "macs2/bigwig/heatmap_spearman_corr_readCounts.pdf",
         # get stats
         "report/stats.csv",

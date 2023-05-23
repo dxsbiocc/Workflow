@@ -27,9 +27,9 @@ class Wrapper(WrapperBase):
         self.out_file = None
         # data type
         if n == 1:   # single-end
-            self.out_file = f" -o {self.snakemake.output.fastq1}"
+            self.out_file = f" -o {self.snakemake.output.trimmed[0]}"
         elif n == 2:  # paired-end
-            self.out_file = f" -o {self.snakemake.output.fastq1} -p {self.snakemake.output.fastq2}"
+            self.out_file = f" -o {self.snakemake.output.trimmed[0]} -p {self.snakemake.output.trimmed[1]}"
         else:
             raise ValueError("Input reads must contain 1 (single-end) or 2 (paired-end) elements.")
 
