@@ -2,27 +2,52 @@
 
 ## Introduction
 
-The snakemake analysis workflow for Epigenomic analysis, Such as
+The snakemake analysis workflow for bioinformatics analysis, including
 
-- ATAC-seq
-- Cut&Tag
-- Chip-seq
+- [x] ATAC-seq/Cut&Tag/ChIP-seq
+- [ ] RNA-seq
+- [ ] DNA-seq(WGS and WES)
+- [ ] HiC
+
+**To-Do list will be updated soon**
 
 ## Usage
 
-#### Config
+#### **Configration**
 
-1. copy the file `utils/base.py` to package `snakemake_wrapper_utils` installed directory.
-2. config file in `config/config.yaml`, Choose the right parameters.
+1. install packages
+    ```sh
+    pip install -r requirement.txt
+    ```
+2. copy the file `base.py` in `utils` to package `snakemake-wrapper-utils` installed directory.
+3. setting the config file `config.yaml` in `config`, choose the properly parameters.
 
-#### Sample data
+#### **Sample data**
 
-example files in `example`, you need to modify `sample_info.json` and `sample_list.txt`
+example files in directory `example`, you need to modify the path of the files `sample_info.json` and `sample_list.txt` 
 
-#### Running
+*sample_list.txt*
+
+| sample | fastq1 | fastq2 | type(optional) |
+| ------ | ------ | ------ | -------------- |
+|   sp1  | path/to/sp1.R1.fq.gz | path/to/sp1.R2.fq.gz | chip |
+|   sp2  | path/to/sp2.R1.fq.gz | path/to/sp2.R2.fq.gz | atac |
+
+*sample_info.json*
+```json
+{
+    'sp1': control_sample,
+    'sp2': control_sample
+}
+```
+
+#### **Running**
 
 ```sh
 cd pipe
+# run in local
+snakemake -s Snakefile --use-conda -c4
+# or run in the slurm task management system
 snakemake -s Snakefile --profile ../config/slurm
 ```
 

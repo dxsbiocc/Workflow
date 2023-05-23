@@ -1,0 +1,2 @@
+snakemake==7.16.2
+snakemake-wrapper-utils==0.5.0
