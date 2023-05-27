@@ -1,14 +1,17 @@
 import os
 import json
+import getpass
 import pandas as pd
 from snakemake.utils import min_version
+
+
 # snakemake built-in report function requires min version 5.1
 min_version("7.12.0")
 
 configfile: "../config/config.yaml"
 
 # workflow dir
-PATH = config.root_dir
+PATH = config.get('root_dir')
 
 if not config.get('workdir'):
     config['workdir'] = os.getcwd()
@@ -27,9 +30,27 @@ else:
 
 # ------------------ Wildcard constraints ------------------ #
 wildcard_constraints:
+    sample = "|".join(SAMPLES),
     pair = "|".join(PAIRS)
 
+
+onstart:
+    if "verbose" in config and config["verbose"]:
+        print("------------------------------ Workflow Parameters ------------------------------")
+        print("Workflow:", config['pipeline'])
+        print("Running Directory:", os.path.abspath(PATH))
+        print("Sample list:", SAMPLES)
+        print("Number of samples:", len(SAMPLES))
+        print("-" * 80, "\n")
+
+        print("---------------------------------- Environment ----------------------------------")
+        print("Username: ", getpass.getuser())
+        print("WorkDir: ", config['workdir'])
+        print("-" * 80, "\n")
 # ---------------------- include rules --------------------- #
+# prepare 
+include: os.path.join(PATH, "rules/common/prepare.smk")
+
 # ATAC-seq、Cut&Tag
 if config['pipeline'] in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:
     include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
@@ -39,3 +60,14 @@ if config['pipeline'] in ['WGS', 'WES']:
 # RNA-seq
 if config['pipeline'] == 'RNA-seq':
     include: os.path.join(PATH, "rules/RNA/RNA.smk")
+
+
+rule all:
+        input: rules.use_all.input
+
+onsuccess:
+    if "verbose" in config and config["verbose"]:
+        print("\n---------------------------- Workflow finished successfully! ----------------------------\n")
+
+onerror:
+    print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ERROR in workflow !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")

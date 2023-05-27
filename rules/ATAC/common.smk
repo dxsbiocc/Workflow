@@ -32,7 +32,7 @@ SHIFT = True if config['control']['shift'] else False
 #     return {'fq1': fastqs.fastq1}
 def get_paired_bam(wildcards):
     paired = {'treatment': 'dedup/{pair}/{pair}.filtered.bam'}
-    if SAMPLE_MAP.get(wildcards.pair):
+    if SAMPLE_MAP and SAMPLE_MAP.get(wildcards.pair):
         paired['control'] = "dedup/{sp}/{sp}.filtered.bam".format(sp=SAMPLE_MAP[wildcards.pair])
     return paired
     

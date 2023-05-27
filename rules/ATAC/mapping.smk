@@ -1,7 +1,7 @@
 # align to reference genome
 rule bowtie2:
     input:
-        reads = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
+        reads = expand("trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz", run=RUN),
         index = multiext(
             config['data']["index"],
             ".1.bt2",
@@ -24,7 +24,7 @@ rule bowtie2:
 
 rule spikein:
     input:
-        reads = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
+        reads = expand("trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz", run=RUN),
         index = multiext(
             config['data']["ecoli"],
             ".1.bt2",

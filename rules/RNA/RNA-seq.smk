@@ -1,3 +1,6 @@
+# configfile
+configfile: os.path.join(PATH, "config/RNA-seq.yaml")
+
 include: os.path.join(PATH, "rules/common/utils.smk")
 
 READ_LENGTH = config['parameters']['star']['read_length']

@@ -1,5 +1,6 @@
 
-
+# configfile
+configfile: os.path.join(PATH, "config/DNA-seq.yaml")
 
 # include utils config
 include: os.path.join(PATH, "rules/common/utils.smk")

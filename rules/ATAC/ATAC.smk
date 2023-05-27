@@ -1,5 +1,9 @@
 from collections import defaultdict
 
+# configfile
+configfile: os.path.join(PATH, "config/ATAC-seq.yaml")
+
+# sample informations
 if SAMPLE_MAP:
     CONTROL = defaultdict(list)
     for k, v in SAMPLE_MAP.items():
@@ -20,12 +24,7 @@ MACS2_MAP = {}
 if 'type' in samples.columns:
     MACS2_MAP = samples['type'].to_dict()
 
-
-include: os.path.join(PATH, "rules/common/utils.smk")
-# get rules
-get_trimmed(config['control']['trimmed_tool'])
-# get_mapping(config['control']['mapping_tool'])
-
+include: os.path.join(PATH, "rules/common/trimmed.smk")
 include: os.path.join(PATH, "rules/ATAC/common.smk")
 include: os.path.join(PATH, "rules/ATAC/mapping.smk")
 include: os.path.join(PATH, "rules/ATAC/filtering.smk")
@@ -40,7 +39,7 @@ include: os.path.join(PATH, "rules/ATAC/report.smk")
 localrules:
     stats, idxstats, flagstat
 
-rule all:
+rule use_all:
     input:
         # trimmed adapter
         expand("trimmed/{sample}/{sample}.clean.{unit}.fq.gz", sample=SAMPLES, unit=['R1', 'R2']),
