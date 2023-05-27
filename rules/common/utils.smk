@@ -41,3 +41,21 @@ def get_adapter(method='fastp'):
     else:
         raise ValueError(f'{method} not support!')
     return pat
+        
+# ------------------------------ DNA ------------------------------ #
+def get_filter(mode):
+    if mode == 'snp':
+        filters = {"my_filter": SNP_FILTER}
+    elif mode == 'indel':
+        filters = {"my_filter": INDEL_FILTER}
+    else:
+        raise ValueError('Unsupport filter!')
+    return filters
+    
+def get_contig():
+    if 'REGION_BED' in config:
+        pass
+    else:
+        with open(f'{REFERENCE}.fai') as fp:
+            contig = pd.read_csv(fp, sep='\t', header=None, usecols=[0], dtype=str).squeeze().to_list()   
+        return contig

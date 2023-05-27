@@ -1,70 +1,74 @@
+import os
 
 # configfile
 configfile: os.path.join(PATH, "config/DNA-seq.yaml")
+############################################################
+#                      Global Variable                     #
+############################################################
+# control parameters
+MODE = ['snp', 'indel']
+FILTER = config['control']['filter']
+# --------------------- Reference data ------------------- #
+DICT = config['data']['dict']
+# ------------------------- Region ----------------------- #
+REGION_BED = config['data']['REGION_BED'] if 'REGION_BED' in config['data'] else ''
 
-# include utils config
-include: os.path.join(PATH, "rules/common/utils.smk")
+CONTIG = get_contig()
+# ---------------------- Known sites --------------------- #
+KNOWEN_SITE = [config['data']["known_site"][k] for k in config['data']["known_site"]]
+# ---------------------- VQSR filters -------------------- #
+MILLS = config['parameters']['gatk']['vqsr']["mills"]
+MILLS_IDX = config['parameters']['gatk']['vqsr']["mills_idx"]
+OMNI = config['parameters']['gatk']['vqsr']["omni"]
+OMIN_IDX = config['parameters']['gatk']['vqsr']["omni_idx"]
+G1K = config['parameters']['gatk']['vqsr']["g1k"]
+G1K_IDX = config['parameters']['gatk']['vqsr']["g1k_idx"]
+DBSNP = config['parameters']['gatk']['vqsr']["dbsnp"]
+DBSNP_IDX = config['parameters']['gatk']['vqsr']["dbsnp_idx"]
+# ---------------------- Hard filters -------------------- #
+SNP_FILTER = config['parameters']['gatk']['hard_filter']['snp_filter']
+INDEL_FILTER = config['parameters']['gatk']['hard_filter']['indel_filter']
+# --------------------- VEP parameters ------------------- #
+VEP_CACHE = config['parameters']['vep']['local']['cache']
+VEP_PLUGINS_LOCAL = config['parameters']['vep']['local']['plugins']
+VEP_SPECIES = config['parameters']['vep']['online']['species']
+VEP_BUILD = config['parameters']['vep']['online']['build']
+VEP_RELEASE = config['parameters']['vep']['online']['release']
+VEP_PLUGINS = config['parameters']["vep"]["plugins"]
+# -------------------- Delly parameters ------------------ #
+DELLY_EXCLUDE = config['parameters']['delly']['exclude']
+# ------------------ Wildcard constraints ---------------- #
+wildcard_constraints:
+    contig = "|".join(CONTIG),
+    mode = "snp|indel"
 
-# known sites
-KNOWN_SNP = ["dbsnp_146.hg38.vcf.gz"]
-KNOWN_INDEL = ["Homo_sapiens_assembly38.known_indels.vcf.gz", "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"]
-KNOWN = KNOWN_SNP + KNOWN_INDEL
-
-# 1. trimming
-get_trimmed(config['control']['trimming'])
-# 2. mapping
-get_mapping(config['control']['mapping'])
-# 3. rmdup
-get_dedup(config['control']['dedup'])
-# index
-rule dedup_index:
-    input: 
-        "dedup/{sample}.rmdup.bam"
-    output:
-        "dedup/{sample}.rmdup.bam.bai"
-    log:
-        "logs/dedup/dmdup_index_{sample}.log"
-    wrapper:
-        get_wrapper('samtools', 'index')
-
-# 4. BQSR
-include: "gatk4.smk"
-# 5. call mutation
-# 6.
-rule combinegvcfs:
+############################################################
+#                         0. Include                       #
+############################################################
+include: os.path.join(PATH, "rules/DNA/check.smk")
+include: os.path.join(PATH, "rules/common/trimmed.smk")
+include: os.path.join(PATH, "rules/common/mapping.smk")
+include: os.path.join(PATH, "rules/common/dedup.smk")
+include: os.path.join(PATH, "rules/common/stats.smk")
+include: os.path.join(PATH, "rules/DNA/gatk4.smk")
+include: os.path.join(PATH, "rules/DNA/filtering.smk")
+include: os.path.join(PATH, "rules/DNA/anno.smk")
+include: os.path.join(PATH, "rules/DNA/sv.smk")
+include: os.path.join(PATH, "rules/DNA/cnv.smk")
+include: os.path.join(PATH, "rules/DNA/report.smk")
+############################################################
+#                           Runing                         #
+############################################################
+rule use_all:
     input:
-        gvcfs = expand(
-            "called/{sample}.g.vcf.gz", sample=samples.index
-        ),
-        ref = REFERENCE,
-    output:
-        gvcf = "called/all.g.vcf.gz",
-    log:
-        "logs/called/combinegvcfs.log",
-    wrapper:
-        "0.74.0/bio/gatk/combinegvcfs"
-
-rule genotypegvcfs:
-    input:
-        gvcf = rules.combinegvcfs.output.gvcf,
-        ref = REFERENCE,
-    output:
-        vcf = temp("genotyped/all.vcf.gz"),
-    params:
-        extra=config["params"]["gatk"]["GenotypeGVCFs"],
-    log:
-        "logs/gatk/genotypegvcfs.{contig}.log",
-    wrapper:
-        "0.74.0/bio/gatk/genotypegvcfs"
-
-rule mergevcfs:
-    input:
-        vcfs=lambda w: expand(
-            "genotyped/all.{contig}.vcf.gz", contig=get_contigs()
-        ),
-    output:
-        vcf="results/genotyped/all.vcf.gz",
-    log:
-        "logs/picard/merge-genotyped.log",
-    wrapper:
-        "0.74.0/bio/picard/mergevcfs"
+        # data process
+        expand("trimmed/{sample}/{sample}.clean.{run}.fq.gz", sample=SAMPLES, run=RUN),
+        expand("mapped/{sample}/{sample}.bam", sample=SAMPLES),
+        expand("dedup/{sample}/{sample}.rmdup.bam", sample=SAMPLES),
+        expand("report/stats/{sample}.{stats}", sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
+        expand("report/plot/{sample}", sample=SAMPLES),
+        # variant called
+        expand("variant/filtered/all.{mode}.filtered.vcf.gz", mode=MODE),
+        # annotate
+        "annotated/all.vcf.gz",
+        "sv/all.vcf.gz"

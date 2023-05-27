@@ -67,3 +67,6 @@ control:
   spike_in: false
   paired: true
   shift: false
+
+# system config
+delete_temporary_files: True

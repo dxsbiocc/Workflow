@@ -10,57 +10,32 @@ min_version("7.12.0")
 
 configfile: "../config/config.yaml"
 
-# workflow dir
-PATH = config.get('root_dir')
-
-if not config.get('workdir'):
-    config['workdir'] = os.getcwd()
-# workdir
-workdir: config['workdir']
-
-#read the sample file using pandas lib (sample names+ fastq names) and crezate index using the sample name
-samples = pd.read_csv(config['data']['sample_file'], sep='\t', index_col=0)
-SAMPLES = samples.index
-if config['data']['sample_info']:
-    SAMPLE_MAP = json.load(open(config['data']['sample_info']))
-    PAIRS = list(SAMPLE_MAP.keys())
-else:
-    SAMPLE_MAP = None
-    PAIRS = SAMPLES
-
-# ------------------ Wildcard constraints ------------------ #
-wildcard_constraints:
-    sample = "|".join(SAMPLES),
-    pair = "|".join(PAIRS)
-
+# ---------------------- prepare data ---------------------- #
+include: os.path.join(PATH, "rules/common/prepare.smk")
+# ---------------------- include rules --------------------- #
+# ATAC-seq、Cut&Tag
+if PIPELINE in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:
+    include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
+# DNA-seq
+if PIPELINE in ['WGS', 'WES']:
+    include: os.path.join(PATH, "rules/DNA/DNA.smk")
+# RNA-seq
+if PIPELINE == 'RNA-seq':
+    include: os.path.join(PATH, "rules/RNA/RNA.smk")
 
 onstart:
     if "verbose" in config and config["verbose"]:
         print("------------------------------ Workflow Parameters ------------------------------")
-        print("Workflow:", config['pipeline'])
-        print("Running Directory:", os.path.abspath(PATH))
+        print("Workflow:", PIPELINE)
         print("Sample list:", SAMPLES)
         print("Number of samples:", len(SAMPLES))
         print("-" * 80, "\n")
 
         print("---------------------------------- Environment ----------------------------------")
         print("Username: ", getpass.getuser())
-        print("WorkDir: ", config['workdir'])
+        print("Project Directory:", os.path.abspath(PATH))
+        print("Work Directory: ", config['workdir'])
         print("-" * 80, "\n")
-# ---------------------- include rules --------------------- #
-# prepare 
-include: os.path.join(PATH, "rules/common/prepare.smk")
-
-# ATAC-seq、Cut&Tag
-if config['pipeline'] in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:
-    include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
-# DNA-seq
-if config['pipeline'] in ['WGS', 'WES']:
-    include: os.path.join(PATH, "rules/DNA/DNA.smk")
-# RNA-seq
-if config['pipeline'] == 'RNA-seq':
-    include: os.path.join(PATH, "rules/RNA/RNA.smk")
-
 
 rule all:
         input: rules.use_all.input
