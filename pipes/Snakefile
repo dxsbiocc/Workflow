@@ -10,6 +10,8 @@ min_version("7.12.0")
 
 configfile: "../config/config.yaml"
 
+# project dir
+PATH = config.get('root_dir')
 # ---------------------- prepare data ---------------------- #
 include: os.path.join(PATH, "rules/common/prepare.smk")
 # ---------------------- include rules --------------------- #
@@ -17,11 +19,15 @@ include: os.path.join(PATH, "rules/common/prepare.smk")
 if PIPELINE in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:
     include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
 # DNA-seq
-if PIPELINE in ['WGS', 'WES']:
+elif PIPELINE in ['WGS', 'WES']:
     include: os.path.join(PATH, "rules/DNA/DNA.smk")
 # RNA-seq
-if PIPELINE == 'RNA-seq':
+elif PIPELINE == 'RNA-seq':
     include: os.path.join(PATH, "rules/RNA/RNA.smk")
+elif PIPELINE == 'WGBS':
+    pass
+else:
+    raise ValueError("")
 
 onstart:
     if "verbose" in config and config["verbose"]:

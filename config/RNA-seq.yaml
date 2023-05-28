@@ -19,5 +19,4 @@ parameters:
 control:
   trimming: "fastp"
   mapping: "star"           # bowtie2、hisat2、star、minimap2
-  paired: true
   star_two_step: true

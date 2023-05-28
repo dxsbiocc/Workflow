@@ -86,7 +86,7 @@ class Wrapper(WrapperBase):
                 " {self.extra}"
                 " {self.index}"
                 " {self.snakemake.input.reads}"
-                " | self.pipe_cmd)"
+                " | {self.pipe_cmd})"
                 " {self.log}"
             )
 

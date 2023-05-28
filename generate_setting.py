@@ -10,10 +10,10 @@ def find_file(path):
     sp_list = [p1.findall(f)[0][0] for f in file_list if p1.match(f)]
     #
     data = pd.DataFrame(sp_list, columns=['sample'])
-    data['fastq1'] = [f for f in file_list if p1.match(f)]
+    data['fastq1'] = [os.path.join(path, f) for f in file_list if p1.match(f)]
     # fastq2
     p2 = re.compile('(.*)_R?2(_0[0-9]+)?.f[ast]{0,3}q.gz')
-    fq2_list = [f for f in file_list if p2.match(f)]
+    fq2_list = [os.path.join(path, f) for f in file_list if p2.match(f)]
     if len(fq2_list) == 0:
         data['fastq2'] = None
     elif len(sp_list) != len(fq2_list):

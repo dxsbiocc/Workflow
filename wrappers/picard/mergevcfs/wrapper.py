@@ -32,10 +32,11 @@ class Wrapper(WrapperBase):
         with tempfile.TemporaryDirectory() as tmpdir:
             shell(
                 "picard MergeVcfs"
-                " {self.java_opts} {self.extra}"
+                " {self.java_opts}"
+                " {self.extra}"
                 " {self.inputs}"
                 " --TMP_DIR {tmpdir}"
-                " --OUTPUT {self.snakemake.output[0]}"
+                " --OUTPUT {self.snakemake.output.vcf}"
                 " {self.log}"
             )
 

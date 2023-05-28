@@ -40,7 +40,7 @@ rule call_variants:
         bam = rules.applybqsr.output.bam,
         ref = INDEX,
         idx = DICT,
-        known = config['KNOWEN_SITE']['DBSNP'],
+        known = KNOWEN_SITE_DBSNP,
     output:
         gvcf = "variant/called/{sample}.{contig}.g.vcf.gz",
     log:
@@ -74,7 +74,7 @@ rule combine_calls:
 rule genotypegvcfs:
     input:
         ref = REFERENCE,
-        gvcfs = rules.combine_calls.output.gvcf,
+        gvcf = rules.combine_calls.output.gvcf,
         # genomicsdb = rules.genomicsdbimport.output.db
     output:
         gvcf = "variant/genotyped/{contig}.g.vcf.gz",
@@ -87,13 +87,13 @@ rule merge_vcfs:
     input:
         vcfs = expand("variant/genotyped/{contig}.g.vcf.gz", contig=CONTIG),
     output:
-        "variant/genotyped/all.vcf.gz",
+        vcf = "variant/genotyped/all.vcf.gz",
     log:
         "logs/variant/picard/mergevcfs.log",
     params:
-        extra="",
+        extra = "",
     resources:
-        mem_mb=1024,
+        mem_mb = 1024,
     wrapper:
         get_wrapper('picard', 'mergevcfs')
 

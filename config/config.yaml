@@ -11,14 +11,13 @@ data:
   genome: hg19
   ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
   index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
-  ecoli: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/e.coli/e.coli
   gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
   db: "local"
 
 # ------------------- output folder ------------------
 workdir: null
 # ------------------ wrapper folder ------------------
-root_dir: ""  # project dir (example: xxx/Workflow), must be set
+root_dir: "{PLACEHOLDER}"  # project dir (example: xxx/Workflow), must be set
 wrappers: "local"
 scripts: "local"
 # --------------- programs parameters ----------------
@@ -39,7 +38,7 @@ parameters:
     sort: samtools
     extra: "--end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
   bwa:
-    extra: "-R '@RG\\tID:{sample}\\tSM:{sample}'"
+    extra: "-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:Illumina'"
     sort: "samtools"  # Can be 'none', 'samtools' or 'picard'.
     sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
     sort_extra: ""

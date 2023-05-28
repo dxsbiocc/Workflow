@@ -5,8 +5,8 @@
 The snakemake analysis workflow for bioinformatics analysis, including
 
 - [x] ATAC-seq/Cut&Tag/ChIP-seq
+- [X] DNA-seq(WGS and WES)
 - [ ] RNA-seq
-- [ ] DNA-seq(WGS and WES)
 - [ ] HiC
 
 **To-Do list will be updated soon**
@@ -15,28 +15,28 @@ The snakemake analysis workflow for bioinformatics analysis, including
 
 #### **Configration**
 
-1. install packages
+1. One-Click Configuration
 
     ```sh
-    pip install -r requirement.txt
+    sh setup.sh
     ```
 
-2. copy the file `base.py` in `utils` to package `snakemake-wrapper-utils` installed directory.
-3. setting the config file `config.yaml` in `config`, choose the properly parameters.
-4. setting the `root_dir` value in `config/config.yaml`
+2. Choose pipeline and set the file path in `config.yaml`, such as reference genome.
+
+3. sample information to table or json.
 
 #### **Sample data**
 
 example files in directory `example`, you need to modify the path of the files `sample_info.json` and `sample_list.txt`
 
-*sample_list.txt*
+- *sample_list.txt*, use `generate_setting.py`
 
 | sample | fastq1 | fastq2 | type(optional) |
 | ------ | ------ | ------ | -------------- |
 |   sp1  | path/to/sp1.R1.fq.gz | path/to/sp1.R2.fq.gz | chip |
 |   sp2  | path/to/sp2.R1.fq.gz | path/to/sp2.R2.fq.gz | atac |
 
-*sample_info.json*
+- *sample_info.json*
 
 ```json
 {

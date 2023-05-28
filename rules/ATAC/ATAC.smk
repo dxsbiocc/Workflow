@@ -42,7 +42,7 @@ localrules:
 rule use_all:
     input:
         # trimmed adapter
-        expand("trimmed/{sample}/{sample}.clean.{unit}.fq.gz", sample=SAMPLES, unit=['R1', 'R2']),
+        expand("trimmed/{sample}/{sample}.clean.{unit}.fq.gz", sample=SAMPLES, unit=RUN),
         # spikein
         expand("bowtie2/{sample}/{sample}.spikein.bam", sample=SAMPLES),
         # stats

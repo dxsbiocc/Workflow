@@ -56,7 +56,7 @@ class Wrapper(WrapperBase):
                 " {self.intervals}"
                 " {self.extra}"
                 " --tmp-dir {tmpdir}"
-                " --output {self.snakemake.output.vcf}"
+                " --output {self.snakemake.output.gvcf}"
                 " {self.log}"
             )
 

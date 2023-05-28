@@ -24,5 +24,4 @@ parameters:
 # ---------------- control parameters ----------------
 control:
   mapping: "bwa"           # bowtie2、hisat2、star、minimap2
-  paired: true
   star_two_step: true

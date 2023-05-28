@@ -4,9 +4,6 @@ if TRIMMING == "fastp":
             reads = get_fastq,
         output:
             trimmed = expand("trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz", run=RUN),
-            # or in a single file
-            unpaired = "trimmed/{sample}/{sample}.singletons.fastq",
-            # merged = "fastp/{sample}.merged.fastq",
             failed = "trimmed/{sample}/{sample}.failed.fastq",
             html = "trimmed/report/{sample}.html",
             json = "trimmed/report/{sample}.json"

@@ -2,7 +2,7 @@ if MAPPING == "bwa":
     # DNA-seq
     rule bwa:
         input:
-            reads = expand("trimmed/{{sample}}.clean.{run}.fq.gz", run=RUN),
+            reads = expand("trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz", run=RUN),
             index = multiext(
                 INDEX, 
                 ".amb", ".ann", ".bwt", ".pac", ".sa"

@@ -49,4 +49,3 @@ control:
   mapping: "bwa"           # bowtie2、hisat2、star、minimap2
   dedup: "markduplicates"  # sambamba
   filter: "hard"           # or "vqsr"
-  paired: true

@@ -2,8 +2,6 @@ import os
 
 
 # -------------------- Global Parameters -------------------- #
-# project dir
-PATH = config.get('root_dir')
 # database path
 if config['data']['db'] == 'local':
     DATABASE = os.path.join(PATH, 'data')
@@ -14,14 +12,16 @@ if config['control']['paired']:
     RUN = ['R1', 'R2']
 else:
     RUN = ['R1']
-
-# ---------------------- Workflow Envs ---------------------- #
-PIPELINE = config['pipeline']
-
-if not config.get('workdir'):
-    config['workdir'] = os.getcwd()
-# workdir
-workdir: config['workdir']
+# --------------------- Reference Data ---------------------- #
+GENOME = config['data']['genome']
+REFERENCE = config['data']['ref']
+INDEX = config['data']['index']
+GTF = config['data']['gtf']
+TRIMMING = config['control']['trimming']
+MAPPING = config['control']['mapping']
+DEDUP = config['control']['dedup']
+# --------------------- Local Database ---------------------- #
+REF_GC = os.path.join(DATABASE, 'GC', f'{GENOME}.gc')
 # ---------------------- Samples Info ----------------------- #
 # read the sample file using pandas lib (sample names+ fastq names) and 
 # create index using the sample name
@@ -33,17 +33,17 @@ if config['data']['sample_info']:
 else:
     SAMPLE_MAP = None
     PAIRS = SAMPLES
+# ---------------------- Workflow Envs ---------------------- #
+PIPELINE = config['pipeline']
+
+if not config.get('workdir'):
+    config['workdir'] = os.getcwd()
+# workdir
+workdir: config['workdir']
 # ------------------- Wildcard constraints ------------------ #
 wildcard_constraints:
     sample = "|".join(SAMPLES),
     pair = "|".join(PAIRS)
 
-# --------------------- Reference Data ---------------------- #
-REFERENCE = config['data']['ref']
-INDEX = config['data']['index']
-GTF = config['data']['gtf']
-TRIMMING = config['control']['trimming']
-MAPPING = config['control']['mapping']
-DEDUP = config['control']['dedup']
-# --------------------- Local Database ---------------------- #
-REF_GC = os.path.join(DATABASE, 'GC', f'{genome}.gc')
+# ---------------------- Include rules ---------------------- #
+include: "utils.smk"

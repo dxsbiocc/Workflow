@@ -2,7 +2,7 @@ rule merge_vcfs:
     input:
         vcfs=["snvs.chr1.vcf", "snvs.chr2.vcf"],
     output:
-        "snvs.vcf",
+        vcf = "snvs.vcf",
     log:
         "logs/picard/mergevcfs.log",
     params:

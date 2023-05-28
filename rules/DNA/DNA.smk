@@ -16,6 +16,7 @@ REGION_BED = config['data']['REGION_BED'] if 'REGION_BED' in config['data'] else
 CONTIG = get_contig()
 # ---------------------- Known sites --------------------- #
 KNOWEN_SITE = [config['data']["known_site"][k] for k in config['data']["known_site"]]
+KNOWEN_SITE_DBSNP = config['data']["known_site"]['dbsnp']
 # ---------------------- VQSR filters -------------------- #
 MILLS = config['parameters']['gatk']['vqsr']["mills"]
 MILLS_IDX = config['parameters']['gatk']['vqsr']["mills_idx"]
@@ -63,7 +64,7 @@ rule use_all:
     input:
         # data process
         expand("trimmed/{sample}/{sample}.clean.{run}.fq.gz", sample=SAMPLES, run=RUN),
-        expand("mapped/{sample}/{sample}.bam", sample=SAMPLES),
+        expand("mapped/{sample}/{sample}.sorted.bam", sample=SAMPLES),
         expand("dedup/{sample}/{sample}.rmdup.bam", sample=SAMPLES),
         expand("report/stats/{sample}.{stats}", sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
         expand("report/plot/{sample}", sample=SAMPLES),

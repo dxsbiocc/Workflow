@@ -16,7 +16,7 @@ rule macs2Narrow:
     log:
         "logs/macs2_callpeak_narrow_{pair}.log"
     params:
-        extra = lambda wildcards: get_macs2(wildcards, True),
+        extra = lambda wildcards: get_macs2(wildcards.pair, True),
     wrapper:
         get_wrapper('macs2', 'callpeak')
 
@@ -40,7 +40,7 @@ rule macs2Broad:
     log:
         "logs/macs2_callpeak_broad_{pair}.log"
     params:
-        extra = lambda wildcards: get_macs2(wildcards, False)
+        extra = lambda wildcards: get_macs2(wildcards.pair, False)
     wrapper:
         get_wrapper('macs2', 'callpeak')
 

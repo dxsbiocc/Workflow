@@ -109,41 +109,41 @@ rule ploGenebodytProfile:
         get_wrapper("deeptools", "plotprofile")
 
 
-
-rule multibigwigsummary:
-    input:
-        # Required input.
-        # bigwig = get_bigwig,
-        bigwig = expand("macs2/bigwig/{sample}.norm.bw", sample=SAMPLES),
-    output:
-        # Required output.
-        out = 'macs2/bigwig/scores_per_bin.npz',
-        # raw_count = ''
-    params:
-        # Optional parameters.
-        subcommand = 'bins',
-        extra = '',
-        labels = lambda wildcards, input: [f.split('/')[-1].strip('.norm.bw') for f in input.bigwig]
-    threads: 1
-    log: 
-        'logs/deeptools_multibigwigsummary.log'
-    wrapper: 
-        get_wrapper("deeptools", "multibigwigsummary")
-        
-rule plotcorrelation:
-    input:
-        # Required input.
-        rules.multibigwigsummary.output.out,
-    output:
-        img = 'macs2/bigwig/heatmap_spearman_corr_readCounts.pdf',
-        # matrix = 'SpearmanCorr_readCounts.tab'
-    params:
-        # Optional parameters.
-        extra = '--skipZeros --whatToPlot heatmap --colorMap RdYlBu --plotNumbers',
-        cor = 'spearman',
-        title = 'Spearman Correlation of Read Counts',
-    threads: 1
-    log: 
-        'logs/deeptools_plotcorrelation.log'
-    wrapper: 
-        get_wrapper("deeptools", "plotcorrelation")
+if len(SAMPLES) > 1:
+    rule multibigwigsummary:
+        input:
+            # Required input.
+            # bigwig = get_bigwig,
+            bigwig = expand("macs2/bigwig/{sample}.norm.bw", sample=SAMPLES),
+        output:
+            # Required output.
+            out = 'macs2/bigwig/scores_per_bin.npz',
+            # raw_count = ''
+        params:
+            # Optional parameters.
+            subcommand = 'bins',
+            extra = '',
+            labels = lambda wildcards, input: [f.split('/')[-1].strip('.norm.bw') for f in input.bigwig]
+        threads: 1
+        log: 
+            'logs/deeptools_multibigwigsummary.log'
+        wrapper: 
+            get_wrapper("deeptools", "multibigwigsummary")
+            
+    rule plotcorrelation:
+        input:
+            # Required input.
+            rules.multibigwigsummary.output.out,
+        output:
+            img = 'macs2/bigwig/heatmap_spearman_corr_readCounts.pdf',
+            # matrix = 'SpearmanCorr_readCounts.tab'
+        params:
+            # Optional parameters.
+            extra = '--skipZeros --whatToPlot heatmap --colorMap RdYlBu --plotNumbers',
+            cor = 'spearman',
+            title = 'Spearman Correlation of Read Counts',
+        threads: 1
+        log: 
+            'logs/deeptools_plotcorrelation.log'
+        wrapper: 
+            get_wrapper("deeptools", "plotcorrelation")

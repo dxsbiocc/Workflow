@@ -9,7 +9,7 @@ rule delly_call:
     params:
         extra = "",  # optional parameters for delly (except -g, -x)
     log:
-        "logs/delly/call/{sample}.log",
+        "logs/sv/delly/call_{sample}.log",
     threads: 2  # It is best to use as many threads as samples
     wrapper:
         get_wrapper('delly')
@@ -21,6 +21,6 @@ rule merge_sv:
     output:
         vcf = "sv/all.vcf.gz",
     log:
-        "logs/picard/merge-sv.log",
+        "logs/sv/picard/merge-sv.log",
     wrapper:
         get_wrapper('picard', 'mergevcfs')
