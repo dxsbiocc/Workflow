@@ -21,9 +21,9 @@ The snakemake analysis workflow for bioinformatics analysis, including
     sh setup.sh
     ```
 
-2. Choose pipeline and set the file path in `config.yaml`, such as reference genome.
+2. Select the appropriate parameters in the file(`config.yaml`), such as reference genome.
 
-3. sample information to table or json.
+3. Sample data information into tabular form.
 
 #### **Sample data**
 
@@ -40,19 +40,18 @@ example files in directory `example`, you need to modify the path of the files `
 
 ```json
 {
-    'sp1': 'control_sample',
-    'sp2': 'control_sample'
+    'sample1': 'control1',
+    'sample2': 'control2'
 }
 ```
 
 #### **Running**
 
 ```sh
-cd pipe
 # run in local
-snakemake -s Snakefile --use-conda -c4
+snakemake -s path/to/Snakefile --use-conda -c4
 # or run in the slurm task management system
-snakemake -s Snakefile --profile ../config/slurm
+snakemake -s path/to/Snakefile --profile path/to/config/slurm
 ```
 
 ## Notes
