@@ -56,6 +56,4 @@ snakemake -s path/to/Snakefile --profile path/to/config/slurm
 
 ## Notes
 
-1. change directory to `pipe`
-2. default running in conda env, most of the packages and software no need to install mannually
-3. python script `get_stats.py` need package `pandas`
+1. default running in conda env, most of the packages and software no need to install mannually
