@@ -68,4 +68,4 @@ rule use_all:
         # correlation heatmap
         "macs2/bigwig/heatmap_spearman_corr_readCounts.pdf",
         # get stats
-        "report/stats.csv",
+        # "report/stats.csv",

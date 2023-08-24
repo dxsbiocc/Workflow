@@ -89,7 +89,7 @@ elif MAPPING == "minimap2":
         log:
             "logs/mapped/minimap2_{sample}.log",
         params:
-            extra = config['parameters']['minimap2']['extra'],           # optional
+            extra = config['parameters']['minimap2']['extra'],            # optional
             sorting = config['parameters']['minimap2']['sorting'],        # optional: Enable sorting. Possible values: 'none', 'queryname' or 'coordinate'
             sort_extra = config['parameters']['minimap2']['sort_extra'],  # optional: extra arguments for samtools/picard
         threads: 3

@@ -1,4 +1,4 @@
-# Workflow
+# Snakemake Workflow for NGS Analysis
 
 ## Introduction
 
@@ -53,6 +53,32 @@ snakemake -s path/to/Snakefile --use-conda -c4
 # or run in the slurm task management system
 snakemake -s path/to/Snakefile --profile path/to/config/slurm
 ```
+
+## Description
+
+### 1. ATAC-seq
+
+- fastp: quality control and remove low quality reads
+- bowtie2: mapping to reference genome
+- samtools: sort and index bam file
+- picard: remove duplicates
+- deeptools/bedtools+samtools: filter reads with mapping quality < 30 or in blacklist region, mapped to mitochondria or unmapped reads.
+    - deeptools: alignmentsieve, shift 9-bp [optional]
+    - bedtools+samtools
+- macs2: peak calling
+- homer: annotation peaks and motif analysis
+- deeptools: plot heatmap and profile
+
+### 2. DNA-seq
+
+- fastp: quality control and remove low quality reads
+- bwa: mapping to reference genome
+- samtools: sort and index bam file
+- picard: remove duplicates
+- samtools: statistics mapping information
+- gatk: call variants
+- annovar: annotate variants
+- delly: detect SVs
 
 ## Notes
 

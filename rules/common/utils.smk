@@ -20,6 +20,14 @@ def get_wrapper(*args, local=True):
     else:
         raise ValueError("Please use local version!")
 
+def get_environment(*args, local=True):
+    """Get environment.yaml"""
+    if local:
+        abspath = os.path.join(PATH, 'wrappers', *args, 'environment.yaml')
+        return abspath
+    else:
+        raise ValueError("Please use local version!")
+
 def get_script(script):
     return os.path.join(PATH, 'scripts', script)
 

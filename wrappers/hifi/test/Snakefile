@@ -1,0 +1,20 @@
+prefix = "hifiasm"
+suffix = ["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]
+sample = "chr11-2M"
+
+rule hifiasm:
+    input:
+        fastq = ["reads/{sample}.fa.gz"],
+    output:
+        expand("output/{{sample}}.{sufix}.gfa", sufix=suffix),
+    params: 
+        extra = "",
+        hic = [],
+        yak = [],
+        ultralong = "",
+        primary = False,
+    log:
+        "logs/hifiasm/{sample}.log"
+    threads: 2
+    wrapper:
+        "file:../../hifi"

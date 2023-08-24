@@ -6,7 +6,9 @@
 *.ipynb_checkpoints/
 pipes/.snakemake/
 pipes/*/
+docs/build/
 
 # ignore files
 *.DS_Store
 *.log
+*.icloud

@@ -14,7 +14,7 @@ rule macs2Narrow:
                  "_summits.bed"
                  )
     log:
-        "logs/macs2_callpeak_narrow_{pair}.log"
+        "logs/macs2/macs2_callpeak_narrow_{pair}.log"
     params:
         extra = lambda wildcards: get_macs2(wildcards.pair, True),
     wrapper:
@@ -38,7 +38,7 @@ rule macs2Broad:
                  "_peaks.gappedPeak"
                  )
     log:
-        "logs/macs2_callpeak_broad_{pair}.log"
+        "logs/macs2/macs2_callpeak_broad_{pair}.log"
     params:
         extra = lambda wildcards: get_macs2(wildcards.pair, False)
     wrapper:
@@ -51,7 +51,7 @@ rule annotatePeaks:
     output:
         expand('macs2/anno/{{pair}}.peakAnno.{ext}', ext=['pdf', 'txt'])
     log:
-        "logs/peak_anno_{pair}.log"
+        "logs/anno/peak_anno_{pair}.log"
     params:
         sample = lambda wildcards: '{}'.format(wildcards.pair),
         output = config['workdir'] + "/macs2/anno/"

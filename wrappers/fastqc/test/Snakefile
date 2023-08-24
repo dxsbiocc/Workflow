@@ -9,4 +9,4 @@ rule fastqc:
         "logs/fastqc/{sample}.log"
     threads: 1
     wrapper:
-        "master/bio/fastqc"
+        "file:../../fastqc"

@@ -11,7 +11,7 @@ rule bamCoverage:
         extra = '--binSize 10 --normalizeUsing RPGC --effectiveGenomeSize ' + str(CHROM_SIZE),
     threads: 1
     log: 
-        'logs/deeptools_bamcoverage_{sample}.log'
+        'logs/deeptools/bamcoverage_{sample}.log'
     wrapper:
         get_wrapper('deeptools', 'bamcoverage')
 
@@ -23,7 +23,7 @@ rule TSSEnrichment:
     output:
         matrix_gz = "macs2/matrix/{control}.tss.matrix.gz",   # required
     log:
-        "logs/deeptools_compute_tss_matrix_{control}.log"
+        "logs/deeptools/compute_tss_matrix_{control}.log"
     params:
         # required argument, choose "scale-regions" or "reference-point"
         command = "reference-point",
@@ -39,7 +39,7 @@ rule plotTSSHeatmap:
     output:
         heatmap_img="macs2/matrix/{control}.tss.heatmap.pdf",  # required
     log:
-        "logs/deeptools_TSS_heatmap_{control}.log"
+        "logs/deeptools/TSS_heatmap_{control}.log"
     params:
         # optional parameters
         extra = "--plotType=fill --colorMap Reds Blues ",
@@ -52,7 +52,7 @@ rule plotTSSProfile:
     output:
         plot_img="macs2/matrix/{control}.tss.profile.pdf",  # required
     log:
-        "logs/deeptools_TSS_profile_{control}.log"
+        "logs/deeptools/TSS_profile_{control}.log"
     params:
         # optional parameters
         extra = "--plotType=fill "
@@ -69,7 +69,7 @@ rule genbodyEnrichment:
     output:
         matrix_gz = "macs2/matrix/{control}.genebody.matrix.gz",   # required
     log:
-        "logs/deeptools_compute_genebody_matrix_{control}.log"
+        "logs/deeptools/compute_genebody_matrix_{control}.log"
     params:
         # required argument, choose "scale-regions" or "reference-point"
         command="scale-regions",
@@ -85,7 +85,7 @@ rule plotBodyHeatmap:
     output:
         heatmap_img = "macs2/matrix/{control}.genebody.heatmap.pdf",  # required
     log:
-        "logs/deeptools_genebody_heatmap_{control}.log"
+        "logs/deeptools/genebody_heatmap_{control}.log"
     params:
         # optional parameters
         extra = "--plotType=fill --colorMap Reds Blues ",
@@ -98,7 +98,7 @@ rule ploGenebodytProfile:
     output:
         plot_img="macs2/matrix/{control}.genebody.profile.pdf",  # required
     log:
-        "logs/deeptools_genebody_profile_{control}.log"
+        "logs/deeptools/genebody_profile_{control}.log"
     params:
         # optional parameters
         extra = "--plotType=fill "
@@ -114,7 +114,7 @@ if len(SAMPLES) > 1:
         input:
             # Required input.
             # bigwig = get_bigwig,
-            bigwig = expand("macs2/bigwig/{sample}.norm.bw", sample=SAMPLES),
+            bigwig = expand("macs2/bigwig/{sample}.norm.bw", sample=PAIRS),
         output:
             # Required output.
             out = 'macs2/bigwig/scores_per_bin.npz',
@@ -126,7 +126,7 @@ if len(SAMPLES) > 1:
             labels = lambda wildcards, input: [f.split('/')[-1].strip('.norm.bw') for f in input.bigwig]
         threads: 1
         log: 
-            'logs/deeptools_multibigwigsummary.log'
+            'logs/deeptools/multibigwigsummary.log'
         wrapper: 
             get_wrapper("deeptools", "multibigwigsummary")
             
@@ -144,6 +144,6 @@ if len(SAMPLES) > 1:
             title = 'Spearman Correlation of Read Counts',
         threads: 1
         log: 
-            'logs/deeptools_plotcorrelation.log'
+            'logs/deeptools/plotcorrelation.log'
         wrapper: 
             get_wrapper("deeptools", "plotcorrelation")

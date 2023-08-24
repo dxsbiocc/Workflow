@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 import pandas as pd
 
 def find_file(path):
@@ -21,3 +22,9 @@ def find_file(path):
     else:
         data['fastq2'] = fq2_list
     return data
+
+
+if __name__ == '__main__':
+    path = os.path.abspath(sys.argv[1])
+    data = find_file(os.path.join(path, 'raw'))
+    data.to_csv(os.path.join(path, 'sample_list.txt'), index=False, sep='\t')

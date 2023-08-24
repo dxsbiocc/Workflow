@@ -14,7 +14,7 @@ rule bowtie2:
     output:
         "bowtie2/{sample}/{sample}.sort.bam",
     log:
-        "logs/bowtie2_{sample}.summary",
+        "logs/bowtie2/bowtie2_{sample}.summary",
     params:
         extra = config['parameters']['bowtie2']['extra'],  # optional parameters
         sort = config['parameters']['bowtie2']['sort']
@@ -37,7 +37,7 @@ rule spikein:
     output:
         "bowtie2/{sample}/{sample}.spikein.bam",
     log:
-        "logs/bowtie2_{sample}_spikein.summary",
+        "logs/bowtie2/bowtie2_{sample}_spikein.summary",
     params:
         extra = "--end-to-end --very-sensitive --no-overlap --no-dovetail --no-mixed --no-discordant --phred33 -I 10 -X 700",  # optional parameters
         sort = "none"
@@ -51,7 +51,7 @@ rule stats:
     output:
         "bowtie2/stats/{sample}.stats"
     log:
-        "logs/samtools_stats_{sample}.log",
+        "logs/stats/samtools_stats_{sample}.log",
     wrapper:
         get_wrapper('samtools', 'stats')
 
@@ -62,7 +62,7 @@ rule plotBamStats:
     output:
         directory("bowtie2/plot/{sample}")
     log:
-        "logs/samtools_stats_plot_{sample}.log"
+        "logs/stats/samtools_stats_plot_{sample}.log"
     wrapper:
         get_wrapper('samtools', 'plot-bamstats')
 
@@ -72,7 +72,7 @@ rule idxstats:
     output:
         "bowtie2/stats/{sample}.idxstats"
     log:
-        "logs/samtools_idxstats_{sample}.log",
+        "logs/stats/samtools_idxstats_{sample}.log",
     params:
         extra = "",  # optional params string
     wrapper:
@@ -85,7 +85,7 @@ rule flagstat:
         "bowtie2/stats/{sample}.flagstats"
     threads: 4
     log:
-        "logs/samtools_flagstat_{sample}.log",
+        "logs/stats/samtools_flagstat_{sample}.log",
     params:
         extra = "",  # optional params string
     wrapper:
@@ -102,7 +102,7 @@ rule mark_duplicates:
         bam = "dedup/{sample}/{sample}.cons.bam",
         metrics = "dedup/{sample}/{sample}.metrics.txt",
     log:
-        "logs/picard_dedup_{sample}.log",
+        "logs/dedup/picard_dedup_{sample}.log",
     params:
         extra = config['parameters']['picard']['markduplicates'],
     resources:
@@ -117,7 +117,7 @@ rule cons_index:
     output:
         "dedup/{sample}/{sample}.cons.bam.bai",
     log:
-        "logs/samtools_index_{sample}.log",
+        "logs/samtools/samtools_index_{sample}.log",
     params:
         extra = "",  # optional params string
     wrapper:

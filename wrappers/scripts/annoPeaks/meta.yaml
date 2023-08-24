@@ -1,8 +1,0 @@
-name: scripts annopeaks
-description: Download FASTQ files from SRA.
-authors:
-  - dengxsh
-output:
-  - peak annotationed file
-notes: |
-  * ChIPseeker
