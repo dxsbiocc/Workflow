@@ -1,0 +1,13 @@
+name: gfatools
+description: |
+  Convert .bam to .fastq and remove reads with remnant PacBio adapter sequences
+url: https://github.com/sheinasim/HiFiAdapterFilt
+authors:
+  - dengxsh
+input:
+  - .bam, .fastq, .fastq.gz, .fq, .fq.gz
+output:
+  - {prefix}.contaminant.blastout (Output of BLAST search)
+  - {prefix}.blocklist (Headers of PB adapter contaminated reads to be removed)
+  - {prefix}.filt.fastq.gz (Fastq reads free of PB adapter sequence ready for assembly)
+  - {prefix}.stats (File with simple math on number of reads removed, etc)

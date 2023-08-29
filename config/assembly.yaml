@@ -8,21 +8,16 @@ data:
 
 # --------------- programs parameters ----------------
 parameters:
+  hifiasm:
+    extra: "-f 37 -l 1 -s 0.75 -O 1"
+    threads: 32
+    resourses: 160000
   bwa:
     extra: "-R '@RG\\tID:{sample}\\tSM:{sample}'"
     sort: "samtools"  # Can be 'none', 'samtools' or 'picard'.
     sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
     sort_extra: ""
-  alignmentsieve:
-    mapq: 30
-    flag: 2
-    shift: "--ATACshift"
-  macs2:
-    atac: "--bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 --shift -75 --extsize 150 --nomodel --call-summits --nolambda"
-    chip: "--bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 "
 
 # ---------------- control parameters ----------------
 control:
-  mapping: "bwa"           # bowtie2、hisat2、star、minimap2
-  trimming: "cutadapt"
-  star_two_step: true
+  assembly_mode: "solo"  # options: solo, HIC, trio

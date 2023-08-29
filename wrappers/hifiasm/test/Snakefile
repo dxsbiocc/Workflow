@@ -1,0 +1,23 @@
+rule hifiasm:
+    input:
+        seq = [
+            "reads/HiFi_dataset_01.fasta.gz",
+            "reads/HiFi_dataset_02.fasta.gz",
+        ],
+    # optional
+    # hic1 = "reads/Hi-C_dataset_R1.fastq.gz",
+    # hic2 = "reads/Hi-C_dataset_R2.fastq.gz",
+    # yak = [],
+    output:
+        expand("output/HIFI.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+    log:
+        "logs/hifiasm.log",
+    params:
+        extra = "-f 37 -l 1 -s 0.75 -O 1",
+        ultralong = "",
+        primary = False,
+    threads: 2
+    resources:
+        mem_mb = 1024,
+    wrapper:
+        "file:../../hifiasm"

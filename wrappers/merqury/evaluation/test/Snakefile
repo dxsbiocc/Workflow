@@ -1,0 +1,14 @@
+rule meryl_evaluation:
+    input:
+        hifi = "../../../hifi/test/reads/chr11-2M.fa.gz",
+        db = "../../meryl/test/a.meryl",
+    output:
+        directory("output")
+    log:
+        "logs/eval.log",
+    params:
+        output_prefix = "merqury",
+        extra = "",
+    threads: 4
+    wrapper:
+        "file:../../evaluation"

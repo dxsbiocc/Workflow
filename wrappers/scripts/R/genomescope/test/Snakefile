@@ -1,0 +1,14 @@
+rule genomescope:
+    input:
+        "ara_F1_21.hist.txt"
+    output:
+        directory("output")
+    log:
+        "logs/genomescope.log"
+    params:
+        kmer = 31,
+        read_length = 150,
+        kmer_max = -1,
+        verbose = True,
+    wrapper:
+        "file:../../../R/genomescope"

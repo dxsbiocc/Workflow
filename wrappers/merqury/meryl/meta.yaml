@@ -1,0 +1,10 @@
+name: merqury
+description: >
+  Merqury is a tool for estimating genome completeness and correctness by
+  using k-mer frequencies from raw sequencing reads.
+authors:
+  - dengxsh
+input:
+  - fastq.gz of Illumina WGS reads
+output:
+  - meryl db

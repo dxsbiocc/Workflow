@@ -1,0 +1,13 @@
+rule yak:
+    input:
+        "{sample}.fasta"
+    output:
+        "{sample}.yak"
+    log:
+        "logs/{sample}.log"
+    params:
+        kmer = 8,
+        extra = "-b37",
+    threads: 8
+    wrapper:
+        "file:../../../yak/count"

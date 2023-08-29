@@ -25,8 +25,8 @@ REF_GC = os.path.join(DATABASE, 'GC', f'{GENOME}.gc')
 # ---------------------- Samples Info ----------------------- #
 # read the sample file using pandas lib (sample names+ fastq names) and 
 # create index using the sample name
-samples = pd.read_csv(config['data']['sample_file'], sep='\t', index_col=0)
-SAMPLES = samples.index.to_list()
+DATA = pd.read_csv(config['data']['sample_file'], sep='\t', index_col=0)
+SAMPLES = DATA.index.to_list()
 if config['data']['sample_info']:
     SAMPLE_MAP = json.load(open(config['data']['sample_info']))
     PAIRS = list(SAMPLE_MAP.keys())

@@ -7,7 +7,7 @@ from snakemake.utils import min_version
 # -------------------- Global Functions -------------------- #
 def get_fastq(wildcards):
     """Get fastq files of given sample-unit."""
-    fastqs = samples.loc[wildcards.sample, ["fastq1", "fastq2"]].dropna()
+    fastqs = DATA.loc[wildcards.sample, ["fastq1", "fastq2"]].dropna()
     if config['control']['paired']:
         return [fastqs.fastq1, fastqs.fastq2]
     return [fastqs.fastq1]
@@ -29,6 +29,7 @@ def get_environment(*args, local=True):
         raise ValueError("Please use local version!")
 
 def get_script(script):
+    """Get script that connot wrappered by snakemake"""
     return os.path.join(PATH, 'scripts', script)
 
 def get_adapter(method='fastp'):
@@ -46,6 +47,8 @@ def get_adapter(method='fastp'):
         pat = f'ILLUMINACLIP:{adapt_file}:2:15:4:4:true'
     elif method == 'cutadapt':
         pat = f'-a "file:{adapt_file}"'
+    elif method == 'HIFI':
+        pat = os.path.join(DATABASE, "adapters", "HIFI")
     else:
         raise ValueError(f'{method} not support!')
     return pat

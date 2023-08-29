@@ -1,0 +1,15 @@
+rule hifiadapterfit:
+    input:
+        seq = "a.fastq",
+        db = "/Users/dengxsh/Documents/WorkSpace/VSCode/Workflow/data/adapters/HIFI",
+        script = "/Users/dengxsh/Documents/WorkSpace/VSCode/Workflow/wrappers/scripts/bash/pbadapterfilt.sh"
+    output:
+        directory("output")
+    params:
+        min_length = 44,
+        min_percentage = 97,
+    threads: 4
+    log:
+        "logs/hifiadapterfit.log"
+    wrapper:
+        "file:../../hifiadapterfit"
