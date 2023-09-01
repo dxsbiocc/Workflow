@@ -1,0 +1,27 @@
+name: pairtools_stats
+description: Calculate pairs statistics
+author:
+  - dengxsh
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - pairs:
+      type: file
+      description: pairs file
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - stat:
+      type: file
+      description: stats of the pairs
+      pattern: "*.{pairs.stat}"

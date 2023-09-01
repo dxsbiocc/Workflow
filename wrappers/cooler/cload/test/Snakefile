@@ -1,0 +1,15 @@
+rule cooler_cload:
+    input:
+        pairs = "GSM1551552_HIC003.pairs.gz",
+        bins = "b37.chrom.sizes",
+    output:
+        cool = "mock.cool"
+    log:
+        "logs/cooler/cload_pairs.log",
+    params:
+        command = "pairs",  # hiclib/pairix/pairs/tabix
+        binsize = 1000,
+        extra = "-c1 3 -p1 4 -c2 7 -p2 8",
+    threads: 8
+    wrapper:
+        "file:../../../cooler/cload"

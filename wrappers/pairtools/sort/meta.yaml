@@ -1,0 +1,27 @@
+name: pairtools_sort
+description: Sort a .pairs/.pairsam file
+author:
+  - dengxsh
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - input:
+      type: file
+      description: A pairs file
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - sorted:
+      type: file
+      description: Sorted pairs file
+      pattern: "*.{pairs.gz}"

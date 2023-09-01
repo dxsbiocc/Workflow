@@ -1,13 +1,9 @@
-genome = "test"
-
-rule bwa_index:
+rule bwa_mem2_index:
     input:
-        f"{genome}.fa",
+        "{genome}.fa",
     output:
-        idx=multiext(f"{genome}", ".amb", ".ann", ".bwt", ".pac", ".sa"),
+        multiext("{genome}", ".0123", ".amb", ".ann", ".pac", ".bwt.2bit.64"),
     log:
-        f"logs/bwa_index/{genome}.log",
-    params:
-        algorithm="bwtsw",
+        "logs/bwa-mem2_index/{genome}.log",
     wrapper:
-        "file:///Users/dengxsh/Documents/WorkSpace/VSCode/snakemake_wrappers/bioinformatics/bwa/index"
+        "file:../../../bwa-mem2/index"

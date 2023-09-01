@@ -1,0 +1,13 @@
+rule hicmergematrixbins:
+    input:
+        "small_test_matrix.h5"
+    output:
+        "result.h5"
+    log:
+        "logs/hicexplorer/hicmergematrixbins.log"
+    params:
+        extra = "",
+        numbins = 5,
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre-processing/hicmergematrixbins"

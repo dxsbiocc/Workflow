@@ -21,8 +21,8 @@ else:
 
 # macs2 parameters
 MACS2_MAP = {}
-if 'type' in samples.columns:
-    MACS2_MAP = samples['type'].to_dict()
+if 'type' in DATA.columns:
+    MACS2_MAP = DATA['type'].to_dict()
 
 include: os.path.join(PATH, "rules/common/trimmed.smk")
 include: os.path.join(PATH, "rules/ATAC/common.smk")

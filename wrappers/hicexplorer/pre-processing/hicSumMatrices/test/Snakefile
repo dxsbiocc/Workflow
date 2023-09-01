@@ -1,0 +1,12 @@
+rule :
+    input:
+        ""
+    output:
+        ""
+    log:
+        ""
+    params:
+        ""
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre_processing/"

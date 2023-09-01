@@ -22,3 +22,6 @@ echo "Copy base.py ..."
 location=$(pip show snakemake-wrapper-utils | awk '/Location/ {print substr($0, index($0,$2))}')
 cp "$script_path/utils/base.py" "$location/snakemake_wrapper_utils"
 echo "Copy done."
+
+echo "Exit snakemake environment"
+conda deactivate

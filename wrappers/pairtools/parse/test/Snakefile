@@ -1,0 +1,14 @@
+rule pairtools_parse:
+    input:
+        bam = "{sample}.sam",
+        chromsizes = "mock.chrom.sizes"
+    output:
+        out = "{sample}.pairs.gz",
+        stats = "{sample}.stats",
+    log:
+        "logs/pairtools/parse/{sample}.log"
+    params:
+        extra = "--drop-sam --drop-seq"
+    threads: 2
+    wrapper:
+        "file:../../../pairtools/parse"

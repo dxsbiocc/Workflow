@@ -9,7 +9,7 @@ rule hifiasm:
     # hic2 = "reads/Hi-C_dataset_R2.fastq.gz",
     # yak = [],
     output:
-        expand("output/HIFI.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+        protected(expand("output/HIFI.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"])),
     log:
         "logs/hifiasm.log",
     params:

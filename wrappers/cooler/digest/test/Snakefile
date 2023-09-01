@@ -1,0 +1,14 @@
+rule cooler_digest:
+    input:
+        fasta = "toy.fasta",
+        chromsizes = "toy.chrom.sizes"
+    output:
+        "toy.bed"
+    log:
+        "logs/cooler/digest.log",
+    params:
+        enzyme = "DpnII",
+        extra = "",
+    threads: 8
+    wrapper:
+        "file:../../../cooler/digest"

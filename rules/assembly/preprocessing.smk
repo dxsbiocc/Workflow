@@ -7,7 +7,7 @@ rule hifiadapterfit:
     output:
         directory("trimmed/{hifi}")
     params:
-        min_length = 44,
+        min_length = 44, # minimum length of the read after trimming
         min_percentage = 97,
     threads: 10
     log:

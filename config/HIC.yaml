@@ -1,0 +1,13 @@
+# --------------------- pipeline ---------------------
+pipeline: "HIC"
+verbose: true
+
+# -------------------- input data --------------------
+data:
+  sample_file: "/disk2/dxs/WorkSpace/assembly/sample_list.csv"
+
+# --------------- programs parameters ----------------
+parameters:
+
+# ---------------- control parameters ----------------
+control:

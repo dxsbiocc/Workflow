@@ -1,0 +1,15 @@
+rule pairtools_sort:
+    input:
+        "mock.selected.pairs.gz"
+    output:
+        "mock.sorted.pairs.gz"
+    log:
+        "logs/pairtools/sort.log"
+    params:
+        extra = ""
+    threads: 2
+    resources:
+        ncpus = 5,
+        mem_gb = '1G'
+    wrapper:
+        "file:../../../pairtools/sort"

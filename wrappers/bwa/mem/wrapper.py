@@ -89,6 +89,7 @@ class Wrapper(WrapperBase):
                 " | {self.pipe_cmd})"
                 " {self.log}"
             )
+            shell("samtools index {self.snakemake.output[0]}")
 
 
 if __name__ == "__main__":

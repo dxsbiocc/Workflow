@@ -1,5 +1,5 @@
-def get_file_list():
-    return []
+def get_file_list(wildcards):
+    return config['workdir']
 
 
 rule multiqc_report:

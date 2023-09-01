@@ -1,0 +1,20 @@
+rule hicbuildmatrix:
+    input:
+        bam = expand("small_test_{run}_unsorted.bam", run=['R1', 'R2']),
+        rs = ["DpnII.bed", "hindIII.bed"],
+    output:
+        matrix = "out/matrix.h5",
+    log:
+        "logs/hicexplorer/hicbuildmatrix.log"
+    params:
+        extra = "--minMappingQuality 15 --minDistance 150 --maxLibraryInsertSize 1500",
+        qc = "out/qc",
+        seq = "GATC AAGCTT",
+        dseq = "GATC AGCT",
+        binsize = [5000, 10000, 20000],
+        region = "chr3R",
+        chromosomeSizes = "dm3.chrom.sizes",
+        genomeAssembly = "dm3"
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre-processing/hicbuildmatrix"

@@ -1,0 +1,14 @@
+rule cooler_zoomify:
+    input:
+        "mock.cool"
+    output:
+        "mock.mcool"
+    log:
+        "logs/cooler/zoomify.log",
+    params:
+        extra = "--legacy",
+    threads: 8
+    resources:
+        ncpus = 3
+    wrapper:
+        "file:../../../cooler/zoomify"

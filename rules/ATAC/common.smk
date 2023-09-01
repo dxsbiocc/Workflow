@@ -24,12 +24,7 @@ COLORS = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fd
 SPIKEIN = True if config['control']['spike_in'] else False
 SHIFT = True if config['control']['shift'] else False
 # -------------------- Helper functions -------------------- #
-# def get_fastq(wildcards):
-#     """Get fastq files of given sample-unit."""
-#     fastqs = samples.loc[wildcards.sample, ["fastq1", "fastq2"]].dropna()
-#     if len(fastqs) == 2:
-#         return {'fq1': fastqs.fastq1, 'fq2': fastqs.fastq2}
-#     return {'fq1': fastqs.fastq1}
+
 def get_paired_bam(wildcards):
     paired = {'treatment': 'dedup/{pair}/{pair}.filtered.bam'}
     if SAMPLE_MAP and SAMPLE_MAP.get(wildcards.pair):

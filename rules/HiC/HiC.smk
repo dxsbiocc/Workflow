@@ -1,49 +1,55 @@
-# include utils config
-include: os.path.join(PATH, "rules/common/utils.smk")
+import os
 
+# configfile
+configfile: os.path.join(PATH, "config/HIC.yaml")
+############################################################
+#                      Global Variable                     #
+############################################################
 DIGESTION = 'single'  # or 'double'
-
-# Snakefile
-
-# Configuration
-configfile: "config.yaml"
-
-# Define input files
 reads = config["reads"]
 ref_genome = config["ref_genome"]
 fragments = config["fragments"]
-
+############################################################
+#                           Include                        #
+############################################################
 # 1. trimming
-get_trimmed(config['control']['trimming'])
+include: os.path.join(PATH, "rules/common/trimmed.smk")
 # 2. mapping
-get_mapping(config['control']['mapping'])
+include: os.path.join(PATH, "rules/common/mapping.smk")
 # 3. rmdup
-get_dedup(config['control']['dedup'])
+include: os.path.join(PATH, "rules/common/dedup.smk")
 # 4. HiCExplorer
 include: os.path.join(PATH, "rules/HiC/hicexplorer.smk")
 # 5. multiQC
 include: os.path.join(PATH, "rules/common/multiqc.smk")
-
+############################################################
+#                           Runing                         #
+############################################################
 onstart:
     if config["verbose"]:
-        print("--- Workflow parameters --------------------------------------------------------")
-        print("samples:", SAMPLES)
+        print("Workflow Parameters".center(80, '-'))
+        print("samples:", DATA.index.to_list())
         print("genome index:", INDEX)
         print("-" * 80, "\n")
 
-        print("--- Environment ----------------------------------------------------------------")
+        print("Environment".center(80, '-'))
         print("$TMPDIR: ",os.getenv('TMPDIR', ""))
         print("$HOSTNAME: ",os.getenv('HOSTNAME', ""))
         print("-" * 80, "\n")
 
 # Rules
-rule all:
+rule use_all:
     input:
-        "results/filtered_reads.fastq",
+        # data process
+        expand("trimmed/{sample}/{sample}.clean.{run}.fq.gz", sample=SAMPLES, run=RUN),
+        expand("mapped/{sample}/{sample}.sorted.bam", sample=SAMPLES),
+        expand("dedup/{sample}/{sample}.rmdup.bam", sample=SAMPLES),
+        expand("report/stats/{sample}.{stats}", sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
+        expand("report/plot/{sample}", sample=SAMPLES),
 
 onsuccess:
     if config["verbose"]:
-        print("\n--- Hi-C workflow finished successfully! --------------------------------\n")
+        print("Hi-C workflow finished successfully!".center(80, '-'))
 
 onerror:
-    print("\n !!! ERROR in HI-C workflow! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+    print("ERROR in HI-C workflow".center(80, '!'))

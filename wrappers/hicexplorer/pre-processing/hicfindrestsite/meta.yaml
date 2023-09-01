@@ -1,0 +1,15 @@
+name: HicExplorer hicFindRestSite
+description: >
+  hicFindRestSite can be used to find restriction sites individually per enzyme. 
+  Afterwards, all output bed files should be combined. However, it should be noted 
+  that the QC report will not be correct for this specific usage.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - fasta file with the genome sequence
+output:
+  - .bed file 
+params:
+  extra: Any additional arguments to pass
+notes:

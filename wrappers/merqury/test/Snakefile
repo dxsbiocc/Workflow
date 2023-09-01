@@ -1,0 +1,29 @@
+rule merqury_haploid:
+    input:
+        hifi = "hap1.fasta",
+        db = "meryldb",
+    output:
+        directory("haploid")
+    log:
+        "logs/haploid/haploid.log",
+    params:
+        output_prefix = "merqury",
+        extra = "",
+    threads: 4
+    wrapper:
+        "file:../../merqury"
+
+rule merqury_diploid:
+    input:
+        hifi = ["hap1.fasta", "hap2.fasta"],
+        db = "meryldb",
+    output:
+        directory("diploid")
+    log:
+        "logs/diploid/diploid.log",
+    params:
+        output_prefix = "merqury",
+        extra = "",
+    threads: 4
+    wrapper:
+        "file:../../merqury"

@@ -1,0 +1,41 @@
+rule hiccorrectmatrix_diagnostic_plot:
+    input:
+        "small_test_matrix.h5"
+    output:
+        "plot_file.png"
+    log:
+        "logs/hicexplorer/hiccorrectmatrix.log"
+    params:
+        command = "diagnostic_plot",  # diagnostic_plot/correct
+        chromosomes = ["chrUextra", "chr3LHet"],
+        perchr = False,
+        extra = ""
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre-processing/hiccorrectmatrix"
+
+
+rule hiccorrectmatrix_correct:
+    input:
+        "small_test_matrix.h5"
+    output:
+        "corrected_matrix.h5"
+    log:
+        "logs/hicexplorer/hiccorrectmatrix.log"
+    params:
+        command = "correct",      # diagnostic_plot/correct
+        correctionMethod = "KR",  # KR, ICE
+        chromosomes = ["chrUextra", "chr3LHet"],
+        perchr = False,
+        ICE = {
+            '--filterThreshold': '-1.5 5',
+            '--iterNum': 500,
+            '--inflationCutoff': 3,
+            '--transCutoff': 0.05,
+            '--sequencedCountCutoff': 0.5,
+            '--skipDiagonal': False
+        },
+        extra = ""
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre-processing/hiccorrectmatrix"

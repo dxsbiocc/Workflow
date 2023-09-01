@@ -1,37 +1,17 @@
-rule bwa_mem:
+rule bwa_mem2_mem:
     input:
         reads=["reads/{sample}.1.fastq", "reads/{sample}.2.fastq"],
-        idx=multiext("genome", ".amb", ".ann", ".bwt", ".pac", ".sa"),
+        # Index can be a list of (all) files created by bwa, or one of them
+        idx=multiext("genome.fasta", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
     output:
         "mapped/{sample}.bam",
     log:
         "logs/bwa_mem/{sample}.log",
     params:
         extra=r"-R '@RG\tID:{sample}\tSM:{sample}'",
-        sorting="samtools",  # Can be 'none', 'samtools' or 'picard'.
-        sort_order="queryname",  # Can be 'queryname' or 'coordinate'.
+        sort="samtools",  # Can be 'none', 'samtools' or 'picard'.
+        sort_order="coordinate",  # Can be 'coordinate' (default) or 'queryname'.
         sort_extra="",  # Extra args for samtools/picard.
-        tmp_dir="/tmp/",  # Path to temp dir. (optional)
     threads: 8
     wrapper:
-        "file:///Users/dengxsh/Documents/WorkSpace/VSCode/snakemake_wrappers/bioinformatics/bwa/mem"
-
-
-rule bwa_mem_write_index:
-    input:
-        reads=["reads/{sample}.1.fastq", "reads/{sample}.2.fastq"],
-        idx=multiext("genome", ".amb", ".ann", ".bwt", ".pac", ".sa"),
-    output:
-        "mapped_with_index/{sample}.bam",
-        "mapped_with_index/{sample}.bam.csi",
-    log:
-        "logs/bwa_mem/{sample}.log",
-    params:
-        extra=r"-R '@RG\tID:{sample}\tSM:{sample}'",
-        sorting="samtools",  # Can be 'none', 'samtools' or 'picard'.
-        sort_order="coordinate",  # Can be 'queryname' or 'coordinate'.
-        sort_extra="--write-index",  # Extra args for samtools/picard.
-        tmp_dir="/tmp/",  # Path to temp dir. (optional)
-    threads: 8
-    wrapper:
-        "file:///Users/dengxsh/Documents/WorkSpace/VSCode/snakemake_wrappers/bioinformatics/bwa/mem"
+        "master/bio/bwa-mem2/mem"

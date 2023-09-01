@@ -1,0 +1,13 @@
+rule pairtools_dedup:
+    input:
+        "mock.sorted.pairs.gz",
+    output:
+        out = "mock.pairs.gz",
+        stats = "mock.stats",
+    log:
+        "logs/pairtools/dedup/mock.log"
+    params:
+        extra = ""
+    threads: 2
+    wrapper:
+        "file:../../../pairtools/dedup"

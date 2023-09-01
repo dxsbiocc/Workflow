@@ -1,7 +1,8 @@
-rule bwa_mem:
+rule bwa_mem2_mem:
     input:
         reads=["reads/{sample}.1.fastq", "reads/{sample}.2.fastq"],
-        idx=multiext("genome", ".amb", ".ann", ".bwt", ".pac", ".sa"),
+        # Index can be a list of (all) files created by bwa, or one of them
+        idx=multiext("genome.fasta", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
     output:
         "mapped/{sample}.bam",
     log:
@@ -9,9 +10,8 @@ rule bwa_mem:
     params:
         extra=r"-R '@RG\tID:{sample}\tSM:{sample}'",
         sort="picard",  # Can be 'none', 'samtools' or 'picard'.
-        sort_order="queryname",  # Can be 'queryname' or 'coordinate'.
+        sort_order="coordinate",  # Can be 'coordinate' (default) or 'queryname'.
         sort_extra="",  # Extra args for samtools/picard.
-        tmp_dir="/tmp/",  # Path to temp dir. (optional)
     threads: 8
     wrapper:
-        "master/bio/bwa/mem"
+        "master/bio/bwa-mem2/mem"

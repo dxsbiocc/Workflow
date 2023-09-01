@@ -22,12 +22,12 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
-        self.input = self.snakemake.input[0]
-        if self.input.endswith(".gz"):
+        input_file = self.snakemake.input[0]
+        if input_file.endswith(".gz"):
             self.pipe = "gunzip -c"
-        elif self.input.endswith(".bz2"):
+        elif input_file.endswith(".bz2"):
             self.pipe = "bunzip2 -c"
-        elif infer_out_format(self.input) in ["SAM", "BAM", "CRAM"]:
+        elif infer_out_format(input_file) in ["SAM", "BAM", "CRAM"]:
             self.pipe = "samtools view -h"
         else:
             self.pipe = "cat"
@@ -35,7 +35,7 @@ class Wrapper(WrapperBase):
     def run(self):
         shell(
             "({self.pipe}"
-            " {self.input} | "
+            " {self.snakemake.input} | "
             "PretextMap"
             " {self.extra}"
             " -o {self.snakemake.output}"

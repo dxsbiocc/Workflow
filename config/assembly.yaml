@@ -4,14 +4,19 @@ verbose: true
 
 # -------------------- input data --------------------
 data:
-  ecoli: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/e.coli/e.coli
+  sample_file: "/disk2/dxs/WorkSpace/assembly/sample_list.csv"
 
 # --------------- programs parameters ----------------
 parameters:
   hifiasm:
     extra: "-f 37 -l 1 -s 0.75 -O 1"
-    threads: 32
-    resourses: 160000
+    threads: 200
+    memory: 320000
+  jellyfish:
+    threads: 200
+    memory: '100G'  # GB
+  yak:
+    threads: 200
   bwa:
     extra: "-R '@RG\\tID:{sample}\\tSM:{sample}'"
     sort: "samtools"  # Can be 'none', 'samtools' or 'picard'.

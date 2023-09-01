@@ -18,26 +18,28 @@ include: os.path.join(PATH, "rules/common/prepare.smk")
 # ATAC-seq、Cut&Tag
 if PIPELINE in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:
     include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
-# DNA-seq
-elif PIPELINE in ['WGS', 'WES']:
+elif PIPELINE in ['WGS', 'WES']:  # DNA-seq, targeted sequencing
     include: os.path.join(PATH, "rules/DNA/DNA.smk")
-# RNA-seq
-elif PIPELINE == 'RNA-seq':
+elif PIPELINE == 'RNA-seq':       # RNA-seq
     include: os.path.join(PATH, "rules/RNA/RNA.smk")
 elif PIPELINE == 'WGBS':
-    pass
+    include: os.path.join(PATH, "rules/WGBS/WGBS.smk")
+elif PIPELINE == 'HIC':
+    include: os.path.join(PATH, "rules/HIC/HIC.smk")
+elif PIPELINE == 'Assembly':
+    include: os.path.join(PATH, "rules/Assembly/Assembly.smk")
 else:
     raise ValueError("")
 
 onstart:
     if "verbose" in config and config["verbose"]:
-        print("------------------------------ Workflow Parameters ------------------------------")
+        print("Workflow Parameters".center(80, '-'))
         print("Workflow:", PIPELINE)
-        print("Sample list:", SAMPLES)
+        print("Sample list:", DATA.index.tolist())
         print("Number of samples:", len(SAMPLES))
         print("-" * 80, "\n")
 
-        print("---------------------------------- Environment ----------------------------------")
+        print("Environment".center(80, '-'))
         print("Username: ", getpass.getuser())
         print("Project Directory:", os.path.abspath(PATH))
         print("Work Directory: ", config['workdir'])
@@ -48,7 +50,7 @@ rule all:
 
 onsuccess:
     if "verbose" in config and config["verbose"]:
-        print("\n---------------------------- Workflow finished successfully! ----------------------------\n")
+        print("Workflow finished successfully!".center(80, '-'))
 
 onerror:
-    print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ERROR in workflow !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+    print(" ERROR in workflow ".center(80, '!'))

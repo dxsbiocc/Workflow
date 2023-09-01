@@ -6,7 +6,7 @@ if ASSEMBLE_MODE == 'solo':
         input:
             seq = glob.glob('trimmed/*.filt.fastq.gz'),
         output:
-            expand("output/HIFI.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+            expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
         log:
             "logs/hifiasm.log",
         params:
@@ -26,7 +26,7 @@ elif ASSEMBLE_MODE == 'hic':
             hic1 = expand("trimmed/{hic}/{hic}.clean.R1.fq.gz", hic=DATA_DICT['HIC']),
             hic2 = expand("trimmed/{hic}/{hic}.clean.R2.fq.gz", hic=DATA_DICT['HIC']),
         output:
-            expand("output/HIFI.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+            expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
         log:
             "logs/hifiasm_hic.log",
         params:
@@ -58,7 +58,7 @@ elif ASSEMBLE_MODE == 'trio':
             seq = glob.glob('trimmed/*.filt.fastq.gz'),
             yak = expand("yak/{trio}.yak", trio=TRIO),
         output:
-            expand("output/HIFI.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+            expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
         log:
             "logs/hifiasm_trio.log",
         params:

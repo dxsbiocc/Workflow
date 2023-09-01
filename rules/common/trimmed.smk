@@ -5,8 +5,8 @@ if TRIMMING == "fastp":
         output:
             trimmed = expand("trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz", run=RUN),
             failed = "trimmed/{sample}/{sample}.failed.fastq",
-            html = "trimmed/report/{sample}.html",
-            json = "trimmed/report/{sample}.json"
+            html = "trimmed/report/{sample}.fastp.html",
+            json = "trimmed/report/{sample}.fastp.json"
         log:
             "logs/trimmed/fastp_{sample}.log"
         params:

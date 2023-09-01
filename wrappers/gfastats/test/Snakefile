@@ -1,0 +1,18 @@
+rule gfastats:
+    input:
+        "{prefix}.gfa",
+        "{prefix}.gfa",
+    output:
+        seq = "{prefix}.fasta",        # output format (fasta/fastq/gfa)
+        summary = "{prefix}.assembly_summary",
+    log:
+        "logs/{prefix}_gfastats.log",
+    params:
+        extra = "",
+        agpfile = "",
+        include_bed = "",
+        exclude_bed = "",
+        instructions = "",
+    threads: 4
+    wrapper:
+        "file:../../gfastats"

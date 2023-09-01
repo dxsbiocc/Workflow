@@ -37,19 +37,24 @@ parameters:
   bowtie2:
     sort: samtools
     extra: "--end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
+    threads: 20
   bwa:
     extra: "-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:Illumina'"
     sort: "samtools"  # Can be 'none', 'samtools' or 'picard'.
     sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
     sort_extra: ""
+    threads: 20
   hisat2:
     extra: ""
+    threads: 20
   star:
     extra: "--outSAMtype BAM SortedByCoordinate"
+    threads: 20
   minimap2:
     extra: "-x map-pb"
     sorting: "coordinate"
     sort_extra: ""
+    threads: 20
   # dedup
   picard:
     markduplicates: "--REMOVE_DUPLICATES true"
@@ -61,7 +66,7 @@ parameters:
 control:
   adapters: "Nextera"      # Truseq(Illumina)、Nextera, use in cut&tag
   trimming: "fastp"        # choose: fastp(default)、cutadapt、trimmomatic and trim_galore
-  mapping: "bwa"           # bowtie2、hisat2、star、minimap2
+  mapping: "bwa"           # bwa-mem2、bowtie2、hisat2、star、minimap2
   dedup: "markduplicates"  # sambamba
   spike_in: false
   paired: true
