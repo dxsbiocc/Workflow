@@ -1,0 +1,14 @@
+name: HicExplorer hicMergeTADbins
+description: |
+  Uses a BED file of domains or TAD boundaries to merge the bin counts of a Hi-C matrix per TAD.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  -  Hi-C matrix
+  - bed file containing the domains.
+output:
+  - matrix file.
+params:
+  extra: Any additional arguments to pass
+notes:

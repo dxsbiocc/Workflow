@@ -21,6 +21,7 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
+        self.log = self.snakemake.log_fmt_shell(stdout=False, stderr=True)
         self.command = self.snakemake.params.get("command", "view")
         assert self.command in [
             "view",

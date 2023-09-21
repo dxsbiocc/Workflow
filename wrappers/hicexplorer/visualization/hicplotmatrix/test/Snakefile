@@ -1,0 +1,48 @@
+rule hicPlotMatrix:
+    input:
+        matrix = "Li_et_al_2015.h5",
+        # bigwig = "bigwig_chrx_2e6_5e6.bw",
+        # loops = "",
+        # tads = "",
+    output:
+        "plot/Li_chrX30-35-chrX31-36_no_clearmasked_title.png"
+    log:
+        "logs/hicPlotMatrix1.log"
+    params:
+        title = "Li_chrX:3000000-3500000_chrX:3100000-3600000",
+        extra = "--region chrX:3000000-3500000 --region2 chrX:3100000-3600000 --clearMaskedBins",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicplotmatrix" 
+
+rule hicPlotMatrix2:
+    input:
+        matrix = "Li_et_al_2015.h5",
+        bigwig = "bigwig_chrx_2e6_5e6.bw",
+        # loops = "",
+        # tads = "",
+    output:
+        "plot/hicexplorer_test_h5.png"
+    log:
+        "logs/hicPlotMatrix2.log"
+    params:
+        title = "",
+        extra = "--region chrX:3000000-3500000 --region2 chrX:3100000-3600000 --log1p --clearMaskedBins",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicplotmatrix" 
+
+
+rule hicPlotMatrix3:
+    input:
+        matrix = "small_test_matrix.h5",
+        # bigwig = "",
+        # loops = "",
+        tads = "multiNone_domains.bed",
+    output:
+        "plot/hicexplorer_test.png"
+    log:
+        "logs/hicPlotMatrix3.log"
+    params:
+        title = "",
+        extra = "--disable_tight_layout --region chr3L:1300000-4220000",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicplotmatrix" 

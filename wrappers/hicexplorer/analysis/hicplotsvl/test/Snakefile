@@ -1,0 +1,13 @@
+rule hicPlotSVL:
+    input:
+        ["small_test_matrix_50kb_res.h5", "small_test_matrix.h5"]
+    output:
+        plotFileName = "out/plot.png",
+        outFileName = "out/pvalues.txt",
+        outFileNameData = "out/rawData.txt",
+    log:
+        "logs/hicPlotSVL.log"
+    params:
+        extra = "--distance 2000000"
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hicplotsvl"

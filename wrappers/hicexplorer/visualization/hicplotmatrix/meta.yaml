@@ -1,0 +1,13 @@
+name: HicExplorer hicPlotMatrix
+description: |
+  Creates a heatmap of a Hi-C matrix.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - Path of the Hi-C matrix to plot.
+output:
+  - File name to save the image.
+params:
+  extra: Any additional arguments to pass
+notes:

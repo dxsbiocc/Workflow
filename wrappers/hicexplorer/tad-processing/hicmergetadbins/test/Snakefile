@@ -1,0 +1,12 @@
+rule hicMergeTADbins:
+    input:
+        matrix = "small_test_matrix.cool",
+        domains = "small_test_domains.bed"
+    output:
+        "merged_domains.cool"
+    log:
+        "logs/hicMergeTADbins.log"
+    params:
+        extra = ""
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hicmergetadbins"

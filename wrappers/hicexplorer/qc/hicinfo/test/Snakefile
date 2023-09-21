@@ -1,0 +1,11 @@
+rule hicexplorer_hicinfo:
+    input:
+        ["small_test_matrix.cool", "small_test_matrix.h5"]
+    output:
+        "info.txt"
+    log:
+        "logs/hicexplorer/hicinfo.log"
+    params:
+        extra = "--no_metadata",
+    wrapper:
+        "file:../../../../hicexplorer/qc/hicinfo"

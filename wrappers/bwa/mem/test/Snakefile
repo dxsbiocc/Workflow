@@ -13,4 +13,4 @@ rule bwa_mem:
         sort_extra = "",  # Extra args for samtools/picard.
     threads: 2
     wrapper:
-        "file:../../mem"
+        "file:../../../bwa/mem"

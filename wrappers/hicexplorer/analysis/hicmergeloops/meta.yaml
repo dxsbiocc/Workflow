@@ -1,0 +1,13 @@
+name: HicExplorer hicMergeLoops
+description: |
+  This script merges the locations of loops detected at several resolutions.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - loop files from hicDetectLoops.
+output:
+  - merged loop file.
+params:
+  extra: Any additional arguments to pass
+notes:

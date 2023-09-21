@@ -1,14 +1,15 @@
-name: HicExplorer 
-description: Calculate GC content for a genome in bins
+name: HicExplorer hicSumMatrices
+description: >
+  Adds Hi-C matrices of the same size. Format has to be hdf5 (.h5) or npz. 
+  In order to minimize the the loss of information, it is recommended to to 
+  sum uncorrected matrices (before hicCorrectMatrix).
 url: https://github.com/deeptools/HiCExplorer
 authors:
   - dengxsh
 input:
-  - .bed file with bin coordinates
-  - fasta file with the genome sequence
+  - .h5 or cooler file format
 output:
-  - >
-    A tsv file with GC content in bins
+  - either .h5 or .cool
 params:
   extra: Any additional arguments to pass
 notes:

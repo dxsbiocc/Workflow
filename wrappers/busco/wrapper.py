@@ -11,7 +11,7 @@
 # ============================================================
 
 
-import tempfile
+import os
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
 
@@ -32,49 +32,29 @@ class Wrapper(WrapperBase):
         self.lineage = lineage_opt = self.snakemake.params.get("lineage", "")
         self.lineage_opt = f"--lineage {lineage_opt}" if lineage_opt else ""
 
+        self.dataset_dir = self.snakemake.input.get("dataset_dir", "")
+        if not self.dataset_dir:
+            self.dataset_dir = self.snakemake.params.get("dataset_dir", "")
+            if not self.dataset_dir:
+                self.dataset_dir = f"dataset"
+
+        output = os.path.abspath(self.snakemake.output[0].strip('/'))
+        self.out_path = os.path.dirname(output)
+        self.out = os.path.basename(output)
+
     def run(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            dataset_dir = self.snakemake.input.get("dataset_dir", "")
-            if not dataset_dir:
-                dataset_dir = f"{tmpdir}/dataset"
-
-            shell(
-                "busco"
-                " --cpu {self.snakemake.threads}"
-                " --in {self.snakemake.input}"
-                " --mode {self.mode}"
-                " {self.lineage_opt}"
-                " {self.extra}"
-                " --download_path {dataset_dir}"
-                " --out_path {tmpdir}"
-                " --out output"
-                " {self.log}"
-            )
-
-            if self.snakemake.output.get("short_txt"):
-                assert self.lineage, "parameter 'lineage' is required to output 'short_tsv'"
-                shell(
-                    "cat {tmpdir}/output/short_summary.specific.{self.lineage}.output.txt > {self.snakemake.output.short_txt:q}"
-                )
-            if self.snakemake.output.get("short_json"):
-                assert self.lineage, "parameter 'lineage' is required to output 'short_json'"
-                shell(
-                    "cat {tmpdir}/output/short_summary.specific.{self.lineage}.output.json > {self.snakemake.output.short_json:q}"
-                )
-            if self.snakemake.output.get("full_table"):
-                assert self.lineage, "parameter 'lineage' is required to output 'full_table'"
-                shell(
-                    "cat {tmpdir}/output/run_{self.lineage}/full_table.tsv > {self.snakemake.output.full_table:q}"
-                )
-            if self.snakemake.output.get("miss_list"):
-                assert self.lineage, "parameter 'lineage' is required to output 'miss_list'"
-                shell(
-                    "cat {tmpdir}/output/run_{self.lineage}/missing_busco_list.tsv > {self.snakemake.output.miss_list:q}"
-                )
-            if self.snakemake.output.get("out_dir"):
-                shell("mv {tmpdir}/output {self.snakemake.output.out_dir:q}")
-            if self.snakemake.output.get("dataset_dir"):
-                shell("mv {dataset_dir} {self.snakemake.output.dataset_dir:q}")
+        shell(
+            "busco"
+            " --cpu {self.snakemake.threads}"
+            " --in {self.snakemake.input.fasta}"
+            " --mode {self.mode}"
+            " {self.lineage_opt}"
+            " {self.extra}"
+            " --download_path {self.dataset_dir}"
+            " --out_path {self.out_path}"
+            " --out {self.out}"
+            " {self.log}"
+        )
 
 
 if __name__ == "__main__":

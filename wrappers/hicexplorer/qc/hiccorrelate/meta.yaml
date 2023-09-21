@@ -1,0 +1,14 @@
+name: HicExplorer hicCorrelate
+description: |
+  hicCorrelate is a dedicated Quality Control tool that allows the correlation of 
+  multiple Hi-C matrices at once with either a heatmap or scatter plots output.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - .h5 file
+output:
+  - figure
+params:
+  extra: Any additional arguments to pass
+notes:

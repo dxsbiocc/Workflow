@@ -1,0 +1,13 @@
+name: HicExplorer hicTransform
+description: |
+  Converts the (interaction) matrix to different types of obs/exp, pearson or covariance matrix.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - matrix file
+output:
+  - matrix file
+params:
+  extra: Any additional arguments to pass
+notes:

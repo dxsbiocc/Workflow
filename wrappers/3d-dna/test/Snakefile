@@ -1,0 +1,15 @@
+rule 3ddna:
+    input:
+        fasta = "",
+        mnd = "",
+    output:
+        "out"
+    log:
+        "logs/3ddna/genome.log"
+    params:
+        mode = 'haploid',    # haploid/diploid
+        input_size = 15000,  # Specifies threshold input contig/scaffold size (default is 15000). Contigs/scaffolds smaller than input_size are going to be ignored
+        rounds = 2,          # Specifies number of iterative rounds for misjoin correction (default is 2)
+        stage = '',          # Fast forward to later assembly steps, can be polish, split, seal, merge and finalize
+    wrapper:
+        "file:../../3d-dna"

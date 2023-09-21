@@ -1,0 +1,13 @@
+rule hicPlotTADs:
+    input:
+        tracks = "hic_track.ini",
+        # bed = ""
+    output:
+        "plot/master_plot.png"
+    log:
+        "logs/hicPlotTADs.log"
+    params:
+        title = "HIC-track",
+        extra = "--region X:3000000-3500000 --trackLabelFraction 0.2 --width 38 --dpi 130",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicplottads" 

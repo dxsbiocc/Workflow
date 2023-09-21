@@ -1,0 +1,12 @@
+rule hicCompartmentalization:
+    input:
+        mat = "obsexp_norm.h5",
+        pca = "pca1.bedgraph"
+    output:
+        "out.png"
+    log:
+        "logs/hicCompartmentalization.log"
+    params:
+        extra = "--outliers 0.0 --quantile 30"
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hiccompartmentalization"

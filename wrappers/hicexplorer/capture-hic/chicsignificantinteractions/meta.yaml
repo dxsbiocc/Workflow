@@ -1,0 +1,21 @@
+name: HicExplorer chicSignificantInteractions
+description: |
+  Per viewpoint the significant interactions are detected based on the 
+  background model. For each viewpoint file, an output file is created 
+  with all recorded significant interactions and a target file. The 
+  target file is especially useful in the batch mode context; for two 
+  consecutive listed control and treatment viewpoints it merges the 
+  significant interactions which can then be used to test for a 
+  differential interaction scheme.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - path to the interaction file (HDF5) which should be used for aggregation of the statistics.
+  - path to the background file.
+output:
+  - File name suffix to save the results; prefix is the input file name
+  - The file to store the target data (Default “targetFile.hdf5”).
+params:
+  extra: Any additional arguments to pass
+notes:

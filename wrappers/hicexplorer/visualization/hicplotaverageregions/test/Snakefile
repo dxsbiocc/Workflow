@@ -1,0 +1,11 @@
+rule hicPlotAverageRegions:
+    input:
+        "result_range_100000.npz"
+    output:
+        "plot/average_region.png"
+    log:
+        "logs/hicPlotAverageRegions.log"
+    params:
+        extra = "--log --colorMap RdYlBu_r",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicplotaverageregions" 

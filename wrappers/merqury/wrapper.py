@@ -22,8 +22,12 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
-        self.db = self.snakemake.input.get("db")
-        self.hifi = self.snakemake.input.get("hifi")
+        self.db = os.path.abspath(self.snakemake.input.get("db"))
+        hifi = self.snakemake.input.get("hifi")
+        if isinstance(hifi, list):
+            self.hifi = " ".join([os.path.abspath(i) for i in hifi])
+        else:
+            self.hifi = os.path.abspath(hifi)
 
         self.output = self.snakemake.output[0]
         if not os.path.exists(self.output):
@@ -33,18 +37,19 @@ class Wrapper(WrapperBase):
 
     def run(self):
         shell(
-            "(cd {self.output} && merqury.sh "
+            "(cd {self.output} &&"
+            " merqury.sh "
             " {self.db}"
             " {self.hifi}"
-            " output {self.output_prefix}"
+            " {self.output_prefix}"
             " {self.extra}"
             " ) {self.log}"
         )
         # remove 
-        shell('find {self.output} -not -name "merqury*" -delete')
-        log_dir = os.path.dirname(self.log).strip('> ')
-        shell('mv {self.output}/logs/* {log_dir}')
-        shell('rm -rf {self.output}/logs/')
+        # log_dir = os.path.dirname(self.log).strip('> ')
+        # shell('mv {self.output}/logs/* {log_dir}')
+        # shell('rm -rf {self.output}/logs/')
+        # shell('find {self.output} -not -name "merqury*" -delete')
 
 
 if __name__ == '__main__':

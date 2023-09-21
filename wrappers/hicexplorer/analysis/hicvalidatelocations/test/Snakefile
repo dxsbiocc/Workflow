@@ -1,0 +1,31 @@
+rule hicValidateLocations_loops:
+    input:
+        data = "loops_1.bedgraph",
+        valid = "GSM935376_hg19_Gm12878_Smc3.narrowPeak"
+    output:
+        expand("out/loops{suffix}", suffix=["_matched_locations", "_statistics"])
+    log:
+        "logs/hicValidateLocations.log"
+    params:
+        validtype = "bed",
+        method = "loops",
+        resolution = 10000,
+        extra = "--chrPrefixLoops add"  # None, add, remove
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hicvalidatelocations"
+
+rule hicValidateLocations_tad:
+    input:
+        data = "untreated_R1_boundaries.bed",
+        valid = "GSM733752_hg19_ctcf_GM12878.broadPeak"
+    output:
+        expand("out/tad{suffix}", suffix=["", "_statistics"])  # tad method does not have matched locations
+    log:
+        "logs/hicValidateLocations.log"
+    params:
+        validtype = "bed",
+        method = "tad",
+        resolution = 20000,
+        extra = ""  # None, add, remove
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hicvalidatelocations"

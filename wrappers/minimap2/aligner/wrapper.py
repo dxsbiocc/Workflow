@@ -46,6 +46,8 @@ class Wrapper(WrapperBase):
                 self.pipe_cmd = f"| samtools sort {sort_extra} {samtools_opts}"
             else:
                 raise ValueError(f"Unexpected value for params.sort: {sort}")
+        if out_ext == "GZ":
+            self.pipe_cmd += " | pigz -c - "
 
     def run(self):
         shell(

@@ -1,0 +1,14 @@
+name: HicExplorer hicTADClassifier
+description: |
+  Uses Supervised Learning to call TAD boundaries. One or multiple HiC-Matrices can be passed, 
+  from which a BED file will be produced containing the predicted boundary positions.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - HiC-Matrix file or list of files for input. Only COOLER files are supported!
+output:
+  - output file path for predictions
+params:
+  extra: Any additional arguments to pass
+notes:

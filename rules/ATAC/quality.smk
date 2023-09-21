@@ -9,6 +9,7 @@ rule bamCoverage:
     params:
         # Optional parameters.
         extra = '--binSize 10 --normalizeUsing RPGC --effectiveGenomeSize ' + str(CHROM_SIZE),
+        # extar = '--binSize 1 --normalizeUsing RPKM',
     threads: 1
     log: 
         'logs/deeptools/bamcoverage_{sample}.log'

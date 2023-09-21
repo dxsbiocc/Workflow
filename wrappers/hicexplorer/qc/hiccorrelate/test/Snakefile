@@ -1,0 +1,16 @@
+rule hicexplorer_hicCorrelate:
+    input:
+        "small_test_matrix_ICEcorrected_chrUextra_chr3LHet.h5",
+        "small_test_matrix_KRcorrected_chrUextra_chr3LHet.h5"
+    output:
+        heatmap = "correlate_heatmap.png",  # png, pdf, ps, eps and svg.
+        scatter = "correlate_scatter.png"
+    log:
+        "logs/hicexplorer/hicCorrelate.log"
+    params:
+        extra = "",
+        method = "pearson",  # pearson, spearman
+        labels = ["ICE", "KR"],
+        colorMap = "jet",
+    wrapper:
+        "file:../../../../hicexplorer/qc/hiccorrelate"

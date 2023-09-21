@@ -1,7 +1,6 @@
 rule gfastats:
     input:
         "{prefix}.gfa",
-        "{prefix}.gfa",
     output:
         seq = "{prefix}.fasta",        # output format (fasta/fastq/gfa)
         summary = "{prefix}.assembly_summary",

@@ -1,0 +1,16 @@
+rule chicSignificantInteractions:
+    input:
+        interaction = "two_matrices.hdf5",
+        background = "background.txt"
+    output: 
+        significant = "significant.hdf5",
+        target = "target.hdf5"
+    log:
+        "logs/chicSignificantInteractions.log"
+    params:
+        range = "200000 200000",
+        pvalue = 0.2,
+        extra = "--xFoldBackground 1.5 --combinationMode dual"
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/capture-hic/chicsignificantinteractions"

@@ -37,6 +37,7 @@ wildcard_constraints:
     access = "|".join(ASSESS),
     trio = "|".join(TRIO)
     suffix = "|".join(['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg'])
+    hap = "|".join(['hap1.p_ctg', 'hap2.p_ctg'])
 
 ############################################################
 #                          Include                         #
@@ -44,12 +45,21 @@ wildcard_constraints:
 include: os.path.join(PATH, "rules/Assembly/preprocessing.smk")
 include: os.path.join(PATH, "rules/Assembly/assessing.smk")
 include: os.path.join(PATH, "rules/Assembly/assemble.smk")
+include: os.path.join(PATH, "rules/Assembly/quality_control.smk")
 ############################################################
 #                           Runing                         #
 ############################################################
 rule use_all:
     input:
-        # expand("trimmed/{hifi}/", hifi=DATA_DICT['HIFI']),
-        # expand("trimmed/{sample}/{sample}.clean.{run}.fq.gz", sample=SAMPLES, run=RUN),
+        expand("trimmed/{hifi}/", hifi=DATA_DICT['HIFI']),
+        expand("trimmed/{sample}/{sample}.clean.{run}.fq.gz", sample=SAMPLES, run=RUN),
         expand("genomescope/{access}/{version}", access=ASSESS, version=['v1', 'v2']),
-        expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"])
+        expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+        expand('genome/genome.{suffix}.stat', suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+        expand("busco/{suffix}/", suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg']),
+        expand("genome/genome.{suffix}.fasta.fai", suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg']),
+        expand('qc/stats/{suffix}.tsv', suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg'])
+        "merqury/diploid",
+        expand("quast/{suffix}", suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg'])
+        expand('scaffolding/juicer/{hap}/aligned/merged_nodups.txt', hap=['hap1.p_ctg', 'hap2.p_ctg'])
+        expand("scaffolding/3d-dna/{hap}", hap=['hap1.p_ctg']),

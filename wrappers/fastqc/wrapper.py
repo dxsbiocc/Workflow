@@ -11,7 +11,7 @@
 # ============================================================
 
 
-import os
+import os, re
 import pathlib
 from tempfile import TemporaryDirectory
 
@@ -25,7 +25,23 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
-        assert isinstance(self.snakemake.input, str), "Only supported 'str'!"
+        outdir = os.path.dirname(os.path.commonprefix(self.snakemake.output))
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+
+    def basename_without_ext(self, file_path):
+        """Returns basename of file path, without the file extension."""
+        base = os.path.basename(file_path)
+        # Remove file extension(s) (similar to the internal fastqc approach)
+        base = re.sub("\\.gz$", "", base)
+        base = re.sub("\\.bz2$", "", base)
+        base = re.sub("\\.txt$", "", base)
+        base = re.sub("\\.fastq$", "", base)
+        base = re.sub("\\.fq$", "", base)
+        base = re.sub("\\.sam$", "", base)
+        base = re.sub("\\.bam$", "", base)
+
+        return base
 
     def run(self):
         # Run fastqc, since there can be race conditions if multiple jobs
@@ -33,12 +49,12 @@ class Wrapper(WrapperBase):
         with TemporaryDirectory() as tempdir:
             shell(
                 "fastqc {self.snakemake.params} -t {self.snakemake.threads} "
-                "--outdir {tempdir:q} {self.snakemake.input[0]:q}"
+                "--outdir {tempdir:q} {self.snakemake.input}"
                 " {self.log}"
             )
 
             # Move outputs into proper position.
-            output_base = pathlib.Path(self.snakemake.input[0]).stem
+            output_base = self.basename_without_ext(self.snakemake.input[0])
             html_path = os.path.join(tempdir, f"{output_base}_fastqc.html")
             zip_path = os.path.join(tempdir, f"{output_base}_fastqc.zip")
 

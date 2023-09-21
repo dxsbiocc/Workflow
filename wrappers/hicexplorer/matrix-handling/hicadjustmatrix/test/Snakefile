@@ -1,0 +1,14 @@
+rule hicAdjustMatrix:
+    input:
+        matrix = "small_test_matrix_50kb_res.h5",
+        regions = "keep_region.bed",
+    output: 
+        "test_matrix.h5"
+    log:
+        "logs/hicAdjustMatrix.log"
+    params:
+        action = "keep",
+        chromosomes = "",
+        extra = ""
+    wrapper:
+        "file:../../../../hicexplorer/matrix-handling/hicadjustmatrix"

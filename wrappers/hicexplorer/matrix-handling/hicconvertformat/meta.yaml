@@ -1,0 +1,17 @@
+name: HicExplorer hicConvertFormat
+description: |
+  Conversion of Hi-C matrices of different file formats. We support the 
+  conversion of hic to cool format via hic2cool, and homer, HicPro, h5 
+  and cool format to h5, cool, homer or ginteractions format. Moreover, 
+  hicConvertFormat accepts multiple input files from one format with 
+  different resolutions and creates a mcool file
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - input file(s). Could be one or many files.[hic/cool/h5/homer/HicPro]
+output:
+  - File name to save the exported matrix.[cool/mcool/h5/homer/ginteractions]
+params:
+  extra: Any additional arguments to pass
+notes:

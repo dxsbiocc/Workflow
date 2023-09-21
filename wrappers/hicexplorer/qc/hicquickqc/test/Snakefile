@@ -1,0 +1,14 @@
+rule hicquickQC:
+    input:
+        sam = expand("small_test_{run}_unsorted.bam", run=['R1', 'R2']),
+        rc = "DpnII.bed"
+    output:
+        directory("qc")
+    log:
+        "logs/hicquickQC.log"
+    params:
+        seq = "GATC",
+        dseq = "GATC",
+        extra = "--lines 1000"
+    wrapper:
+        "file:../../../../hicexplorer/qc/hicquickqc"

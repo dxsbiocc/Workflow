@@ -1,0 +1,12 @@
+rule hicTransform:
+    input:
+        "matrix.cool"
+    output:
+        "obs_exp.cool"
+    log:
+        "logs/hicTransform.log"
+    params:
+        method = "obs_exp",
+        extra = ""
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hictransform"

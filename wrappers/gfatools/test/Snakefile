@@ -15,12 +15,12 @@ rule gfatools_gfa2fa:
     input:
         "{sample}.gfa",
     output:
-        "{sample}.fas",
+        "{sample}.fasta",
     log:
         "logs/{sample}.gfa2fa.log",
     params:
-        command="gfa2fa",
-	extra="-l 90",
+        command = "gfa2fa",
+	    extra = "-l 90",
     wrapper:
         "file:../../gfatools"
 

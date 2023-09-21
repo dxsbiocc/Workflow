@@ -1,0 +1,14 @@
+rule hicFindTADs:
+    input:
+        "small_test_matrix.h5"
+    output:
+        directory("TAD")
+    log:
+        "logs/hicDifferentialTAD.log"
+    params:
+        prefix = "small",
+        correct = "fdr",
+        cutoff = 0.01,
+        extra = "--minDepth 60000 --maxDepth 180000 --step 20000 --minBoundaryDistance 20000 --chromosomes chr2L chr3R"
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hicfindtads"

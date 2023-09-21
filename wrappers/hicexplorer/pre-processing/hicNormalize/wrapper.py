@@ -20,10 +20,32 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
-        return super().parser()
+        self.normalize = self.snakemake.params.get("normalize", "smallest")
+        assert self.normalize in [
+            "smallest", 
+            "norm_range", 
+            "multiplicative"
+        ], "normalize must be one of [smallest, norm_range, multiplicative]"
+
+        assert len(self.snakemake.input) == len(self.snakemake.output), "input and output must be the same length"
+
+        if self.normalize == 'multiplicative':
+            self.extra += f" --multiplicativeValue {self.snakemake.params.get('multiplicativeValue', 1)}"
+
+        self.setToZeroThreshold = self.snakemake.params.get("setToZeroThreshold", 0.0)
+        if self.normalize == 'smallest' and self.setToZeroThreshold != 1:
+            Warning("It is recommended to set it for the normalize mode “smallest” to 1.0!")
     
     def run(self):
-        return super().run()
+        shell(
+            "(hicNormalize"
+            " {self.extra}"
+            " --setToZeroThreshold {self.setToZeroThreshold}"
+            " --matrices {self.snakemake.input}"
+            " --normalize {self.normalize}"
+            " --outFileName {self.snakemake.output}"
+            ") {self.log}"
+        )
     
 
 if __name__ == "__main__":

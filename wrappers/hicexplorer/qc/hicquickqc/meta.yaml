@@ -1,0 +1,20 @@
+name: HicExplorer hicQuickQC
+description: |
+  The tool hicQuickQC considers the first n lines of two bam/sam files to 
+  get a first estimate of the quality of the data. It is highly recommended 
+  to set the restriction enzyme and dangling end parameter to get a good 
+  quality report.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - .sam file
+  - QC folder
+  - restrictionCutFile
+  - restrictionSequence
+  - danglingSequence
+output:
+  - folder
+params:
+  extra: Any additional arguments to pass
+notes:

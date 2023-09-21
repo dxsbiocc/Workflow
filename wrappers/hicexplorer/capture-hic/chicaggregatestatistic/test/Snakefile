@@ -1,0 +1,13 @@
+rule chicAggregateStatistic:
+    input:
+        interaction = "two_matrices.hdf5",
+        target = "targetFile_dual.hdf5"
+    output: 
+        "small_test_matrix.h5"
+    log:
+        "logs/chicAggregateStatistic.log"
+    params:
+        extra = ""
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/capture-hic/chicaggregatestatistic"

@@ -1,0 +1,15 @@
+name: HicExplorer chicPlotViewpoint
+description: |
+  chicPlotViewpoint plots one or many viewpoints with the average background 
+  model and the computed p-value per sample. In addition, it can highlight 
+  differential interactions of two samples and/or significant regions.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - path to the interaction files which should be used for plotting
+output:
+  - Output tar.gz of the files (Default “plots.tar.gz”).
+params:
+  extra: Any additional arguments to pass
+notes:

@@ -23,7 +23,12 @@ class Wrapper(WrapperBase):
         return super().parser()
     
     def run(self):
-        return super().run()
+        shell(
+            "(hicSumMatrices"
+            " --matrices {self.snakemake.input}"
+            " --outFileName {self.snakemake.output}"
+            ") {self.log}"
+        )
     
 
 if __name__ == "__main__":

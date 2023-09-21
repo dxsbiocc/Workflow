@@ -1,12 +1,28 @@
-rule :
+rule hicnormalize:
     input:
-        ""
+        "matrix.cool"
     output:
-        ""
+        "matrix_0_1_range.cool"
     log:
-        ""
+        "logs/normalize.log"
     params:
-        ""
+        extra = "",
+        normalize = "norm_range",  # norm_range,smallest,multiplicative
     threads: 2
     wrapper:
-        "file:../../../../hicexplorer/pre_processing/"
+        "file:../../../../hicexplorer/pre-processing/hicnormalize"
+
+
+rule hicnormalize_:
+    input:
+        ["smallest_one.cool", "smallest_two.cool"]
+    output:
+        ["smallest_one_norm.cool", "smallest_two_norm.cool"]
+    log:
+        "logs/normalize_smallest.log"
+    params:
+        extra = "",
+        normalize = "smallest",  # norm_range,smallest,multiplicative
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre-processing/hicnormalize"

@@ -1,0 +1,15 @@
+name: HicExplorer hicDetectLoops
+description: |
+  hicDetectLoops can detect enriched interaction regions (peaks / loops) 
+  based on a strict candidate selection, negative binomial distributions 
+  and Wilcoxon rank-sum tests.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The matrix to compute the loop detection on
+output:
+  - Outfile name to store the detected loops. The file will in bedgraph format.
+params:
+  extra: Any additional arguments to pass
+notes:

@@ -47,22 +47,6 @@ rule jellyfish_hist:
     wrapper:
         get_wrapper('jellyfish', 'histo')
 
-rule meryl_count:
-    input:
-        expand("trimmed/{hifi}/{hifi}.filt.fastq.gz", hifi=DATA_DICT['HIFI']),
-    output:
-        "meryl/genome.meryl",
-    log:
-        "logs/meryl/count.log"
-    params:
-        command = "count",
-        extra = "k=31",
-    threads: 10
-    resources:
-        mem_gb = '300G',
-    wrapper:
-        get_wrapper('meryl', 'count')
-
 # plot hist
 rule genomescope:
     input:

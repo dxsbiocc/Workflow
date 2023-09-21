@@ -1,14 +1,14 @@
-name: HicExplorer 
-description: Calculate GC content for a genome in bins
+name: hicNormalize 
+description: >
+  Normalizes given matrices either to the smallest given read number of all matrices 
+  or to 0 - 1 range. However, it does NOT compute the contact probability.
 url: https://github.com/deeptools/HiCExplorer
 authors:
   - dengxsh
 input:
-  - .bed file with bin coordinates
-  - fasta file with the genome sequence
+  - The matrix (or multiple matrices) to get information about. 
 output:
-  - >
-    A tsv file with GC content in bins
+  - Hi-C matrix.
 params:
   extra: Any additional arguments to pass
 notes:

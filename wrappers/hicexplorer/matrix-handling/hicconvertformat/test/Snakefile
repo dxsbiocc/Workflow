@@ -1,0 +1,13 @@
+rule hicConvertFormat:
+    input:
+        "small_test_matrix.cool"
+    output: 
+        "small_test_matrix.h5"
+    log:
+        "logs/hicConvertFormat.log"
+    params:
+        input_format = "cool",
+        output_format = "h5",
+        extra = ""
+    wrapper:
+        "file:../../../../hicexplorer/matrix-handling/hicconvertformat"

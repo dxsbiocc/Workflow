@@ -1,0 +1,20 @@
+name: HicExplorer hicDifferentialTAD
+description: |
+  Computes differential TADs by comparing the precomputed TAD regions of the 
+  target matrix with the same regions of the control matrix. Please notice 
+  that the matrices need to have the same read coverage, this can be achieved 
+  with hicNormalize and the ‘smallest’-mode. H0 is the assumption that two 
+  regions are identical, the rejected files contain therefore the as differential 
+  considered regions.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The matrix which was used to compute the TADs
+  - The control matrix to test the TADs for a differential interaction pattern.
+  - The TADs domain file computed by hicFindTADs.
+output:
+  - Outfile name prefix to store the accepted / rejected H0 TADs.
+params:
+  extra: Any additional arguments to pass
+notes:

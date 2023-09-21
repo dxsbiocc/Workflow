@@ -6,6 +6,7 @@ The snakemake analysis workflow for bioinformatics analysis, including
 
 - [x] ATAC-seq/Cut&Tag/ChIP-seq
 - [X] DNA-seq(WGS and WES)
+- [X] Assembly
 - [ ] RNA-seq
 - [ ] HiC
 
@@ -79,6 +80,20 @@ snakemake -s path/to/Snakefile --profile path/to/config/slurm
 - gatk: call variants
 - annovar: annotate variants
 - delly: detect SVs
+
+### 3. Assembly
+
+- hifiadapterfit: remove adapter for HIFI reads;
+- fastp: qc for NGS reads(DNA-seq, RNA-seq, HiC);
+- jellyfish: assessing heterozygosity of species, if DNA-seq exist;
+- genomescope/genomescope2: plot k-mer histogram;
+- hifiasm: sssembly(solo, hic, trio);
+- gfatools/seqkit/quast: qc for assemble and get fasta;
+- merqury/meryl: assessing heterozygosity for assemble.fasta;
+- busco: sssessing gene assembly quality and completeness of gene predictions;
+- juicer: HiC reads processing;
+- 3d-dna: scaffolding using HiC reads(The /tmp directory requires a large space. If not, you need to specify `--tempdir` where parallel is used in the code);
+- ...
 
 ## Notes
 

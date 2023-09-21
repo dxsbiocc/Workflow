@@ -1,0 +1,16 @@
+name: HicExplorer hicPlotDistVsCounts
+description: |
+  This program creates distance vs. Hi-C counts plots. It can use several 
+  matrix files to compare them at once. If the –perchr option is given, 
+  each chromosome is plotted independently. When plotting multiple matrices, 
+  denser matrices are scaled down to match the sum of the smallest matrix.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - .h5 file
+output:
+  - figure, .png, .emf, .eps, .pdf and .svg
+params:
+  extra: Any additional arguments to pass
+notes:

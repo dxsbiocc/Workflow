@@ -1,0 +1,13 @@
+rule chicDifferentialTest:
+    input:
+        "aggregate.hdf5"
+    output: 
+        "differential.hdf5"
+    log:
+        "logs/chicDifferentialTest.log"
+    params:
+        alpha = 0.5,
+        test = "fisher",  # fisher, chi2
+        extra = ""  # 
+    wrapper:
+        "file:../../../../hicexplorer/capture-hic/chicdifferentialtest"

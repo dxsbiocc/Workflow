@@ -56,15 +56,12 @@ class Wrapper(WrapperBase):
         # ])
 
     def run(self):
-        print("trimmomatic {self.type} -threads {self.trimmomatic_threads} {self.java_opts} {self.extra} "\
-            "{self.inputs} {self.outputs} "\
-            "{self.trimmer} "\
-            "{self.log}")
         shell(
-            "trimmomatic {self.type} -threads {self.trimmomatic_threads} {self.java_opts} {self.extra} "
-            "{self.inputs} {self.outputs} "
-            "{self.trimmer} "
-            "{self.log}"
+            "trimmomatic {self.type} -threads {self.trimmomatic_threads} {self.java_opts}"
+            " {self.inputs} {self.outputs}"
+            " {self.extra}"
+            " {self.trimmer}"
+            " {self.log}"
         )
 
     # Distribute available threads between trimmomatic itself and any potential pigz instances

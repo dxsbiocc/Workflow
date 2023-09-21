@@ -1,0 +1,16 @@
+name: HicExplorer chicQualityControl
+description: |
+  Computes the sparsity of each viewpoint to determine the quality. 
+  A viewpoint is considered to be of bad quality if it is too sparse 
+  i.e. if there are too many locations with no interactions recorded.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The input matrices to apply the QC on.
+  - Bed file contains all reference points which are checked for a sufficient number of interactions.
+output:
+  - The output file name of the passed reference points. Used as prefix for the plots as well (Default “new_referencepoints.bed”).
+params:
+  extra: Any additional arguments to pass
+notes:

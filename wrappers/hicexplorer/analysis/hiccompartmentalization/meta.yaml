@@ -1,0 +1,14 @@
+name: HicExplorer hicCompartmentalization
+description: |
+  Rearrange the average interaction frequencies using the first PC 
+  values to represent the global compartmentalization signal.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - HiCExplorer matrices in h5/cool format.
+output:
+  - Plot to represent the polarization of A/B compartments.
+params:
+  extra: Any additional arguments to pass
+notes:

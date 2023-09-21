@@ -1,21 +1,47 @@
+rule download_juicer_tools:
+    output:
+        paths.juicebox.tools,
+    params:
+        url = config["software"]["juicer"]["tools_url"],
+    conda:
+        "../envs/juicer_tools.yml"
+    log:
+        to_log(paths.juicebox.tools),
+    shell:
+        "wget -O - {params.url} > {output} 2>{log}"
+
 rule bwa_mem2_index:
     input:
-        "genome/genome.p_ctg.fasta",
+        "genome/genome.{hap}.fasta",
     output:
-        multiext("index/genome", ".0123", ".amb", ".ann", ".pac", ".bwt.2bit.64"),
+        multiext("scaffolding/index/{hap}", ".0123", ".amb", ".ann", ".pac", ".bwt.2bit.64"),
     log:
         "logs/bwa-mem2/index.log",
     threads: 20
     wrapper:
         get_wrapper("bwa-mem2", "index")
 
+rule hicfindrestsite:
+    input:
+        "genome/genome.{hap}.fasta"
+    output:
+        "scaffolding/restsite/DpnII.bed"
+    log:
+        "logs/hicexplorer/hicfindrestsite.log"
+    params:
+        pattern = ["GATC"],  # HindIII: 'AAGCTT', DpnII/MboI/Sau3AI: 'GATC', Arima: 'GATC', 'GANTC'
+        extra = ""
+    threads: 20
+    wrapper:
+        get_wrapper("hicexplorer", "pre-processing", "hicfindrestsite")
+
 rule bwa_mem2_mem:
     input:
         reads = expand("trimmed/{{hic}}/{{hic}}.clean.{run}.fq.gz", run=RUN),
         # Index can be a list of (all) files created by bwa, or one of them
-        idx = multiext("index/genome", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+        idx = multiext("scaffolding/index/{hap}", ".amb", ".ann", ".bwt.2bit.64", ".pac"),
     output:
-        "mapped/{hic}.bam",
+        "scaffolding/mapped/{hic}.bam",
     log:
         "logs/bwa_mem2/{hic}.log",
     params:

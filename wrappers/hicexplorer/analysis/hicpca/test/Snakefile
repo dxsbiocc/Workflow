@@ -1,0 +1,14 @@
+rule hicPCA:
+    input:
+        "small_test_matrix.cool"
+    output:
+        ["a.bw", "b.bw"]
+    log:
+        "logs/hicPCA.log"
+    params:
+        output_fmt = "bigwig",  # bedgraph, bigwig
+        method = "dist_norm",  # dist_norm, lieberman
+        we = "1 2",
+        extra = ""
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hicpca"

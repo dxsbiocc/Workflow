@@ -1,0 +1,14 @@
+name: HicExplorer hicAdjustMatrix
+description: |
+  This tool adjusts hic matrices by keeping, removing or masking a given list of regions or chromosmes.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The Hi-C matrix to adjust.
+  - BED file which stores a list of regions to keep/remove.
+output:
+  - File name to save the adjusted matrix.
+params:
+  extra: Any additional arguments to pass
+notes:

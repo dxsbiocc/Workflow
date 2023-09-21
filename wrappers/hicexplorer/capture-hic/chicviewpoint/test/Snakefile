@@ -1,0 +1,15 @@
+rule chicViewpoint:
+    input:
+        matrices = ["FL-E13-5_chr1.cool", "MB-E10-5_chr1.cool"],
+        reference = "referencePoints_chicViewpoint.bed",
+        background = "background.txt"
+    output: 
+        "output.hdf5"
+    log:
+        "logs/chicViewpoint.log"
+    params:
+        range = "200000 200000",
+        extra = ""
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/capture-hic/chicviewpoint"

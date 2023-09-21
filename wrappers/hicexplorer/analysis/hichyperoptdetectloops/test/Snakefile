@@ -1,0 +1,14 @@
+rule hichyperoptdetectloops:
+    input:
+        mat = "GSE63525_GM12878_insitu_primary_2_5mb.cool",
+        protein = "ctcf_sorted.bed"
+    output:
+        "hyperopt_result.txt"
+    log:
+        "logs/hichyperoptdetectloops.log"
+    params:
+        ml = 3210,
+        chrPrefixLoops = "add",  # None, add, remove
+        extra = "--resolution 10000 --runs 2"
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hichyperoptdetectloops"

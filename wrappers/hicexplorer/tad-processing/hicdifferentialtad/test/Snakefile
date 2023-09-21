@@ -1,0 +1,14 @@
+rule hicDifferentialTAD:
+    input:
+        target = "GSM2644945_Untreated-R1.100000_chr1.cool",
+        control = "GSM2644947_Auxin2days-R1.100000_chr1.cool",
+        domains = "untreated_R1_domains.bed",
+    output:
+        expand("output/test_{suffix}.diff_tad", suffix=['accepted', 'rejected'])
+    log:
+        "logs/hicDifferentialTAD.log"
+    params:
+        mode = "all",  # intra-TAD, left-inter-TAD, right-inter-TAD, all
+        extra = "--pValue 0.05 --modeReject one" # one or all
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hicdifferentialtad"

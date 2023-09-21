@@ -1,0 +1,20 @@
+name: HicExplorer chicViewpointBackgroundModel
+description: |
+  chicViewpointBackgroundModel computes a background model for all given 
+  samples with all reference points. For all relative distances to a 
+  reference point a negative binomial distribution is fitted. In addition, 
+  for each relative distance to a reference point the average value for this 
+  location is computed. Both background models are used, the first one for 
+  p-value and significance computation, the second one to filter out 
+  interactions with a smaller x-fold over the mean.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The input matrices (samples) to build the background model on.
+  - Bed file contains all reference points which should be used to build the background model.
+output:
+  - The name of the background model file (Default “background_model.txt”).
+params:
+  extra: Any additional arguments to pass
+notes:

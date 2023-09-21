@@ -1,0 +1,16 @@
+rule hicTrainTADClassifier:
+    input:
+        matrices = "gm12878_chr1.cool",
+        domain = "unittest_domains.bed",
+    output:
+        out = "train_test.txt",
+        # classifier = "classifier.pkl"
+    log:
+        "logs/hicTrainTADClassifier.log"
+    params:
+        mode = "train_test",
+        normalization_method = "obs_exp",
+        resolution = 10000,
+        extra = "--estimators_per_step 10"
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hictraintadclassifier"

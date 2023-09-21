@@ -1,0 +1,17 @@
+rule flye:
+    input:
+        "E.coli_PacBio_40x.fasta"
+    output:
+        assembly = "out/assembly.fasta.gz",
+        assembly_gfa = "out/assembly_graph.gfa.gz",
+        assembly_gv = "out/assembly_graph.gv.gz",
+        assembly_info = "out/assembly_info.txt",
+        params = "out/params.json"
+    log:
+        "logs/flye/hifi.log"
+    params:
+        mode = "--pacbio-hifi",
+        extra = "",
+    threads: 4
+    wrapper:
+        "file:../../flye"

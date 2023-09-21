@@ -1,0 +1,14 @@
+rule hicAverageRegions:
+    input:
+        mat = "small_test_matrix.cool",
+        bed = "regions_multi.bed"
+    output:
+        "small.npz"
+    log:
+        "logs/hicaverageregions.log"
+    params:
+        rangeInBase = '100000 100000',
+        # rangeInBins = '100 100',
+        extra = "-cb start"  # start, center, end
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hicaverageregions"

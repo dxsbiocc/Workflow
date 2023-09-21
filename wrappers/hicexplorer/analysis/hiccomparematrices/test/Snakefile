@@ -1,0 +1,11 @@
+rule hicCompareMatrices:
+    input:
+        ["small_test_matrix_twice.cool", "small_test_matrix.cool"],
+    output:
+        "matrix.h5"
+    log:
+        "logs/hicCompareMatrices.log"
+    params:
+        extra = "--operation log2ratio"  # diff, ratio, log2ratio
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hiccomparematrices"

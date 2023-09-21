@@ -1,0 +1,13 @@
+name: HicExplorer hicPlotTADs
+description: |
+  For parameter options please see the pyGenomeTracks documentation.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - configuration file
+output:
+  - output file path for predictions
+params:
+  extra: Any additional arguments to pass
+notes:

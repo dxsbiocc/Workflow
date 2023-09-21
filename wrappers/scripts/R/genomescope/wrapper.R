@@ -631,6 +631,12 @@ wrapper <- function(snakemake) {
   dir.create(foldername, showWarnings = FALSE)
 
   kmer_prof <- read.csv(file = histfile, sep = " ", header = FALSE)
+  if (dim(kmer_prof)[2] != 2) {
+    kmer_prof <- read.csv(file = histfile, sep = "\t", header = FALSE)
+    if (dim(kmer_prof)[2] != 2) {
+      stop("histogram file must have 2 columns")
+    }
+  }
 
   minkmerx <- 1
   if (kmer_prof[1, 1] == 0) {

@@ -1,0 +1,14 @@
+name: HicExplorer hicInterIntraTAD
+description: |
+  Extracts and computes different inter and intra TAD values and ratios.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The matrix which was used to compute the TADs
+  - The TADs domain file computed by hicFindTADs.
+output:
+  - text file
+params:
+  extra: Any additional arguments to pass
+notes:

@@ -1,0 +1,20 @@
+name: HicExplorer hicAverageRegions
+description: |
+  Sums Hi-C contacts around given reference points and computes 
+  their average. This tool is useful to detect differences at 
+  certain reference points as for example TAD boundaries between 
+  samples.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - matrix file
+  - .bed
+output:
+  - TADs matrix
+params:
+  extra: Any additional arguments to pass
+notes:
+  This tool can only be used with fixed bin size Hi-C matrices. 
+  No guarantees how and if it works on restriction site interaction 
+  matrices.

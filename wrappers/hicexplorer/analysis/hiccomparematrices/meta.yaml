@@ -1,0 +1,15 @@
+name: HicExplorer hicCompareMatrices
+description: |
+  Takes two matrices as input, normalizes them and applies the given 
+  operation. To normalize the matrices each element is divided by the 
+  sum of the matrix.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - .h5 or .cool matrix files
+output:
+  - .h5 or .cool output matrix
+params:
+  extra: Any additional arguments to pass
+notes:

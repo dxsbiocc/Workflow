@@ -1,0 +1,9 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - hicexplorer = 3.7.2
+  - pandas = 1.1.0
+  - numpy = 1.19
+  - cleanlab = 0.1.1

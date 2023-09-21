@@ -1,0 +1,15 @@
+name: HicExplorer chicViewpoint
+description: |
+  Computes per input matrix all viewpoints which are defined in the reference points file.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - Path to the Hi-C matrices which store the captured Hi-C data per sample.
+  - path to the background file computed by chicViewpointBackgroundModel
+  - Reference point file.
+output:
+  - This hdf5 file contains all created viewpoint files.
+params:
+  extra: Any additional arguments to pass
+notes:
