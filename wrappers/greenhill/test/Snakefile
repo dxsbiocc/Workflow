@@ -1,0 +1,14 @@
+rule greenhill:
+    input:
+        cph = "",
+        hic = "",
+    output:
+        ""
+    log:
+        "logs/greenhill.log"
+    params:
+        extra = "",
+        prefix = "",
+    threads: 10
+    wrapper:
+        "file:../../greenhill"

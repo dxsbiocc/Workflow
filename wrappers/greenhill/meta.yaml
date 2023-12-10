@@ -1,0 +1,16 @@
+name: greenhill
+description: |
+  GreenHill is a de novo chromosome-level scaffolding and phasing tool using Hi-C. 
+  GreenHill generates chromosome-level haplotypes by scaffolding and phasing the 
+  input contigs using a combination of information from Hi-C and other reads (PE, 
+  MP, LongRead).
+url: https://github.com/ShunOuchi/GreenHill
+authors:
+  - dengxsh
+input:
+  - assembly file
+  - reads files(HIC, PacBio/Oxford-Nanopore long reads)
+output:
+  - PREFIX_afterPhase.fa and PREFIX_*
+notes: |
+  * The `command` param allows to specify how to do with the GFA: `view` [default], `stat`, `gfa2fa`, `gfa2bed`, `blacklist`, `bubble`, `asm`, `sql`, or `version`.

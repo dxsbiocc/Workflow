@@ -29,31 +29,39 @@ class Wrapper(WrapperBase):
         # Distribute threads
         num = len(self.snakemake.input)
         if num == 1:
-            input_files, output_files = [self.snakemake.input[0]], [self.snakemake.output[0]]
+            input_files = self.snakemake.input
+            if self.snakemake.output.get("unpaired"):
+                output_files = [self.snakemake.output.trimmed, self.snakemake.output.unpaired]
+            else:
+                output_files = [self.snakemake.output.trimmed]
             self.type = 'SE'
         else:
             input_files = self.snakemake.input
-            output_files = [
-                self.snakemake.output.trimmed[0], 
-                self.snakemake.output.unpaired[0],
-                self.snakemake.output.trimmed[1],
-                self.snakemake.output.unpaired[1],
-            ]
+            if self.snakemake.output.get("unpaired"):
+                output_files = [
+                    self.snakemake.output.trimmed[0], 
+                    self.snakemake.output.unpaired[0],
+                    self.snakemake.output.trimmed[1],
+                    self.snakemake.output.unpaired[1],
+                ]
+            else:
+                output_files = self.snakemake.output.trimmed
+            
             self.type = 'PE'
-        self.inputs = input_files
-        self.outputs = output_files
+        # self.inputs = input_files
+        # self.outputs = output_files
         self.trimmomatic_threads, input_threads, output_threads = self.distribute_threads(
             input_files, output_files, self.snakemake.threads
         )
 
-        # self.inputs = " ".join([
-        #     self.compose_input_gz(filename, input_threads) for filename in input_files
-        # ])
+        self.inputs = " ".join([
+            self.compose_input_gz(filename, input_threads) for filename in input_files
+        ])
 
-        # self.outputs = " ".join([
-        #     self.compose_output_gz(filename, output_threads, compression_level)
-        #     for filename in output_files
-        # ])
+        self.outputs = " ".join([
+            self.compose_output_gz(filename, output_threads, compression_level)
+            for filename in output_files
+        ])
 
     def run(self):
         shell(

@@ -11,7 +11,6 @@
 # ============================================================
 
 
-import tempfile
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
 
@@ -30,23 +29,17 @@ class Wrapper(WrapperBase):
             
 
     def run(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            shell(
-                "run_pipeline.py"
-                " --assembly {self.snakemake.input.fas}"
-                " --length {self.snakemake.input.fai}"
-                " --bed {self.snakemake.input.bed}"
-                " {self.enzyme}"
-                " {self.gfa}"
-                " {self.extra}"
-                " --output {tmpdir}"
-                " {self.log}"
-            )
-
-            if self.snakemake.output.get("agp"):
-                shell("cat {tmpdir}/scaffolds_FINAL.agp > {self.snakemake.output.agp}")
-            if self.snakemake.output.get("fas"):
-                shell("cat {tmpdir}/scaffolds_FINAL.fasta > {self.snakemake.output.fas}")
+        shell(
+            "run_pipeline.py"
+            " --assembly {self.snakemake.input.fas}"
+            " --length {self.snakemake.input.fai}"
+            " --bed {self.snakemake.input.bed}"
+            " {self.enzyme}"
+            " {self.gfa}"
+            " {self.extra}"
+            " --output {self.snakemake.output[0]}"
+            " {self.log}"
+        )
 
 
 if __name__ == '__main__':

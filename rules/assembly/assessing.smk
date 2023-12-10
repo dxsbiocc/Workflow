@@ -3,11 +3,11 @@ if DATA_DICT['DNA']:
     # k-mer histogram
     rule jellyfish_count_dna:
         input:
-            expand("trimmed/{dna}/{dna}.clean.{run}.fq.gz", dna=DATA_DICT['DNA'], run=RUN),
+            expand(opj(OUTDIR, "trimmed/{dna}/{dna}.clean.{run}.fq.gz"), dna=DATA_DICT['DNA'], run=RUN),
         output:
-            "jellyfish/DNA.jf",
+            opj(OUTDIR, "jellyfish/DNA.jf"),
         log:
-            "logs/jellyfish/count_DNA.log"
+            opj(OUTDIR, "logs/jellyfish/count_DNA.log")
         params:
             kmer = 31,
             extra = "--canonical",  # You should always use "canonical k-mers" (-C) since the sequencing reads will come from both the forward and reverse strand of DNA.
@@ -21,11 +21,11 @@ if DATA_DICT['DNA']:
 # HIFI k-mer histogram
 rule jellyfish_count_hifi:
     input:
-        expand("trimmed/{hifi}/{hifi}.filt.fastq.gz", hifi=DATA_DICT['HIFI']),
+        expand(opj(OUTDIR, "trimmed/{hifi}/{hifi}.filt.fastq.gz"), hifi=DATA_DICT['HIFI']),
     output:
-        "jellyfish/HIFI.jf",
+        opj(OUTDIR, "jellyfish/HIFI.jf"),
     log:
-        "logs/jellyfish/count_HIFI.log"
+        opj(OUTDIR, "logs/jellyfish/count_HIFI.log")
     params:
         kmer = 31,
         extra = "--canonical",  # You should always use "canonical k-mers" (-C) since the sequencing reads will come from both the forward and reverse strand of DNA.
@@ -38,11 +38,11 @@ rule jellyfish_count_hifi:
 
 rule jellyfish_hist:
     input:
-        "jellyfish/{access}.jf",
+        opj(OUTDIR, "jellyfish/{access}.jf"),
     output:
-        "jellyfish/{access}_jf.hist",
+        opj(OUTDIR, "jellyfish/{access}_jf.hist"),
     log:
-        "logs/jellyfish/hist_{access}.log"
+        opj(OUTDIR, "logs/jellyfish/hist_{access}.log")
     threads: 2
     wrapper:
         get_wrapper('jellyfish', 'histo')
@@ -52,9 +52,9 @@ rule genomescope:
     input:
         rules.jellyfish_hist.output
     output:
-        directory("genomescope/{access}/v1")
+        directory(opj(OUTDIR, "genomescope/{access}/v1"))
     log:
-        "logs/genomescope/{access}_v1.log"
+        opj(OUTDIR, "logs/genomescope/{access}_v1.log")
     params:
         kmer = 31,
         read_length = 150,
@@ -67,9 +67,9 @@ rule genomescope2:
     input:
         rules.jellyfish_hist.output
     output:
-        directory("genomescope/{access}/v2")
+        directory(opj(OUTDIR, "genomescope/{access}/v2"))
     log:
-        "logs/genomescope/{access}_v2.log"
+        opj(OUTDIR, "logs/genomescope/{access}_v2.log")
     params:
         kmer = 31,
         extra = ""

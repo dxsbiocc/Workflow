@@ -6,9 +6,9 @@ if ASSEMBLE_MODE == 'solo':
         input:
             seq = glob.glob('trimmed/*.filt.fastq.gz'),
         output:
-            expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+            expand(opj(OUTDIR, "assembly/genome.{suffix}.gfa"), suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
         log:
-            "logs/hifiasm.log",
+            opj(OUTDIR, "logs/hifiasm.log"),
         params:
             extra = config['parameters']['hifiasm']['extra'],
             ultralong = "",
@@ -23,12 +23,12 @@ elif ASSEMBLE_MODE == 'hic':
     rule hifiasm_hic:
         input:
             seq = glob.glob('trimmed/*.filt.fastq.gz'),
-            hic1 = expand("trimmed/{hic}/{hic}.clean.R1.fq.gz", hic=DATA_DICT['HIC']),
-            hic2 = expand("trimmed/{hic}/{hic}.clean.R2.fq.gz", hic=DATA_DICT['HIC']),
+            hic1 = expand(opj(OUTDIR, "trimmed/{hic}/{hic}.clean.R1.fq.gz"), hic=DATA_DICT['HIC']),
+            hic2 = expand(opj(OUTDIR, "trimmed/{hic}/{hic}.clean.R2.fq.gz"), hic=DATA_DICT['HIC']),
         output:
-            expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+            expand(opj(OUTDIR, "assembly/genome.{suffix}.gfa"), suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
         log:
-            "logs/hifiasm_hic.log",
+            opj(OUTDIR, "logs/hifiasm_hic.log"),
         params:
             extra = config['parameters']['hifiasm']['extra'],
             ultralong = "",
@@ -41,26 +41,26 @@ elif ASSEMBLE_MODE == 'hic':
 elif ASSEMBLE_MODE == 'trio':
     rule yak_paternal:
         input:
-            expand("trimmed/{trio}/{trio}.clean.R1.fq.gz")
+            expand(opj(OUTDIR, "trimmed/{trio}/{trio}.clean.R1.fq.gz"))
         output:
-            "yak/{trio}.yak"
+            opj(OUTDIR, "yak/{trio}.yak")
         log:
-            "logs/yak_{trio}.log"
+            opj(OUTDIR, "logs/yak_{trio}.log")
         params:
             kmer = 8,
             extra = "-b37",
         threads: 8
         wrapper:
-            get_wrapper("yak/count")
+            get_wrapper("yak", "count")
 
     rule hifiasm_trio:
         input:
             seq = glob.glob('trimmed/*.filt.fastq.gz'),
-            yak = expand("yak/{trio}.yak", trio=TRIO),
+            yak = expand(opj(OUTDIR, "yak/{trio}.yak"), trio=TRIO),
         output:
-            expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+            expand(opj(OUTDIR, "assembly/genome.{suffix}.gfa"), suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
         log:
-            "logs/hifiasm_trio.log",
+            opj(OUTDIR, "logs/hifiasm_trio.log"),
         params:
             extra = config['parameters']['hifiasm']['extra'],
             ultralong = "",

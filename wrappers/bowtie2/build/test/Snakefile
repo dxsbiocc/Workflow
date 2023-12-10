@@ -22,7 +22,7 @@ rule bowtie2_build:
 
 rule bowtie2_build_large:
     input:
-        ref = "genome.fasta",
+        fasta = "genome.fasta",
     output:
         multiext(
             "genome",

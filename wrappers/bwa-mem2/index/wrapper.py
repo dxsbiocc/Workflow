@@ -45,7 +45,7 @@ class Wrapper(WrapperBase):
         shell(
             "bwa-mem2 index" 
             " -p {self.prefix}" 
-            " {self.snakemake.input[0]}" 
+            " {self.snakemake.input.fasta}" 
             " {self.log}"
         )
 

@@ -23,13 +23,15 @@ annotate_peaks <- function(snakemake) {
   }
   suppressWarnings(tx <- makeTxDbFromGFF(file = gtf))
   peak <- readPeakFile(peakfile = peakfile, header = FALSE)
-  peakAnno <- annotatePeak(peak = peak, TxDb = tx, assignGenomicAnnotation = TRUE)
+  peak_anno <- annotatePeak(peak = peak, TxDb = tx, assignGenomicAnnotation = TRUE)
 
   pdf(file = paste0(outfile, ".peakAnno.pdf"))
-  plotAnnoPie(peakAnno, main = paste0(sample, "\nDistribution of Peaks"), line = -8)
+  plotAnnoPie(peak_anno, main = paste0(sample, "\nDistribution of Peaks"), line = -8)
   dev.off()
 
-  write.table(as.data.frame(peakAnno@anno), file = paste0(outfile, ".peakAnno.txt"), sep = '\t', row.names = FALSE)
+  write.table(as.data.frame(peak_anno@anno), file = paste0(outfile, ".peakAnno.txt"), sep = "\t", row.names = FALSE)
+
+  writeLines("Annotation done!", snakemake@log)
 }
 
 annotate_peaks(snakemake)

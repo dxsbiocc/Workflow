@@ -29,7 +29,7 @@ class Wrapper(WrapperBase):
             " {self.snakemake.threads}"
             " {self.extra}"
             " -d {self.snakemake.output[0]}"
-            " {self.snakemake.input.target})"
+            " {self.snakemake.input.fasta})"
             " {self.log}"
         )
 

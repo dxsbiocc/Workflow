@@ -1,0 +1,13 @@
+rule chromap_index:
+    input:
+        "ref.fa"
+    output:
+        "ref.index"
+    log:
+        "log/chromap/index.log"
+    params:
+        kmer = 17,
+        miniWinSize = 7,
+        extra = "--min-frag-length 30",
+    wrapper:
+        "file:../../../chrmoap/index"

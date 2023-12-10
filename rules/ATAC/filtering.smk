@@ -3,11 +3,11 @@ if SHIFT:
     rule shift:
         input:
             rules.mark_duplicates.output.bam,
-            rules.cons_index.output,
+            rules.rmdup_index.output,
         output:
-            "dedup/{sample}/{sample}.shift.bam",
+            opj(OUTDIR, "dedup/{sample}/{sample}.shift.bam"),
         log:
-            "logs/dedup/dedup_shift_{sample}.log",
+            opj(OUTDIR, "logs/dedup/dedup_shift_{sample}.log"),
         threads: 4
         params:
             # optional parameters
@@ -25,11 +25,11 @@ else:
     rule noshift:
         input:
             rules.mark_duplicates.output.bam,
-            rules.cons_index.output,
+            rules.rmdup_index.output,
         output:
-            "dedup/{sample}/{sample}.shift.bam",
+            opj(OUTDIR, "dedup/{sample}/{sample}.shift.bam"),
         log:
-            "logs/dedup/dedup_no_shift_{sample}.log",
+            opj(OUTDIR, "logs/dedup/dedup_no_shift_{sample}.log"),
         threads: 4
         params:
             blacklist=BLACKLIST,
@@ -41,11 +41,11 @@ else:
 
 rule shift_sort:
     input:
-        "dedup/{sample}/{sample}.shift.bam",
+        opj(OUTDIR, "dedup/{sample}/{sample}.shift.bam"),
     output:
-        "dedup/{sample}/{sample}.shift.sort.bam",
+        opj(OUTDIR, "dedup/{sample}/{sample}.shift.sort.bam"),
     log:
-        "logs/dedup/dedup_shift_sort_{sample}.log",
+        opj(OUTDIR, "logs/dedup/dedup_shift_sort_{sample}.log"),
     params:
         extra="-m 4G",
     threads: 8
@@ -57,7 +57,7 @@ rule filterChrM:
     input:
         rules.shift_sort.output,
     output:
-        "dedup/{sample}/{sample}.filtered.bam",
+        opj(OUTDIR, "dedup/{sample}/{sample}.filtered.bam"),
     conda:
         lambda wildcards: get_environment("samtools", "view")
     shell:

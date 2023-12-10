@@ -51,15 +51,15 @@ include: os.path.join(PATH, "rules/Assembly/quality_control.smk")
 ############################################################
 rule use_all:
     input:
-        expand("trimmed/{hifi}/", hifi=DATA_DICT['HIFI']),
-        expand("trimmed/{sample}/{sample}.clean.{run}.fq.gz", sample=SAMPLES, run=RUN),
-        expand("genomescope/{access}/{version}", access=ASSESS, version=['v1', 'v2']),
-        expand("assembly/genome.{suffix}.gfa", suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
-        expand('genome/genome.{suffix}.stat', suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
-        expand("busco/{suffix}/", suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg']),
-        expand("genome/genome.{suffix}.fasta.fai", suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg']),
-        expand('qc/stats/{suffix}.tsv', suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg'])
-        "merqury/diploid",
-        expand("quast/{suffix}", suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg'])
-        expand('scaffolding/juicer/{hap}/aligned/merged_nodups.txt', hap=['hap1.p_ctg', 'hap2.p_ctg'])
-        expand("scaffolding/3d-dna/{hap}", hap=['hap1.p_ctg']),
+        expand(opj(OUTDIR, "trimmed/{hifi}/"), hifi=DATA_DICT['HIFI']),
+        expand(opj(OUTDIR, "trimmed/{sample}/{sample}.clean.{run}.fq.gz"), sample=SAMPLES, run=RUN),
+        expand(opj(OUTDIR, "genomescope/{access}/{version}"), access=ASSESS, version=['v1', 'v2']),
+        expand(opj(OUTDIR, "assembly/genome.{suffix}.gfa"), suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+        expand(opj(OUTDIR, "genome/genome.{suffix}.stat"), suffix=["p_ctg", "hap1.p_ctg", "hap2.p_ctg"]),
+        expand(opj(OUTDIR, "busco/{suffix}/"), suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg']),
+        expand(opj(OUTDIR, "genome/genome.{suffix}.fasta.fai"), suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg']),
+        expand(opj(OUTDIR, "qc/stats/{suffix}.tsv"), suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg'])
+        opj(OUTDIR, "merqury/diploid"),
+        expand(opj(OUTDIR, "quast/{suffix}"), suffix=['p_ctg', 'hap1.p_ctg', 'hap2.p_ctg'])
+        expand(opj(OUTDIR, "scaffolding/juicer/{hap}/aligned/merged_nodups.txt"), hap=['hap1.p_ctg', 'hap2.p_ctg'])
+        expand(opj(OUTDIR, "scaffolding/3d-dna/{hap}"), hap=['hap1.p_ctg']),

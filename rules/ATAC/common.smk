@@ -26,15 +26,15 @@ SHIFT = True if config['control']['shift'] else False
 # -------------------- Helper functions -------------------- #
 
 def get_paired_bam(wildcards):
-    paired = {'treatment': 'dedup/{pair}/{pair}.filtered.bam'}
+    paired = {'treatment': opj(OUTDIR, 'dedup/{pair}/{pair}.filtered.bam')}
     if SAMPLE_MAP and SAMPLE_MAP.get(wildcards.pair):
-        paired['control'] = "dedup/{sp}/{sp}.filtered.bam".format(sp=SAMPLE_MAP[wildcards.pair])
+        paired['control'] = opj(OUTDIR, "dedup/{sp}/{sp}.filtered.bam").format(sp=SAMPLE_MAP[wildcards.pair])
     return paired
     
 def get_bigwig(wildcards):
-    sp_list = ["macs2/bigwig/{}.norm.bw".format(wildcards.control)]
+    sp_list = [opj(OUTDIR, "macs2/bigwig/{}.norm.bw").format(wildcards.control)]
     if CONTROL.get(wildcards.control):
-        sp_list.extend(["macs2/bigwig/{}.norm.bw".format(sp) for sp in CONTROL[wildcards.control]])
+        sp_list.extend([opj(OUTDIR, "macs2/bigwig/{}.norm.bw").format(sp) for sp in CONTROL[wildcards.control]])
     return sp_list
 
 def get_macs2(sample, narrow=True):

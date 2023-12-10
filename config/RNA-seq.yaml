@@ -14,9 +14,22 @@ parameters:
   star:
     extra: "--outSAMtype BAM SortedByCoordinate --twopassMode Basic --quantMode GeneCounts --chimOutType WithinBAM HardClip"
     read_length: 101
+    genome_lib_dir: null
+  rsem:
+    extra: "--seed 42"
+    index: null
+  kallisto:
+    extra: "--single -l 200 -s 80"
+    index: null
+  salmon:
+    extra: "",
+    libtype: "A"
+    index: null
 
 # ---------------- control parameters ----------------
 control:
   trimming: "fastp"
-  mapping: "star"           # bowtie2、hisat2、star、minimap2
+  mapping: "star"               # bowtie2 | hisat2 | star | minimap2
   star_two_step: true
+  quantify: "rsem"              # rsem | salmon | kallisto
+  differential_analysis: edger  # edger | deseq2 | limma

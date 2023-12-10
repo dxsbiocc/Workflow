@@ -3,11 +3,9 @@ rule trimmomatic_pe:
         fq1="reads/{sample}.1.fastq.gz",
         fq2="reads/{sample}.2.fastq.gz"
     output:
-        fq1="trimmed/{sample}.1.fastq.gz",
-        fq2="trimmed/{sample}.2.fastq.gz",
+        trimmed = expand(os.path.join("/Users/dengxsh/Downloads", "trimmed/{{sample}}.{run}.fastq.gz"), run=[1, 2]),
         # reads where trimming entirely removed the mate
-        fq1_unpaired="trimmed/{sample}.1.unpaired.fastq.gz",
-        fq2_unpaired="trimmed/{sample}.2.unpaired.fastq.gz"
+        unpaired = expand(os.path.join("/Users/dengxsh/Downloads", "trimmed/{{sample}}.{run}.unpaired.fastq.gz"), run=[1, 2]),
     log:
         "logs/trimmomatic/{sample}.log"
     params:

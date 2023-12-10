@@ -21,16 +21,19 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
-        # R1
-        fq1 = self.snakemake.input.get("fastq1", None)
-        self.left = f"--left_fq {fq1}" if fq1 else ""
-        # R2
-        fq2 = self.snakemake.input.get("fastq2", None)
-        self.right = f"--left_fq {fq2}" if fq2 else ""
+        reads = self.snakemake.input.get("reads")
+        if len(reads) == 2:
+            fq1, fq2 = reads
+            self.left = f"--left_fq {fq1}"
+            self.right = f"--left_fq {fq2}"
+        else:
+            fq1 = reads[0] if isinstance(reads, list) else reads
+            self.left = f"--left_fq {fq1}"
+            self.right = ""
         # use star align result
         junc = self.snakemake.input.get("junction", None)
         self.junc = f"--chimeric_junction {junc}" if junc else ""
-        if not (bool(fq1 or fq2) ^ bool(junc)):
+        if not (bool(reads) ^ bool(junc)):
             raise ValueError("You can only choose one from FASTQ file and STAR align junction file.")
         # index
         index = self.snakemake.input.get("index", None)

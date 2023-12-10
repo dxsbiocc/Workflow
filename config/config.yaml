@@ -15,6 +15,7 @@ data:
   db: "local"
 
 # ------------------- output folder ------------------
+outdir: null
 workdir: null
 # ------------------ wrapper folder ------------------
 root_dir: "{PLACEHOLDER}"  # project dir (example: xxx/Workflow), must be set
@@ -28,7 +29,7 @@ parameters:
   trimmomatic:
     trimmer: ["LEADING:20", "TRAILING:20", "SLIDINGWINDOW:4:15", "MINLEN:25"]
     compression_level: "-9"
-    mem: 1024
+    mem: 2048
   cutadapt:
     extra: "--minimum-length 1 -q 20"
   trim_galore:
@@ -58,6 +59,7 @@ parameters:
   # dedup
   picard:
     markduplicates: "--REMOVE_DUPLICATES true"
+    mem: 4090
   gatk:
     baserecalibrator: ""
     applybqsr: ""

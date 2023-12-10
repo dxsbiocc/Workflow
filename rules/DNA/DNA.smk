@@ -63,13 +63,13 @@ include: os.path.join(PATH, "rules/DNA/report.smk")
 rule use_all:
     input:
         # data process
-        expand("trimmed/{sample}/{sample}.clean.{run}.fq.gz", sample=SAMPLES, run=RUN),
-        expand("mapped/{sample}/{sample}.sorted.bam", sample=SAMPLES),
-        expand("dedup/{sample}/{sample}.rmdup.bam", sample=SAMPLES),
-        expand("report/stats/{sample}.{stats}", sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
-        expand("report/plot/{sample}", sample=SAMPLES),
+        expand(opj(OUTDIR, "trimmed/{sample}/{sample}.clean.{run}.fq.gz"), sample=SAMPLES, run=RUN),
+        expand(opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"), sample=SAMPLES),
+        expand(opj(OUTDIR, "dedup/{sample}/{sample}.rmdup.bam"), sample=SAMPLES),
+        expand(opj(OUTDIR, "report/{bam}/stats/{sample}.{stats}"), bam=["mapped", "dedup"], sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
+        expand(opj(OUTDIR, "report/{bam}/plot/{sample}"), bam=["mapped", "dedup"], sample=SAMPLES),
         # variant called
-        expand("variant/filtered/all.{mode}.filtered.vcf.gz", mode=MODE),
+        expand(opj(OUTDIR, "variant/filtered/all.{mode}.filtered.vcf.gz"), mode=MODE),
         # annotate
-        "annotated/all.vcf.gz",
-        "sv/all.vcf.gz"
+        opj(OUTDIR, "annotated/all.vcf.gz"),
+        opj(OUTDIR, "sv/all.vcf.gz")

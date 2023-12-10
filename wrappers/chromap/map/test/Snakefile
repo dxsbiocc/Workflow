@@ -1,0 +1,20 @@
+rule chromap_map:
+    input:
+        ref = "ref.fasta",
+        index = "ref.index",
+        fastq1 = [],
+        fastq2 = [],
+        # barcode = "",
+        # whitelist = ""
+    output:
+        "a.bed"
+    log:
+        "log/yahs/a.log"
+    params:
+        mode = "atac",
+        dedup = "",
+        outfmt = "",
+        extra = "",
+    threads: 10,
+    wrapper:
+        "file:../../../chromap/map"

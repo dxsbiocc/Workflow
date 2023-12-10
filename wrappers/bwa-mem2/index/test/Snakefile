@@ -1,6 +1,6 @@
 rule bwa_mem2_index:
     input:
-        "{genome}.fa",
+        fasta = "{genome}.fa",
     output:
         multiext("{genome}", ".0123", ".amb", ".ann", ".pac", ".bwt.2bit.64"),
     log:

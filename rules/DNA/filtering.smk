@@ -5,11 +5,11 @@ if FILTER == 'hard':  # hard filter
             vcf = rules.selectvariants.output.vcf,
             ref = REFERENCE
         output:
-            vcf = "variant/filtered/all.{mode}.filtered.vcf.gz",
+            vcf = opj(OUTDIR, "variant/filtered/all.{mode}.filtered.vcf.gz"),
         params:
             filters = lambda wildcard: get_filter(wildcard.mode), 
         log:
-            "logs/gatk/variantfiltration/{mode}.log",
+            opj(OUTDIR, "logs/gatk/variantfiltration/{mode}.log"),
         resources:
             mem_mb=1024,
         wrapper:
@@ -30,8 +30,8 @@ else: # VQSR filter
             dbsnp = DBSNP,
             dbsnp_idx = DBSNP_IDX
         output:
-            recal = "variant/filtered/all.{mode}.vqsr.recal",
-            tranches = "variant/filtered/all.{mode}.tranches",
+            recal = opj(OUTDIR, "variant/filtered/all.{mode}.vqsr.recal"),
+            tranches = opj(OUTDIR, "variant/filtered/all.{mode}.tranches"),
         params:
             mode = lambda wildcards: '{}'.format(wildcards.mode).upper(),
             resources={
@@ -46,7 +46,7 @@ else: # VQSR filter
         resources:
             mem_mb = 1024,
         log:
-            "logs/gatk/variantrecalibrator/{mode}.log",
+            opj(OUTDIR, "logs/gatk/variantrecalibrator/{mode}.log"),
         wrapper:
             get_wrapper('gatk', 'variantrecalibrator')
 
@@ -57,24 +57,24 @@ else: # VQSR filter
             tranches = rules.variantrecalibrator.output.tranches,
             ref = REFERENCE,
         output:
-            vcf = "variant/filtered/all.{mode}.filtered.vcf.gz",
+            vcf = opj(OUTDIR, "variant/filtered/all.{mode}.filtered.vcf.gz"),
         params:
             mode = lambda wildcards: '{}'.format(wildcards.mode).upper(),
             extra = "",  # optional
         resources:
             mem_mb = 50,
         log:
-            "logs/gatk/applyvqsr/{mode}.log",
+            opj(OUTDIR, "logs/gatk/applyvqsr/{mode}.log"),
         wrapper:
             get_wrapper('gatk', 'applyvqsr')
             
 # merge variant    
 rule merge_calls:
     input:
-        vcfs = expand("variant/filtered/all.{mode}.filtered.vcf.gz", mode=MODE),
+        vcfs = expand(opj(OUTDIR, "variant/filtered/all.{mode}.filtered.vcf.gz"), mode=MODE),
     output:
-        vcf = "variant/filtered/all.vcf.gz",
+        vcf = opj(OUTDIR, "variant/filtered/all.vcf.gz"),
     log:
-        "logs/picard/merge-filtered.log",
+        opj(OUTDIR, "logs/picard/merge-filtered.log"),
     wrapper:
         get_wrapper('picard', 'mergevcfs')

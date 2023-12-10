@@ -1,10 +1,10 @@
 rule gfatools_stat:
     input:
-        "assembly/genome.{suffix}.gfa",
+        opj(OUTDIR, "assembly/genome.{suffix}.gfa"),
     output:
-        "genome/genome.{suffix}.stat",
+        opj(OUTDIR, "genome/genome.{suffix}.stat"),
     log:
-        "logs/gfatools/{suffix}.stat.log",
+        opj(OUTDIR, "logs/gfatools/{suffix}.stat.log"),
     params:
         command = "stat",
     wrapper:
@@ -13,11 +13,11 @@ rule gfatools_stat:
 
 rule gfatools_gfa2fa:
     input:
-        "assembly/genome.{suffix}.gfa",
+        opj(OUTDIR, "assembly/genome.{suffix}.gfa"),
     output:
-        "genome/genome.{suffix}.fasta",
+        opj(OUTDIR, "genome/genome.{suffix}.fasta"),
     log:
-        "logs/gfatools/{suffix}.gfa2fa.log",
+        opj(OUTDIR, "logs/gfatools/{suffix}.gfa2fa.log"),
     params:
         command = "gfa2fa",
 	    extra = "",
@@ -27,11 +27,11 @@ rule gfatools_gfa2fa:
 
 rule samtools_index:
     input:
-        "genome/genome.{suffix}.fasta",
+        opj(OUTDIR, "genome/genome.{suffix}.fasta"),
     output:
-        "genome/genome.{suffix}.fasta.fai",
+        opj(OUTDIR, "genome/genome.{suffix}.fasta.fai"),
     log:
-        "logs/index/{suffix}.log",
+        opj(OUTDIR, "logs/index/{suffix}.log"),
     params:
         extra = "",  # optional params string
     wrapper:
@@ -39,11 +39,11 @@ rule samtools_index:
 
 rule seqkit_stats:
     input:
-        fastx = "genome/genome.{suffix}.fasta",
+        fastx = opj(OUTDIR, "genome/genome.{suffix}.fasta"),
     output:
-        stats="qc/stats/{suffix}.tsv",
+        stats = opj(OUTDIR, "qc/stats/{suffix}.tsv"),
     log:
-        "logs/seqkit_stats/{suffix}.log",
+        opj(OUTDIR, "logs/seqkit_stats/{suffix}.log"),
     params:
         command = "stats",
         extra = "--all --tabular",
@@ -54,11 +54,11 @@ rule seqkit_stats:
 
 rule meryl_count:
     input:
-        fasta = expand("trimmed/{hifi}/{hifi}.filt.fastq.gz", hifi=DATA_DICT['HIFI']),
+        fasta = expand(opj(OUTDIR, "trimmed/{hifi}/{hifi}.filt.fastq.gz"), hifi=DATA_DICT['HIFI']),
     output:
-        directory("merqury/genome/"),
+        directory(opj(OUTDIR, "merqury/genome/")),
     log:
-        "logs/merqury/meryl_count.log",
+        opj(OUTDIR, "logs/merqury/meryl_count.log"),
     params:
         command = "count",
         extra = "k=31",
@@ -71,12 +71,12 @@ rule meryl_count:
 
 rule merqury_diploid:
     input:
-        hifi = expand("genome/genome.{suffix}.fasta", suffix=["hap1.p_ctg", "hap2.p_ctg"]),
+        hifi = expand(opj(OUTDIR, "genome/genome.{suffix}.fasta"), suffix=["hap1.p_ctg", "hap2.p_ctg"]),
         db = rules.meryl_count.output,
     output:
-        directory("merqury/diploid")
+        directory(opj(OUTDIR, "merqury/diploid"))
     log:
-        "logs/merqury/diploid.log",
+        opj(OUTDIR, "logs/merqury/diploid.log"),
     params:
         output_prefix = "merqury",
         extra = "",
@@ -87,11 +87,11 @@ rule merqury_diploid:
 
 rule busco_hap:
     input:
-        fasta = "genome/genome.{suffix}.fasta",
+        fasta = opj(OUTDIR, "genome/genome.{suffix}.fasta"),
     output:
-        directory("busco/{suffix}"),
+        directory(opj(OUTDIR, "busco/{suffix}")),
     log:
-        "logs/qc/busco_{suffix}.log",
+        opj(OUTDIR, "logs/qc/busco_{suffix}.log"),
     params:
         dataset_dir = "vertebrata_odb10"
         mode = "genome",

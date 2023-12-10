@@ -2,12 +2,12 @@
 # then calculate read depth histogram and base-level read depth
 rule minimap2_paf:
     input:
-        target = "genome/genome.p_ctg.fasta",  # can be either genome index or genome fasta
-        query = "trimmed/{hifi}/{hifi}.filt.fastq.gz",
+        target = opj(OUTDIR, "genome/genome.p_ctg.fasta"),  # can be either genome index or genome fasta
+        query = opj(OUTDIR, "trimmed/{hifi}/{hifi}.filt.fastq.gz"),
     output:
-        "dedups/{hifi}.paf.gz",
+        opj(OUTDIR, "dedups/{hifi}.paf.gz"),
     log:
-        "logs/minimap2/{hifi}.log",
+        opj(OUTDIR, "logs/minimap2/{hifi}.log"),
     params:
         extra = "-x map-pb",  # optional
         sorting = "coordinate",  # optional: Enable sorting. Possible values: 'none', 'queryname' or 'coordinate'
@@ -18,12 +18,12 @@ rule minimap2_paf:
 
 rule purge_dups_pbcstat:
     input:
-        expand("dedups/{hifi}.paf.gz", hifi=DATA_DICT["hifi"]),
+        expand(opj(OUTDIR, "dedups/{hifi}.paf.gz"), hifi=DATA_DICT["hifi"]),
     output:
-        cov = "dedups/purge_dups/pbcstat/genome.cov",
-        stat = "dedups/purge_dups/pbcstat/genome.stat",
+        cov = opj(OUTDIR, "dedups/purge_dups/pbcstat/genome.cov"),
+        stat = opj(OUTDIR, "dedups/purge_dups/pbcstat/genome.stat"),
     log:
-        "logs/purge_dups/pbcstat.log",
+        opj(OUTDIR, "logs/purge_dups/pbcstat.log"),
     params:
         extra = "",
     threads: 30
@@ -34,9 +34,9 @@ rule purge_dups_calcuts:
     input:
         rules.purge_dups_pbcstat.output.stat,
     output:
-        "dedups/purge_dups/calcuts/genome.cutoffs",
+        opj(OUTDIR, "dedups/purge_dups/calcuts/genome.cutoffs"),
     log:
-        "logs/purge_dups/calcuts.log",
+        opj(OUTDIR, "logs/purge_dups/calcuts.log"),
     params:
         extra = "-l 2 -m 4 -u 8",
     threads: 30
@@ -46,11 +46,11 @@ rule purge_dups_calcuts:
 # Split an assembly and do a self-self alignment
 rule purge_dups_split_fa:
     input:
-        "genome/genome.p_ctg.fasta",
+        opj(OUTDIR, "genome/genome.p_ctg.fasta"),
     output:
-        "dedups/purge_dups/split_fa/primary.split",
+        opj(OUTDIR, "dedups/purge_dups/split_fa/primary.split"),
     log:
-        "logs/purge_dups/split_fa.log",
+        opj(OUTDIR, "logs/purge_dups/split_fa.log"),
     params:
         extra = "",
     threads: 30
@@ -62,9 +62,9 @@ rule minimap2_self:
         target = rules.purge_dups_split_fa.output,  # can be either genome index or genome fasta
         query = rules.purge_dups_split_fa.output,
     output:
-        "dedups/primary.split.self.paf.gz",
+        opj(OUTDIR, "dedups/primary.split.self.paf.gz"),
     log:
-        "logs/minimap2/split.self.log",
+        opj(OUTDIR, "logs/minimap2/split.self.log"),
     params:
         extra = "-xasm5 -DP",  # optional
         sorting = "coordinate",  # optional: Enable sorting. Possible values: 'none', 'queryname' or 'coordinate'
@@ -80,9 +80,9 @@ rule purge_dups:
         cov = rules.purge_dups_pbcstat.output.cov,
         cutoff = rules.purge_dups_calcuts.output,
     output:
-        "dedups/purge_dups/purge_dups/genome.bed",
+        opj(OUTDIR, "dedups/purge_dups/purge_dups/genome.bed"),
     log:
-        "logs/purge_dups/purge_dups.log",
+        opj(OUTDIR, "logs/purge_dups/purge_dups.log"),
     params:
         extra = "-2",
     threads: 50
@@ -92,13 +92,13 @@ rule purge_dups:
 # Get purged primary and haplotig sequences from draft assembly
 rule purge_dups_get_seqs:
     input:
-        fas = "genome/genome.p_ctg.fasta",
+        fas = opj(OUTDIR, "genome/genome.p_ctg.fasta"),
         bed = rules.purge_dups.output,
     output:
-        hap = "dedups/get_seqs.hap.fasta",
-        purged = "dedups/get_seqs.purged.fasta",
+        hap = opj(OUTDIR, "dedups/get_seqs.hap.fasta"),
+        purged = opj(OUTDIR, "dedups/get_seqs.purged.fasta"),
     log:
-        "logs/purge_dups/get_seqs.log",
+        opj(OUTDIR, "logs/purge_dups/get_seqs.log"),
     params:
         extra = "",
     threads: 20

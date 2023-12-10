@@ -1,36 +1,41 @@
+import os
+import json
+
 # configfile
 configfile: os.path.join(PATH, "config/RNA-seq.yaml")
-
-include: os.path.join(PATH, "rules/common/utils.smk")
-
+############################################################
+#                      Global Variable                     #
+############################################################
+# sample groups
+if 'type' in DATA.columns:
+    GROUPS = DATA.groupby('type').apply(lambda x: x.index.to_list()).to_dict()
+else:
+    GROUPS = None
+# differential analysis metohd
+DIFF_TOOL = config['control']['differential_analysis'].lower()
+# star parameters
 READ_LENGTH = config['parameters']['star']['read_length']
-# ------------------------- common rules ---------------------- #
-# trimming
-get_trimmed(TRIMMING)
-# index
-if MAPPING == 'star' and READ_LENGTH != 101:
-    rule star_index:
-        input:
-            fasta = REF,
-            gtf = GTF
-        output:
-            directory(INDEX),
-        threads: 1
-        params:
-            extra = "",
-            sjdbOverhang = READ_LENGTH - 1
-        log:
-            "logs/mapped/star_index.log",
-        wrapper:
-            get_wrapper("star", "index")
-# mapping
-get_mapping(MAPPING)
-# dedup
-get_dedup(DEDUP)
-# ------------------------- special rules --------------------- #
-
-
-# ---------------------------- outputs ------------------------ #
+GENOME_LIB = config['parameters']['star']['genome_lib_dir']
+# quantify tool
+QUANTIFY_TOOL = config['control']['quantify'].lower()
+# rsem parameters
+RSEM_INDEX = config['parameters']['rsem']['index']
+# salmon parameters
+SALMON_INDEX = config['parameters']['salmon']['index']
+# kilisto parameters
+KALLISTO_INDEX = config['parameters']['kallisto']['index']
+############################################################
+#                          Include                         #
+############################################################
+include: os.path.join(PATH, "rules/common/trimmed.smk")
+include: os.path.join(PATH, "rules/common/mapping.smk")
+include: os.path.join(PATH, "rules/RNA/fusion.smk")
+# inter-groups differential analysis
+if GROUPS:
+    include: os.path.join(PATH, "rules/RNA/differential_expression.smk")
+############################################################
+#                           Runing                         #
+############################################################
 rule all:
     input:
-        ""
+        expand(opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"), sample=SAMPLES),

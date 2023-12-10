@@ -1,0 +1,13 @@
+rule yahs:
+    input:
+        contig = "contigs/a.fasta",
+        hic = "hic/a.bam",
+    output:
+        directory('out')
+    log:
+        "log/yahs/a.log"
+    params:
+        enzyme = "ATGC"
+        extra = "",
+    wrapper:
+        "file:../../yahs"

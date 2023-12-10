@@ -5,13 +5,13 @@ rule hifiadapterfit:
         db = get_adapter('HIFI'),
         script = get_script('pbadapterfilt.sh')
     output:
-        directory("trimmed/{hifi}")
+        directory(opj(OUTDIR, "trimmed/{hifi}"))
     params:
         min_length = 44, # minimum length of the read after trimming
         min_percentage = 97,
     threads: 10
     log:
-        "logs/hifiadapterfit/{hifi}.log"
+        opj(OUTDIR, "logs/hifiadapterfit/{hifi}.log")
     wrapper:
         get_wrapper("hifiadapterfit")
 
@@ -21,15 +21,15 @@ rule fastp:
     input:
         reads = get_fastq,
     output:
-        trimmed = expand("trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz", run=RUN),
+        trimmed = expand(opj(OUTDIR, "trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz"), run=RUN),
         # or in a single file
         # unpaired = "trimmed/{sample}/{sample}.singletons.fastq",
         # merged = "fastp/{sample}.merged.fastq",
-        failed = "trimmed/{sample}/{sample}.failed.fastq",
-        html = "trimmed/report/{sample}.fastp.html",
-        json = "trimmed/report/{sample}.fastp.json"
+        failed = opj(OUTDIR, "trimmed/{sample}/{sample}.failed.fastq"),
+        html = opj(OUTDIR, "trimmed/report/{sample}.fastp.html"),
+        json = opj(OUTDIR, "trimmed/report/{sample}.fastp.json")
     log:
-        "logs/trimmed/fastp_{sample}.log"
+        opj(OUTDIR, "logs/trimmed/fastp_{sample}.log")
     params:
         extra = "-g -q 30 -u 50 -n 15 -l 36 -w 4",  # optional parameters
         adapters = "--adapter_fasta " + os.path.join(PATH, 'data/adapters/NexteraPE-PE.fa')

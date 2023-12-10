@@ -2,7 +2,7 @@ rule trimmomatic:
     input:
         "reads/{sample}.fastq.gz"  # input and output can be uncompressed or compressed
     output:
-        "trimmed/{sample}.fastq.gz"
+        trimmed = os.path.join("/Users/dengxsh/Downloads", "trimmed/{sample}.fastq.gz"),
     log:
         "logs/trimmomatic/{sample}.log"
     params:

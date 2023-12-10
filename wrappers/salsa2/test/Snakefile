@@ -4,8 +4,7 @@ rule salsa2:
         fai = "{sample}.fasta.fai",
         bed = "{sample}.bed",
     output:
-        agp = "out/{sample}.agp",
-        fas = "out/{sample}.fas",
+        directory("out")
     log:
         "logs/salsa2/{sample}.log",
     params:

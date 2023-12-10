@@ -29,7 +29,7 @@ class Wrapper(WrapperBase):
         shell(
             "bowtie2-build"
             " --threads {self.snakemake.threads}"
-            " -f {self.snakemake.input.ref}"
+            " -f {self.snakemake.input.fasta}"
             " {self.index}"
             " {self.extra}"
             " {self.log}"

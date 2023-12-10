@@ -46,7 +46,7 @@ class Wrapper(WrapperBase):
             "bwa index" 
             " {self.prefix}" 
             " {self.algorithm}" 
-            " {self.snakemake.input[0]}" 
+            " {self.snakemake.input.fasta}" 
             " {self.log}"
         )
 

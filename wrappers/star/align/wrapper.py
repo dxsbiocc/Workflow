@@ -47,9 +47,9 @@ class Wrapper(WrapperBase):
             "--chimSegmentMin": 12,                     # ** essential to invoke chimeric read detection & reporting **
             "--chimJunctionOverhangMin": 8,
             "--chimOutJunctionFormat": 1,               # **essential** includes required metadata in Chimeric.junction.out file.
-            "--alignSJDBoverhangMin": 1,
-            "--alignMatesGapMax": 1000000,              # avoid readthru fusions within 100k
-            "--alignIntronMax": 500000,
+            "--alignSJDBoverhangMin": 10,
+            "--alignMatesGapMax": 100000,              # avoid readthru fusions within 100k
+            "--alignIntronMax": 100000,
             "--alignSJstitchMismatchNmax": "5 -1 5 5",  # settings improved certain chimera detections
             "--outSAMattrRGline": "ID:GRPundef",
             "--chimMultimapScoreRange": 3,
@@ -76,10 +76,10 @@ class Wrapper(WrapperBase):
             self.stdout = "SAM"
         # fastq file
         reads = self.snakemake.input.get("reads")
-        fq1 = [r for r in reads if '.clean.R1.fq.gz' in r]
+        fq1 = sorted([r for r in reads if '.clean.R1.fq.gz' in r])
         assert fq1, "input-> fastq1 is a required input parameter"
         
-        fq2 = [r for r in reads if '.clean.R2.fq.gz' in r]
+        fq2 = sorted([r for r in reads if '.clean.R2.fq.gz' in r])
         if fq2:
             assert len(fq1) == len(fq2), \
                 "input-> equal number of files required for fq1 and fastq2"
@@ -90,12 +90,14 @@ class Wrapper(WrapperBase):
         
         # decomplession
         if fq1[0].endswith(".gz"):
-            self.readcmd = "--readFilesCommand zcat"
+            self.readcmd = "--readFilesCommand gunzip -c"
         elif fq1[0].endswith(".bz2"):
-            self.readcmd = "--readFilesCommand bzcat"
+            self.readcmd = "--readFilesCommand bunzip2 -c"
         else:
             self.readcmd = ""
-        
+
+        out_unmapped = self.snakemake.output.get("unmapped", "")
+        self.out_unmapped = "--outReadsUnmapped Fastx" if out_unmapped else ""
         # genome index
         self.index = self.snakemake.input.get("index")
         if not self.index:
@@ -109,6 +111,7 @@ class Wrapper(WrapperBase):
                 " --genomeDir {self.index}"
                 " --readFilesIn {self.left} {self.right}"
                 " {self.readcmd}"
+                " {self.out_unmapped}"
                 " {self.extra}"
                 " --outTmpDir {tmpdir}/STARtmp"
                 " --outFileNamePrefix {tmpdir}/"
@@ -122,7 +125,7 @@ class Wrapper(WrapperBase):
             if self.snakemake.output.get("chim_junc"):
                 shell("cat {tmpdir}/Chimeric.out.junction > {self.snakemake.output.chim_junc:q}")
             if self.snakemake.output.get("chim_junc_sam"):
-                shell("cat {tmpdir}/Chimeric.out.sam > {self.snakemake.output.chim_junc_sam:q}")
+                shell("cat {tmpdir}/Chimeric.out.*am > {self.snakemake.output.chim_junc_sam:q}")
             if self.snakemake.output.get("sj"):
                 shell("cat {tmpdir}/SJ.out.tab > {self.snakemake.output.sj:q}")
             if self.snakemake.output.get("log"):
@@ -131,6 +134,16 @@ class Wrapper(WrapperBase):
                 shell("cat {tmpdir}/Log.progress.out > {self.snakemake.output.log_progress:q}")
             if self.snakemake.output.get("log_final"):
                 shell("cat {tmpdir}/Log.final.out > {self.snakemake.output.log_final:q}")
+            
+            unmapped = self.snakemake.output.get("unmapped")
+            if unmapped:
+                # SE
+                if not self.right:
+                    unmapped = [unmapped]
+
+                for i, out_unmapped in enumerate(unmapped, 1):
+                    cmd = "gzip -c" if out_unmapped.endswith("gz") else "cat"
+                    shell("{cmd} {tmpdir}/Unmapped.out.mate{i} > {out_unmapped}")
 
 
 if __name__ == '__main__':

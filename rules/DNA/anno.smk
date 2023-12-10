@@ -5,12 +5,12 @@ rule vep_annotate:
         plugins = VEP_PLUGINS_LOCAL,
     output:
         calls = report(
-            "annotated/all.vcf.gz",
+            opj(OUTDIR, "annotated/all.vcf.gz"),
             caption = "report/vcf.rst",
             category = "Calls",
         ),
         stats = report(
-            "annotated/stats/all.stats.html",
+            opj(OUTDIR, "annotated/stats/all.stats.html"),
             caption = "report/stats.rst",
             category = "Calls",
         ),
@@ -18,7 +18,7 @@ rule vep_annotate:
         plugins = VEP_PLUGINS,
         extra = "",
     log:
-        "logs/vep/annotate.log",
+        opj(OUTDIR, "logs/vep/annotate.log"),
     threads: 4
     wrapper:
         get_wrapper('vep', 'annotate')
