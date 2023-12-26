@@ -61,19 +61,17 @@ class Wrapper(WrapperBase):
         else:
             self.paired_end_string = ""
 
-        genes_results = self.snakemake.output.genes_results
-        if genes_results.endswith(".genes.results"):
-            self.output_prefix = genes_results[: -len(".genes.results")]
+        self.output_prefix = self.snakemake.output.results
+        
+        mapping = self.snakemake.params.get("mapping", "bowtie2")
+        if mapping == "bowtie2":
+            self.extra += " --bowtie2"
+        elif mapping == "star":
+            self.extra += " --star"
+        elif mapping == "hisat2":
+            self.extra += " --hisat2-hca"
         else:
-            raise Exception(
-                "output.genes_results file name malformed "
-                "(rsem will append .genes.results suffix)"
-            )
-        if not self.snakemake.output.isoforms_results.endswith(".isoforms.results"):
-            raise Exception(
-                "output.isoforms_results file name malformed "
-                "(rsem will append .isoforms.results suffix)"
-            )
+            print("mapping should be bowtie2 or star, got {}".format(mapping))
 
         self.reference_prefix = os.path.splitext(self.snakemake.input.reference[0])[0]
 

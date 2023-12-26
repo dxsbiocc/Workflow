@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 # configfile
-configfile: os.path.join(PATH, "config/ATAC-seq.yaml")
+# configfile: os.path.join(PATH, "config/ATAC-seq.yaml")
 
 # sample informations
 if SAMPLE_MAP:
@@ -76,3 +76,5 @@ rule use_all:
         opj(OUTDIR, "macs2/bigwig/heatmap_spearman_corr_readCounts.pdf"),
         # get stats
         # "report/stats.csv",
+    message:
+        print('ATAC-seq pipeline is runing!')

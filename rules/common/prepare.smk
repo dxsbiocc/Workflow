@@ -1,6 +1,29 @@
 import os
 
 
+# pipeline name
+PIPELINE = config['pipeline']
+# overwrite configurations
+if PIPELINE in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:     # ATAC-seq, Cut&Tag, ChIP-seq
+    configfile: os.path.join(PATH, "config/ATAC-seq.yaml")
+    PIPENAME = 'ATAC'
+elif PIPELINE in ['WGS', 'WES']:  # DNA-seq, targeted sequencing
+    configfile: os.path.join(PATH, "config/DNA-seq.yaml")
+    PIPENAME = 'DNA'
+elif PIPELINE == 'RNA-seq':       # RNA-seq
+    configfile: os.path.join(PATH, "config/RNA-seq.yaml")
+    PIPENAME = 'RNA'
+elif PIPELINE == 'WGBS':
+    configfile: os.path.join(PATH, "config/WGBS.yaml")
+    PIPENAME = 'WGBS'
+elif PIPELINE == 'HIC':
+    configfile: os.path.join(PATH, "config/HIC.yaml")
+    PIPENAME = 'HIC'
+elif PIPELINE == 'Assembly':
+    configfile: os.path.join(PATH, "config/Assembly.yaml")
+    PIPENAME = 'Assembly'
+else:
+    raise ValueError(f"Unknown pipeline: {PIPELINE}")
 # -------------------- Global Parameters -------------------- #
 # output directory
 OUTDIR = os.path.abspath(config['outdir'])
@@ -15,17 +38,6 @@ if PAIRED:
     RUN = ['R1', 'R2']
 else:
     RUN = ['R1']
-# --------------------- Reference Data ---------------------- #
-# genome name
-GENOME = config['data']['genome']
-# reference genome
-REFERENCE = config['data']['ref']
-# genome index
-INDEX = config['data'].get('index', None)
-if not INDEX:
-    include: "index.smk"
-# annotation file
-GTF = config['data']['gtf']
 # --------------------- Control Flags ----------------------- #
 # trimming tool
 TRIMMING = config['control']['trimming']
@@ -33,6 +45,19 @@ TRIMMING = config['control']['trimming']
 MAPPING = config['control']['mapping']
 # deduplication tool
 DEDUP = config['control']['dedup']
+# --------------------- Reference Data ---------------------- #
+# genome name
+GENOME = config['data']['genome']
+# reference genome
+REFERENCE = config['data']['ref']
+# genome index
+INDEX = config['data'].get('index', None)
+# annotation file
+GTF = config['data']['gtf']
+# ----------------------- Util rules ------------------------ #
+include: "utils.smk"
+if (not INDEX) or (not os.path.exists(INDEX)) or (os.listdir(INDEX) == []):
+    include: "index.smk"
 # --------------------- Local Database ---------------------- #
 REF_GC = os.path.join(DATABASE, 'GC', f'{GENOME}.gc')
 # ---------------------- Samples Info ----------------------- #
@@ -47,8 +72,6 @@ else:
     SAMPLE_MAP = None
     PAIRS = SAMPLES
 # ---------------------- Workflow Envs ---------------------- #
-# pipeline name
-PIPELINE = config['pipeline']
 # workdir
 if not config.get('workdir'):
     config['workdir'] = os.getcwd()
@@ -61,6 +84,3 @@ if not OUTDIR:
 wildcard_constraints:
     sample = "|".join(SAMPLES),
     pair = "|".join(PAIRS)
-
-# ---------------------- Include rules ---------------------- #
-include: "utils.smk"

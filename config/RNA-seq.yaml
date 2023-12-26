@@ -9,12 +9,19 @@ data:
   index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
   gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
 
+outdir: null
+
 # --------------- programs parameters ----------------
 parameters:
   star:
     extra: "--outSAMtype BAM SortedByCoordinate --twopassMode Basic --quantMode GeneCounts --chimOutType WithinBAM HardClip"
-    read_length: 101
+    read_length: 150
     genome_lib_dir: null
+  hisat2:
+    extra: "--rg-id ID:{sample} --rg SM:{sample}"
+    sort: "samtools"          # Can be 'none', 'samtools' or 'picard'.
+    sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
+    sort_extra: ""
   rsem:
     extra: "--seed 42"
     index: null
@@ -22,14 +29,18 @@ parameters:
     extra: "--single -l 200 -s 80"
     index: null
   salmon:
-    extra: "",
+    extra: ""
     libtype: "A"
     index: null
+  featurecounts:
+    extra: "-O --fracOverlap 0.2 -J"
+    r_path: ""    # implicitly sets the --Rpath flag
+    strand: 0     # optional; strandness of the library (0: unstranded [default], 1: stranded, and 2: reversely stranded)
 
 # ---------------- control parameters ----------------
 control:
   trimming: "fastp"
   mapping: "star"               # bowtie2 | hisat2 | star | minimap2
   star_two_step: true
-  quantify: "rsem"              # rsem | salmon | kallisto
+  quantify: "featurecounts"     # rsem | salmon | kallisto | featurecounts
   differential_analysis: edger  # edger | deseq2 | limma

@@ -37,6 +37,10 @@ class Wrapper(WrapperBase):
                 raise Exception(
                     "the path for {} is inconsistent with that of output.seq".format(output_variable)
                 )
+            
+        gtf = self.snakemake.input.get("gtf", None)
+        if gtf:
+            self.extra += f" --gtf {gtf}"
 
     def run(self):
         shell(

@@ -7,7 +7,7 @@ from snakemake.utils import min_version
 min_version("7.12.0")
 
 # configfile
-configfile: os.path.join(PATH, "config/Assembly.yaml")
+# configfile: os.path.join(PATH, "config/Assembly.yaml")
 ############################################################
 #                      Global Variable                     #
 ############################################################

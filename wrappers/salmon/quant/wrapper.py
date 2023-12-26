@@ -105,7 +105,7 @@ class Wrapper(WrapperBase):
         if self.bam:
             self.bam = f"--writeMappings {self.bam}"
 
-        self.outdir = dirname(self.snakemake.output.get("quant"))
+        self.outdir = self.snakemake.output.get("quant")
         self.index = self.snakemake.input["index"]
 
 

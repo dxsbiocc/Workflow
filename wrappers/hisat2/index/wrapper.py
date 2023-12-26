@@ -30,17 +30,19 @@ class Wrapper(WrapperBase):
             self.input_seq += "-c "
         self.input_seq += ",".join(fasta) if isinstance(fasta, list) else fasta
 
-        hisat_dir = self.snakemake.params.get("prefix", "")
-        if hisat_dir:
-            os.makedirs(hisat_dir)
+        self.output = self.snakemake.output[0]
+        if not os.path.exists(self.output):
+            os.makedirs(self.output)
+        self.prefix = os.path.join(self.output, self.snakemake.params.get("prefix", "hisat2_index"))
+        
 
     def run(self):
         shell(
-            "hisat2-build {self.extra} "
-            "-p {self.snakemake.threads} "
-            "{self.input_seq} "
-            "{self.snakemake.params.prefix} "
-            "{self.log}"
+            "hisat2-build {self.extra}"
+            " -p {self.snakemake.threads}"
+            " {self.input_seq}"
+            " {self.prefix}"
+            " {self.log}"
         )
 
 

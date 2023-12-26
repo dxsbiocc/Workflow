@@ -11,8 +11,9 @@
 # ============================================================
 
 
-import re
-import tempfile
+import os
+import glob
+from tempfile import TemporaryDirectory
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
 
@@ -27,8 +28,8 @@ class Wrapper(WrapperBase):
 
         # same parameters default value
         params = {
-            "--outReadsUnmapped": "None",
             "--twopassMode": "Basic",
+            "--quantMode": "TranscriptomeSAM GeneCounts",
             "--outSAMstrandField": "intronMotif",       # include for potential use with StringTie for assembly
             "--outSAMunmapped": "Within",
             "--outFilterMultimapScoreRange": 1,
@@ -76,10 +77,10 @@ class Wrapper(WrapperBase):
             self.stdout = "SAM"
         # fastq file
         reads = self.snakemake.input.get("reads")
-        fq1 = sorted([r for r in reads if '.clean.R1.fq.gz' in r])
+        fq1 = sorted([r for r in reads if 'R1' in r])
         assert fq1, "input-> fastq1 is a required input parameter"
         
-        fq2 = sorted([r for r in reads if '.clean.R2.fq.gz' in r])
+        fq2 = sorted([r for r in reads if 'R2' in r])
         if fq2:
             assert len(fq1) == len(fq2), \
                 "input-> equal number of files required for fq1 and fastq2"
@@ -97,14 +98,16 @@ class Wrapper(WrapperBase):
             self.readcmd = ""
 
         out_unmapped = self.snakemake.output.get("unmapped", "")
-        self.out_unmapped = "--outReadsUnmapped Fastx" if out_unmapped else ""
+        self.out_unmapped = "--outReadsUnmapped Fastx" if out_unmapped else "--outReadsUnmapped None",
         # genome index
         self.index = self.snakemake.input.get("index")
         if not self.index:
-            self.index = self.snakemake.params.get("idx", "")        
+            self.index = self.snakemake.params.get("idx", "")
+
+        self.output = os.path.dirname(self.snakemake.output.aln)
 
     def run(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with TemporaryDirectory() as tmpdir:
             shell(
                 "STAR "
                 " --runThreadN {self.snakemake.threads}"
@@ -119,31 +122,19 @@ class Wrapper(WrapperBase):
                 " > {self.snakemake.output.aln}"
                 " {self.log}"
             )
-
-            if self.snakemake.output.get("reads_per_gene"):
-                shell("cat {tmpdir}/ReadsPerGene.out.tab > {self.snakemake.output.reads_per_gene:q}")
-            if self.snakemake.output.get("chim_junc"):
-                shell("cat {tmpdir}/Chimeric.out.junction > {self.snakemake.output.chim_junc:q}")
-            if self.snakemake.output.get("chim_junc_sam"):
-                shell("cat {tmpdir}/Chimeric.out.*am > {self.snakemake.output.chim_junc_sam:q}")
-            if self.snakemake.output.get("sj"):
-                shell("cat {tmpdir}/SJ.out.tab > {self.snakemake.output.sj:q}")
-            if self.snakemake.output.get("log"):
-                shell("cat {tmpdir}/Log.out > {self.snakemake.output.log:q}")
-            if self.snakemake.output.get("log_progress"):
-                shell("cat {tmpdir}/Log.progress.out > {self.snakemake.output.log_progress:q}")
-            if self.snakemake.output.get("log_final"):
-                shell("cat {tmpdir}/Log.final.out > {self.snakemake.output.log_final:q}")
-            
+            # unmapped reads
             unmapped = self.snakemake.output.get("unmapped")
             if unmapped:
                 # SE
                 if not self.right:
                     unmapped = [unmapped]
-
                 for i, out_unmapped in enumerate(unmapped, 1):
-                    cmd = "gzip -c" if out_unmapped.endswith("gz") else "cat"
-                    shell("{cmd} {tmpdir}/Unmapped.out.mate{i} > {out_unmapped}")
+                    if os.path.exists(f"{tmpdir}/Unmapped.out.mate{i}"):
+                        cmd = "gzip -c" if out_unmapped.endswith("gz") else "cat"
+                        shell("{cmd} {tmpdir}/Unmapped.out.mate{i} > {out_unmapped}")
+            if not os.path.exists(self.output):
+                os.makedirs(self.output)
+            shell(f"find {tmpdir} -maxdepth 1 -type f -exec mv {{}} {self.output} \;")
 
 
 if __name__ == '__main__':

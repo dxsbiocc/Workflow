@@ -1,7 +1,7 @@
 import os
 
 # configfile
-configfile: os.path.join(PATH, "config/HIC.yaml")
+# configfile: os.path.join(PATH, "config/HIC.yaml")
 ############################################################
 #                      Global Variable                     #
 ############################################################

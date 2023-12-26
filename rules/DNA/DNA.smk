@@ -1,7 +1,7 @@
 import os
 
 # configfile
-configfile: os.path.join(PATH, "config/DNA-seq.yaml")
+# configfile: os.path.join(PATH, "config/DNA-seq.yaml")
 ############################################################
 #                      Global Variable                     #
 ############################################################

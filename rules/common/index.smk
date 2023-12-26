@@ -1,10 +1,10 @@
 if MAPPING == 'bwa':
     rule bwa_index:
         input:
-            fasta = REF
+            fasta = REFERENCE
         output:
             idx = multiext(
-                os.path.splitext(REF)[0], 
+                INDEX, 
                 ".amb", 
                 ".ann", 
                 ".bwt", 
@@ -15,16 +15,16 @@ if MAPPING == 'bwa':
         params:
             extra = ""
         log:
-            "logs/mapped/bwa_index.log",
+            opj(OUTDIR, "logs/mapped/bwa_index.log"),
         wrapper:
             get_wrapper("bwa", "index")
 elif MAPPING == 'bwa-mem2':
     rule bwa_mem2_index:
         input:
-            fasta = REF
+            fasta = REFERENCE
         output:
             multiext(
-                os.path.splitext(REF)[0], 
+                INDEX, 
                 ".0123", 
                 ".amb", 
                 ".ann", 
@@ -35,16 +35,16 @@ elif MAPPING == 'bwa-mem2':
         params:
             extra = ""
         log:
-            "logs/mapped/bwa_index.log",
+            opj(OUTDIR, "logs/mapped/bwa_index.log"),
         wrapper:
             get_wrapper("bwa-mem2", "index")
 elif MAPPING == 'bowtie2':
     rule bowtie2_index:
         input:
-            fasta = REF
+            fasta = REFERENCE
         output:
             multiext(
-                os.path.splitext(REF)[0],
+                INDEX,
                 ".1.bt2",
                 ".2.bt2",
                 ".3.bt2",
@@ -56,48 +56,49 @@ elif MAPPING == 'bowtie2':
         params:
             extra = ""
         log:
-            "logs/mapped/bowtie2_index.log",
+            opj(OUTDIR, "logs/mapped/bowtie2_index.log"),
         wrapper:
             get_wrapper("bowtie2", "index")
 elif MAPPING == 'hisat2':
     rule hisat2_index:
         input:
-            fasta = REF
+            fasta = REFERENCE
         output:
-            directory(os.path.dirname(REF)),
+            directory(INDEX),
         threads: 20
         params:
-            extra = ""
+            extra = "",
+            prefix = GENOME
         log:
-            "logs/mapped/hisat2_index.log",
+            opj(OUTDIR, "logs/mapped/hisat2_index.log"),
         wrapper:
             get_wrapper("hisat2", "index")
 elif MAPPING == 'star':
     rule star_index:
         input:
-            fasta = REF,
+            fasta = REFERENCE,
             gtf = GTF
         output:
-            directory(os.path.dirname(REF)),
+            directory(INDEX),
         threads: 20
         params:
             extra = "",
-            sjdbOverhang = 100
+            sjdbOverhang = config['parameters']['star']['read_length'] - 1
         log:
-            "logs/mapped/star_index.log",
+            opj(OUTDIR, "logs/mapped/star_index.log"),
         wrapper:
             get_wrapper("star", "index")
 elif MAPPING == 'minimap2':
     rule minimap2_index:
         input:
-            fasta = REF
+            fasta = REFERENCE
         output:
-            f"{os.path.splitext(REF)[0]}.mmi",
+            INDEX,
         threads: 20
         params:
             extra = ""
         log:
-            "logs/mapped/minimap2_index.log",
+            opj(OUTDIR, "logs/mapped/minimap2_index.log"),
         wrapper:
             get_wrapper("minimap2", "index")
 else:

@@ -11,6 +11,7 @@
 # ============================================================
 
 
+import os
 import tempfile
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
@@ -37,6 +38,16 @@ class Wrapper(WrapperBase):
         if self.r_path:
             self.r_path = f"--Rpath {self.r_path}"
 
+        paired = self.snakemake.params.get("paired")
+        if paired:
+            self.extra += " -p --countReadPairs"
+
+        output = str(self.snakemake.output)
+        if not os.path.exists(output):
+            os.makedirs(output)
+        sample = self.snakemake.wildcards.sample
+        self.out = os.path.join(output, f"{sample}.featureCounts")
+
     def run(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             shell(
@@ -49,7 +60,7 @@ class Wrapper(WrapperBase):
                 " {self.r_path}"
                 " {self.extra}"
                 " --tmpDir {tmpdir}"
-                " -o {self.snakemake.output[0]}"
+                " -o {self.out}"
                 " {self.snakemake.input.samples}"
                 " {self.log}"
             )

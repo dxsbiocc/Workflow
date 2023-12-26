@@ -16,21 +16,8 @@ PATH = config.get('root_dir')
 # ---------------------- prepare data ---------------------- #
 include: os.path.join(PATH, "rules/common/prepare.smk")
 # ---------------------- include rules --------------------- #
-# ATAC-seq、Cut&Tag
-if PIPELINE in ['ATAC-seq', 'Cut&Tag', 'ChIP-seq']:
-    include: os.path.join(PATH, "rules/ATAC/ATAC.smk")
-elif PIPELINE in ['WGS', 'WES']:  # DNA-seq, targeted sequencing
-    include: os.path.join(PATH, "rules/DNA/DNA.smk")
-elif PIPELINE == 'RNA-seq':       # RNA-seq
-    include: os.path.join(PATH, "rules/RNA/RNA.smk")
-elif PIPELINE == 'WGBS':
-    include: os.path.join(PATH, "rules/WGBS/WGBS.smk")
-elif PIPELINE == 'HIC':
-    include: os.path.join(PATH, "rules/HIC/HIC.smk")
-elif PIPELINE == 'Assembly':
-    include: os.path.join(PATH, "rules/Assembly/Assembly.smk")
-else:
-    raise ValueError("")
+# include pipeline rules
+include: os.path.join(PATH, f"rules/{PIPENAME}/{PIPENAME}.smk")
 
 onstart:
     if "verbose" in config and config["verbose"]:

@@ -1,12 +1,13 @@
 rule hisat2_index:
     input:
-        fasta = "{genome}.fasta"
+        fasta = "genome.fasta"
     output:
-        directory("index_{genome}")
+        directory("index")
     params:
-        prefix = "index_{genome}/"
+        extra = "",
+        prefix = "genome"
     log:
-        "logs/hisat2_index_{genome}.log"
+        "logs/hisat2_index.log"
     threads: 2
     wrapper:
         "file:../../../hisat2/index"

@@ -1,6 +1,6 @@
 
 cluster-cancel: "scancel"
-restart-times: "30"
+restart-times: "3"
 jobscript: "slurm-jobscript.sh"
 cluster: "slurm-submit.py"
 # cluster-status: "slurm-status.py"
@@ -10,7 +10,7 @@ local-cores: 10
 latency-wait: "5"
 use-conda: "True"
 use-singularity: "False"
-jobs: "100"
+jobs: "10"
 printshellcmds: "False"
 rerun-incomplete: "True"
 

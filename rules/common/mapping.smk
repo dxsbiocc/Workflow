@@ -3,10 +3,7 @@ if MAPPING == "bwa":
     rule bwa:
         input:
             reads = expand(opj(OUTDIR, "trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz"), run=RUN),
-            index = multiext(
-                INDEX, 
-                ".amb", ".ann", ".bwt", ".pac", ".sa"
-            ),
+            index = INDEX,
         output:
             opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
         log:
@@ -24,7 +21,7 @@ elif MAPPING == "bwa-mem2":
         input:
             reads = expand(opj(OUTDIR, "trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz"), run=RUN),
             # Index can be a list of (all) files created by bwa, or one of them
-            idx = multiext(INDEX, ".amb", ".ann", ".bwt.2bit.64", ".pac"),
+            idx = INDEX,
         output:
             opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
         log:
@@ -42,10 +39,7 @@ elif MAPPING == "bowtie2":
     rule bowtie2:
         input:
             reads = expand(opj(OUTDIR, "trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz"), run=RUN),
-            index = multiext(
-                INDEX,
-                ".1.bt2", ".2.bt2", ".3.bt2", ".4.bt2", ".rev.1.bt2", ".rev.2.bt2",
-            ),
+            index = INDEX,
         output:
             opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
         log:
@@ -60,16 +54,17 @@ elif MAPPING == "hisat2":
     rule hisat2:
         input:
             reads = expand(opj(OUTDIR, "trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz"), run=RUN),
-            index = multiext(
-                INDEX,
-                ".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"
-                )
+            index = INDEX,
         output:
             opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam")
         log:
             opj(OUTDIR, "logs/mapped/hisat2_{sample}.log")
         params:
             extra = config['parameters']['hisat2']['extra'],
+            sort = config['parameters']['hisat2']['sort'],              # Can be 'none', 'samtools' or 'picard'.
+            sort_order = config['parameters']['hisat2']['sort_order'],  # Can be 'queryname' or 'coordinate'.
+            sort_extra = config['parameters']['hisat2']['sort_extra'],
+            prefix = GENOME
         threads: config['parameters']['hisat2']['threads']
         wrapper:
             get_wrapper("hisat2", "align")
@@ -82,18 +77,14 @@ elif MAPPING == "star":
         output:
             # see STAR manual for additional output files
             aln = opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
-            log = opj(OUTDIR, "mapped/{sample}/{sample}.Log.out"),
-            log_final = opj(OUTDIR, "mapped/{sample}/{sample}.Log.final.out"),
-            chim_junc = opj(OUTDIR, "mapped/{sample}/Chimeric.out.junction"),
-            chim_junc_sam = opj(OUTDIR, "mapped/{sample}/Chimeric.out.sam"),
-            reads_per_gene = opj(OUTDIR, "mapped/{sample}/{sample}.ReadsPerGene.txt")
+            unmapped = expand(opj(OUTDIR, "mapped/{{sample}}/{{sample}}.unmapped.{run}.fastq"), run=['R1', 'R2']),
         log:
             opj(OUTDIR, "logs/mapped/star_{sample}.log"),
         params:
             # optional parameters
             extra = config['parameters']['star']['extra'] + " --outSAMattrRGline ID:{sample} SM:{sample}" + \
-                    "--sjdbGTFfile {}".format(config['data']['gtf']) + \
-                    "--sjdbOverhang {}".format(READ_LENGTH - 1),
+                    " --sjdbGTFfile {}".format(GTF) + \
+                    " --sjdbOverhang {}".format(READ_LENGTH - 1),
         threads: config['parameters']['star']['threads']
         wrapper:
             get_wrapper("star", "align")
