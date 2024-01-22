@@ -22,17 +22,20 @@ class Wrapper(WrapperBase):
 
     def parser(self):
         reads = self.snakemake.input.get("reads")
-        if len(reads) == 2:
-            fq1, fq2 = reads
-            self.left = f"--left_fq {fq1}"
-            self.right = f"--left_fq {fq2}"
-        else:
-            fq1 = reads[0] if isinstance(reads, list) else reads
-            self.left = f"--left_fq {fq1}"
-            self.right = ""
         # use star align result
-        junc = self.snakemake.input.get("junction", None)
-        self.junc = f"--chimeric_junction {junc}" if junc else ""
+        junc = self.snakemake.input.get("junction")
+        if reads:
+            if len(reads) == 2:
+                fq1, fq2 = reads
+                self.input = f"--left_fq {fq1} --right_fq {fq2}"
+            else:
+                fq1 = reads[0] if isinstance(reads, list) else reads
+                self.input = f"--left_fq {fq1}"
+        elif junc:
+            self.input = f"--chimeric_junction {junc}" if junc else ""
+        else:
+            raise ValueError("Neither 'junction' or 'reads' not exist")
+        
         if not (bool(reads) ^ bool(junc)):
             raise ValueError("You can only choose one from FASTQ file and STAR align junction file.")
         # index
@@ -45,8 +48,7 @@ class Wrapper(WrapperBase):
         shell(
             "(STAR-Fusion"
             " {self.index}"
-            " {self.left} {self.right}"
-            " {self.junc}"
+            " {self.input}"
             " --output_dir {self.snakemake.output}"
             ") {self.log}"
         )

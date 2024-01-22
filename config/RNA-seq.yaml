@@ -1,46 +1,58 @@
 # --------------------- pipeline ---------------------
-pipeline: "RNA-seq"
+pipeline: RNA-seq
 verbose: false
 
 # -------------------- input data --------------------
 data:
   genome: hg19
-  ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
-  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
-  gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/gencode/GRCh38.primary_assembly.genome.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/gencode/index/star/GRCh38
+  rna: /cluster/facility/yzhang/WorkSpace/Reference/gencode/gencode.v42.transcripts.fa
+  rna_index: null
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/gencode/gencode.v42.annotation.gtf
 
 outdir: null
 
 # --------------- programs parameters ----------------
 parameters:
   star:
-    extra: "--outSAMtype BAM SortedByCoordinate --twopassMode Basic --quantMode GeneCounts --chimOutType WithinBAM HardClip"
+    extra:
     read_length: 150
-    genome_lib_dir: null
   hisat2:
     extra: "--rg-id ID:{sample} --rg SM:{sample}"
-    sort: "samtools"          # Can be 'none', 'samtools' or 'picard'.
-    sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
+    sort: samtools          # Can be 'none', 'samtools' or 'picard'.
+    sort_order: coordinate  # Can be 'queryname' or 'coordinate'.
     sort_extra: ""
   rsem:
-    extra: "--seed 42"
+    extra: --estimate-rspd --calc-ci --seed 123456 --no-bam-output
     index: null
   kallisto:
-    extra: "--single -l 200 -s 80"
+    extra:   # SE parameters: --single -l 200 -s 80
     index: null
   salmon:
-    extra: ""
-    libtype: "A"
+    extra:
+    libtype: A
     index: null
   featurecounts:
-    extra: "-O --fracOverlap 0.2 -J"
-    r_path: ""    # implicitly sets the --Rpath flag
+    extra: -O --fracOverlap 0.2 -J -g gene_id  # attribute in the last column GTF file
+    r_path:       # implicitly sets the --Rpath flag
     strand: 0     # optional; strandness of the library (0: unstranded [default], 1: stranded, and 2: reversely stranded)
+  htseq:
+    extra: -i gene_id  # Use the attributes of the last column in the GTF file as the basis for counting
+  arriba:
+    extra:
+    blacklist: null
+    known_fusions: null
+    sv: null
+  star-fusion:
+    extra:
+    genome_lib_dir: /cluster/facility/yzhang/WorkSpace/data/ctat_genome_lib_build_dir
 
 # ---------------- control parameters ----------------
 control:
-  trimming: "fastp"
-  mapping: "star"               # bowtie2 | hisat2 | star | minimap2
-  star_two_step: true
-  quantify: "featurecounts"     # rsem | salmon | kallisto | featurecounts
-  differential_analysis: edger  # edger | deseq2 | limma
+  trimming: fastp
+  mapping: star                  # bowtie2 | hisat2 | star | minimap2
+  quantify: htseq                # rsem | salmon | kallisto | featurecounts | htseq
+  differential_analysis: deseq2  # edger | deseq2 | limma
+  fusion: arriba                 # arriba, star-fusion, null
+  merge: false

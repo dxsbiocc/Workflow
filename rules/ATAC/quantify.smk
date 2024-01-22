@@ -1,14 +1,14 @@
 rule bamCoverage:
     input:
         # Required input, must index
-        opj(OUTDIR, "dedup/{sample}/{sample}.filtered.bam"),
+        rules.downsample.output if DOWNSAMPLE else rules.filterChrM.output,
     output:
         # Required output.
         # Output file format should be one of ['bw', 'bigwig', 'bigWig', 'bedgraph', 'bedGraph'].
         opj(OUTDIR, "macs2/bigwig/{sample}.norm.bw")
     params:
         # Optional parameters.
-        extra = '--binSize 10 --normalizeUsing RPGC --effectiveGenomeSize ' + str(CHROM_SIZE),
+        extra = config['parameters']['deeptools']['bamcoverage']['extra'] + f' --effectiveGenomeSize {CHROM_SIZE}',
         # extar = '--binSize 1 --normalizeUsing RPKM',
     threads: 1
     log: 
@@ -17,7 +17,7 @@ rule bamCoverage:
         get_wrapper('deeptools', 'bamcoverage')
 
 rule TSSEnrichment:
-    input:
+    input: 
         # bigwig = "macs2/bigwig/{pair}.norm.bw", 
         bigwig = get_bigwig,
         bed = config['data']['gtf']
@@ -29,7 +29,7 @@ rule TSSEnrichment:
         # required argument, choose "scale-regions" or "reference-point"
         command = "reference-point",
         # optional parameters
-        extra = "-a 3000 -b 3000 -p 1",
+        extra = config['parameters']['deeptools']['computematrix']['tss'],
         labels = lambda wildcards, input: [f.split('/')[-1].strip('.norm.bw') for f in input.bigwig]
     wrapper:
         get_wrapper("deeptools", "computematrix")
@@ -43,7 +43,7 @@ rule plotTSSHeatmap:
         opj(OUTDIR, "logs/deeptools/TSS_heatmap_{control}.log")
     params:
         # optional parameters
-        extra = "--plotType=fill --colorMap Reds Blues ",
+        extra = config['parameters']['deeptools']['plotheatmap'],
     wrapper:
         get_wrapper("deeptools", "plotheatmap")
 
@@ -56,10 +56,7 @@ rule plotTSSProfile:
         opj(OUTDIR, "logs/deeptools/TSS_profile_{control}.log")
     params:
         # optional parameters
-        extra = "--plotType=fill "
-        "--perGroup "
-        # "--colors red yellow blue "
-        "--dpi 150 ",
+        extra = config['parameters']['deeptools']['plotprofile'],
     wrapper:
         get_wrapper("deeptools", "plotprofile")
 
@@ -75,7 +72,7 @@ rule genbodyEnrichment:
         # required argument, choose "scale-regions" or "reference-point"
         command = "scale-regions",
         # optional parameters
-        extra = "-a 3000 -b 3000 -p 1 --regionBodyLength 5000 --skipZeros --missingDataAsZero",
+        extra = config['parameters']['deeptools']['computematrix']['genbody'],
         labels = lambda wildcards, input: [f.split('/')[-1].strip('.norm.bw') for f in input.bigwig]
     wrapper:
         get_wrapper("deeptools", "computematrix")
@@ -89,7 +86,7 @@ rule plotBodyHeatmap:
         opj(OUTDIR, "logs/deeptools/genebody_heatmap_{control}.log")
     params:
         # optional parameters
-        extra = "--plotType=fill --colorMap Reds Blues ",
+        extra = config['parameters']['deeptools']['plotheatmap'],
     wrapper:
         get_wrapper("deeptools", "plotheatmap")
 
@@ -102,10 +99,7 @@ rule ploGenebodytProfile:
         opj(OUTDIR, "logs/deeptools/genebody_profile_{control}.log")
     params:
         # optional parameters
-        extra = "--plotType=fill "
-        "--perGroup "
-        # "--colors red yellow blue "
-        "--dpi 150 ",
+        extra = config['parameters']['deeptools']['plotprofile'],
     wrapper:
         get_wrapper("deeptools", "plotprofile")
 
@@ -123,7 +117,7 @@ if len(SAMPLES) > 1:
         params:
             # Optional parameters.
             subcommand = 'bins',
-            extra = '',
+            extra = config['parameters']['deeptools']['multibigwigsummary'].get('extra'),
             labels = lambda wildcards, input: [f.split('/')[-1].strip('.norm.bw') for f in input.bigwig]
         threads: 1
         log: 
@@ -140,9 +134,9 @@ if len(SAMPLES) > 1:
             # matrix = 'SpearmanCorr_readCounts.tab'
         params:
             # Optional parameters.
-            extra = '--skipZeros --whatToPlot heatmap --colorMap RdYlBu --plotNumbers',
-            cor = 'spearman',
-            title = 'Spearman Correlation of Read Counts',
+            extra = config['parameters']['deeptools']['plotcorrelation'].get('extra'),
+            cor = config['parameters']['deeptools']['plotcorrelation'].get('cor'),
+            title = config['parameters']['deeptools']['plotcorrelation'].get('title'),
         threads: 1
         log: 
             opj(OUTDIR, "logs/deeptools/plotcorrelation.log")

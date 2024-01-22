@@ -42,6 +42,14 @@ class Wrapper(WrapperBase):
         if gtf:
             self.extra += f" --gtf {gtf}"
 
+        mapping = self.snakemake.params.get("mapping")
+        if mapping == "bowtie2":
+            self.extra += " --bowtie2"
+        elif mapping == "star":
+            self.extra += " --star"
+        elif mapping == "hisat2":
+            self.extra += " --hisat2-hca"
+
     def run(self):
         shell(
             "rsem-prepare-reference"

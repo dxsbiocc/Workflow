@@ -1,0 +1,8 @@
+name: plot PCA
+description: |
+  PCA dimensionality reduction of gene expression genes.
+authors:
+  - dengxsh
+output:
+  - PCA.pdf
+  - QC.pdf

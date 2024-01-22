@@ -82,9 +82,12 @@ elif MAPPING == "star":
             opj(OUTDIR, "logs/mapped/star_{sample}.log"),
         params:
             # optional parameters
-            extra = config['parameters']['star']['extra'] + " --outSAMattrRGline ID:{sample} SM:{sample}" + \
+            extra = config['parameters']['star']['extra'] + \
+                    " --quantTranscriptomeBan {}".format("IndelSoftclipSingleend" if QUANTIFY_TOOL == "rsem" else "Singleend") + \
+                    " --outSAMattrRGline ID:{sample} SM:{sample}" + \
                     " --sjdbGTFfile {}".format(GTF) + \
                     " --sjdbOverhang {}".format(READ_LENGTH - 1),
+            fusion = config['control'].get('fusion', '').lower() if config['control'].get('merge') else ""
         threads: config['parameters']['star']['threads']
         wrapper:
             get_wrapper("star", "align")

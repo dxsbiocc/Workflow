@@ -1,0 +1,14 @@
+name: preseq c_curve
+description: >
+  The c_curve command is used to compute the expected complexity curve using a hypergeometric formula (Heck et al., 
+  1975, below). This can be done with input as mapped reads, a counts file, or a counts histogram file. The output 
+  is a text file with two columns. The first gives the total number of reads and the second the corresponding number 
+  of distinct reads.
+url: https://github.com/smithlabcode/preseq
+authors:
+  - Antonie Vietor
+input:
+  - bed files containing duplicates and sorted by chromosome, start position, strand position and finally strand OR
+  - bam files containing duplicates and sorted by using bamtools or samtools sort.
+output:
+  - c_curve (.c_curve)

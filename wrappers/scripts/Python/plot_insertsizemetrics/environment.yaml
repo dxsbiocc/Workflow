@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - scipy>=1.5.0
+  - numpy>=1.18
+  - pandas = 2.1.4
+  - plotnine = 0.12.4
+  - matplotlib>=3.6.0

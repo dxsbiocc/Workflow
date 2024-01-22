@@ -26,7 +26,12 @@ else:
     raise ValueError(f"Unknown pipeline: {PIPELINE}")
 # -------------------- Global Parameters -------------------- #
 # output directory
-OUTDIR = os.path.abspath(config['outdir'])
+OUTDIR = config.get('outdir')
+# set output directory if not specified
+if not OUTDIR:
+    OUTDIR = os.getcwd()
+else:
+    OUTDIR = os.path.abspath(OUTDIR)
 # database path (local or remote)
 if config['data']['db'] == 'local':
     DATABASE = os.path.join(PATH, 'data')
@@ -54,9 +59,11 @@ REFERENCE = config['data']['ref']
 INDEX = config['data'].get('index', None)
 # annotation file
 GTF = config['data']['gtf']
+# RNA sequence
+RNA = config['data'].get('rna', None)
 # ----------------------- Util rules ------------------------ #
 include: "utils.smk"
-if (not INDEX) or (not os.path.exists(INDEX)) or (os.listdir(INDEX) == []):
+if (not INDEX) or (not os.path.exists(INDEX)) or (os.listdir(os.path.dirname(INDEX)) == []):
     include: "index.smk"
 # --------------------- Local Database ---------------------- #
 REF_GC = os.path.join(DATABASE, 'GC', f'{GENOME}.gc')
@@ -77,9 +84,6 @@ if not config.get('workdir'):
     config['workdir'] = os.getcwd()
 # workdir
 workdir: config['workdir']
-# set output directory if not specified
-if not OUTDIR:
-    OUTDIR = os.path.abspath(config['workdir'])
 # ------------------- Wildcard constraints ------------------ #
 wildcard_constraints:
     sample = "|".join(SAMPLES),

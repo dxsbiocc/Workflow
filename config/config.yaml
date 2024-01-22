@@ -1,10 +1,10 @@
 # --------------------- pipeline ---------------------
-pipeline: "Cut&Tag"  # Chip-seq、ATAC-seq
+pipeline: "Cut&Tag"  # Chip-seq、ATAC-seq、DNA-seq、RNA-seq、Assembly
 verbose: false
 # -------------------- input data --------------------
 data:
   # sample list
-  sample_file: "../example/sample_list.txt"
+  sample_file: ../example/sample_list.txt
   # sample info, json file
   sample_info: null
   # genome files
@@ -12,64 +12,64 @@ data:
   ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
   index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
   gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
-  db: "local"
+  db: local
 
 # ------------------- output folder ------------------
 outdir: null
 workdir: null
 # ------------------ wrapper folder ------------------
-root_dir: "{PLACEHOLDER}"  # project dir (example: xxx/Workflow), must be set
-wrappers: "local"
-scripts: "local"
+root_dir: /Users/dengxsh/Documents/WorkSpace/VSCode/Workflow # "{PLACEHOLDER}"  # project dir (example: xxx/Workflow), must be set
+wrappers: local
+scripts: local
 # --------------- programs parameters ----------------
 parameters:
   # trimming
   fastp:
-    extra: "-g -q 30 -u 50 -n 15 -l 36 -w 4"
+    extra: -g -q 30 -u 50 -n 15 -l 36 -w 4
   trimmomatic:
     trimmer: ["LEADING:20", "TRAILING:20", "SLIDINGWINDOW:4:15", "MINLEN:25"]
-    compression_level: "-9"
+    compression_level: -9
     mem: 2048
   cutadapt:
-    extra: "--minimum-length 1 -q 20"
+    extra: --minimum-length 1 -q 20
   trim_galore:
-    extra: "--illumina -q 20"
+    extra: --illumina -q 20
   # mapping
   bowtie2:
     sort: samtools
-    extra: "--end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700"
+    extra: --end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10 -X 700
     threads: 20
   bwa:
     extra: "-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:Illumina'"
-    sort: "samtools"  # Can be 'none', 'samtools' or 'picard'.
-    sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
-    sort_extra: ""
+    sort: samtools  # Can be 'none', 'samtools' or 'picard'.
+    sort_order: coordinate  # Can be 'queryname' or 'coordinate'.
+    sort_extra:
     threads: 20
   hisat2:
-    extra: ""
+    extra:
     threads: 20
   star:
-    extra: "--outSAMtype BAM SortedByCoordinate"
+    extra: --outSAMtype BAM SortedByCoordinate
     threads: 20
   minimap2:
-    extra: "-x map-pb"
-    sorting: "coordinate"
-    sort_extra: ""
+    extra: -x map-pb
+    sorting: coordinate
+    sort_extra:
     threads: 20
   # dedup
   picard:
-    markduplicates: "--REMOVE_DUPLICATES true"
+    markduplicates: --REMOVE_DUPLICATES true
     mem: 4090
   gatk:
-    baserecalibrator: ""
-    applybqsr: ""
+    baserecalibrator:
+    applybqsr:
 
 # ----------------- control argument -----------------
 control:
-  adapters: "Nextera"      # Truseq(Illumina)、Nextera, use in cut&tag
-  trimming: "fastp"        # choose: fastp(default)、cutadapt、trimmomatic and trim_galore
-  mapping: "bwa"           # bwa-mem2、bowtie2、hisat2、star、minimap2
-  dedup: "markduplicates"  # sambamba
+  adapters: Nextera      # Truseq(Illumina)、Nextera, use in cut&tag
+  trimming: fastp        # choose: fastp(default)、cutadapt、trimmomatic and trim_galore
+  mapping: bwa           # bwa-mem2、bowtie2、hisat2、star、minimap2
+  dedup: markduplicates  # sambamba
   spike_in: false
   paired: true
   shift: false

@@ -17,10 +17,10 @@ echo "Install packages: "
 pip install -r ./requirement.txt
 echo "Packages installed."
 
-# cp utils/base.py to snakemake-wrapper-utils
+# cp scripts/base.py to snakemake-wrapper-utils
 echo "Copy base.py ..."
 location=$(pip show snakemake-wrapper-utils | awk '/Location/ {print substr($0, index($0,$2))}')
-cp "$script_path/utils/base.py" "$location/snakemake_wrapper_utils"
+cp "$script_path/scripts/base.py" "$location/snakemake_wrapper_utils"
 echo "Copy done."
 
 echo "Exit snakemake environment"

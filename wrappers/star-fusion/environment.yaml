@@ -3,5 +3,5 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  -  star-fusion=1.8.1
+  -  star-fusion=1.12.0
  

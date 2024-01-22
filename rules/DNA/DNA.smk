@@ -60,6 +60,10 @@ include: os.path.join(PATH, "rules/DNA/report.smk")
 ############################################################
 #                           Runing                         #
 ############################################################
+localrules:
+    mapped_stats, mapped_plotBamStats, mapped_idxstats, mapped_flagstat, \
+    dedup_stats, dedup_plotBamStats, dedup_idxstats, dedup_flagstat
+    
 rule use_all:
     input:
         # data process

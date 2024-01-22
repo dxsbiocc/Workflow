@@ -58,7 +58,7 @@ elif MAPPING == 'bowtie2':
         log:
             opj(OUTDIR, "logs/mapped/bowtie2_index.log"),
         wrapper:
-            get_wrapper("bowtie2", "index")
+            get_wrapper("bowtie2", "build")
 elif MAPPING == 'hisat2':
     rule hisat2_index:
         input:

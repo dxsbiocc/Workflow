@@ -7,7 +7,7 @@ cluster: "slurm-submit.py"
 max-jobs-per-second: "10"
 max-status-checks-per-second: "10"
 local-cores: 10
-latency-wait: "5"
+latency-wait: 30
 use-conda: "True"
 use-singularity: "False"
 jobs: "10"

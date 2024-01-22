@@ -1,27 +1,70 @@
 # --------------------- pipeline ---------------------
-pipeline: "ATAC-seq"
+pipeline: ATAC-seq
 verbose: true
 
 # -------------------- input data --------------------
 data:
+  # sample list
+  sample_file: ../example/sample_list.txt
+  # sample info, json file
+  sample_info: ../example/sample_info.json
+  # genome files
+  genome: hg19
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
   ecoli: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/e.coli/e.coli
+
+
+outdir: 
 
 # --------------- programs parameters ----------------
 parameters:
   bwa:
     extra: "-R '@RG\\tID:{sample}\\tSM:{sample}'"
-    sort: "samtools"  # Can be 'none', 'samtools' or 'picard'.
-    sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
-    sort_extra: ""
-  alignmentsieve:
-    mapq: 30
-    flag: 2
-    shift: "--ATACshift"
+    sort: samtools  # Can be 'none', 'samtools' or 'picard'.
+    sort_order: coordinate  # Can be 'queryname' or 'coordinate'.
+    sort_extra:
+  deeptools:
+    alignmentsieve:
+      mapq: 30
+      flag: 2
+      shift: --ATACshift
+    multibigwigsummary:
+      extra: --binSize 500
+    plotcorrelation:
+      extra: --skipZeros --whatToPlot heatmap --colorMap RdYlBu --plotNumbers
+      cor: spearman
+      title: Spearman Correlation of Read Counts
+    bamcoverage:
+      extra: --binSize 10 --normalizeUsing RPGC
+    computematrix:
+      tss: -a 3000 -b 3000 -p 1
+      genbody: -a 3000 -b 3000 -p 1 --regionBodyLength 5000 --skipZeros --missingDataAsZero
+    plotheatmap: --plotType=fill --colorMap Reds Blues
+    plotprofile: --plotType=fill --perGroup --dpi 150
   macs2:
-    atac: "--bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 --shift -75 --extsize 150 --nomodel --call-summits --nolambda"
-    chip: "--bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 "
+    randsample:
+      extra: --seed 1234
+      percentage:      # Percentage of tags you want to keep. Input 80.0 for 80%
+      number: 1000000  # 8000000 or 8e+6 for 8 million, can't be used at the same time with -p/--percent
+    callpeak:
+      chip: --bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05
+      cutntag: --bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 --shift -75 --extsize 150 --nomodel --call-summits --nolambda
+      atac: --bdg --SPMR --gsize hs --keep-dup all --qvalue 0.05 --shift -75 --extsize 150 --nomodel --call-summits --nolambda
+  anno_regions:
+    dnase:
+    blacklist:
+    promoter:
+    enhancer:
 
 # ---------------- control parameters ----------------
 control:
-  mapping: "bowtie2"           # bowtie2、hisat2、star、minimap2
-  star_two_step: true
+  adapters: Nextera      # Truseq(Illumina)、Nextera, use in cut&tag
+  trimming: trimmomatic  # choose: fastp(default), cutadapt, trimmomatic and trim_galore
+  mapping: bowtie2       # bwa-mem2, bowtie2, hisat2, star, minimap2
+  dedup: markduplicates  # sambamba
+  downsample: false      # false or number of reads
+  peak_mode: narrow      # broad/narrow
+  paired: true
+  shift: false

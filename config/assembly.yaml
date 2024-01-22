@@ -1,30 +1,30 @@
 # --------------------- pipeline ---------------------
-pipeline: "Assembly"
+pipeline: Assembly
 verbose: true
 
 # -------------------- input data --------------------
 data:
-  sample_file: "/disk2/dxs/WorkSpace/assembly/sample_list.csv"
+  sample_file: /disk2/dxs/WorkSpace/assembly/sample_list.csv
 
 # --------------- programs parameters ----------------
 parameters:
   hifiasm:
-    extra: "-f 37 -l 1 -s 0.75 -O 1"
+    extra: -f 37 -l 1 -s 0.75 -O 1
     threads: 200
     memory: 320000
   jellyfish:
     threads: 200
-    memory: '100G'  # GB
+    memory: 100G  # GB
   yak:
     threads: 200
   bwa:
     extra: "-R '@RG\\tID:{sample}\\tSM:{sample}'"
-    sort: "samtools"  # Can be 'none', 'samtools' or 'picard'.
-    sort_order: "coordinate"  # Can be 'queryname' or 'coordinate'.
-    sort_extra: ""
+    sort: samtools  # Can be 'none', 'samtools' or 'picard'.
+    sort_order: coordinate  # Can be 'queryname' or 'coordinate'.
+    sort_extra:
 
 # ---------------- control parameters ----------------
 control:
-  assembly_mode: "solo"  # options: solo, HIC, trio
+  assembly_mode: solo  # options: solo, HIC, trio
 
 # 

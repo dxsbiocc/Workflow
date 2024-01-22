@@ -10,7 +10,8 @@ if QUANTIFY_TOOL == "rsem":
                 grp = f"{RSEM_INDEX}.grp",
                 ti = f"{RSEM_INDEX}.ti",
             params:
-                extra = "--bowtie2",
+                extra = "",
+                mapping = MAPPING,
             log:
                 opj(OUTDIR, "logs/rsem/prepare-reference.log")
             threads: 8
@@ -20,18 +21,19 @@ if QUANTIFY_TOOL == "rsem":
         RSEM_INDEX = QUANTIFY_INDEX
     rule rsem_quant:
         input:
-            bam = opj(OUTDIR, "dedup/{sample}/{sample}.rmdup.bam"),
+            bam = opj(OUTDIR, "mapped/{sample}/Aligned.toTranscriptome.out.bam"),
+            fq_one = opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R1.fq.gz"),
+            fq_two = opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R2.fq.gz") if PAIRED else "",
             reference = multiext(RSEM_INDEX, ".grp", ".ti", ".seq"),
         output:
-            results = directory(opj(OUTDIR, "quantity/{sample}/")),
-            # genes_results = opj(OUTDIR, "quantity/{sample}/{sample}.genes.results"),
-            # isoforms_results = opj(OUTDIR, "quantity/{sample}/{sample}.isoforms.results"),
+            quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
         params:
             paired_end = PAIRED,
-            mapping = MAPPING,
+            mapping = MAPPING, 
             extra = config["parameters"]["rsem"]["extra"],
+            mode = config["parameters"]["rsem"]["mode"],
         log:
-            opj(OUTDIR, "logs/rsem/{sample}.log")
+            opj(OUTDIR, "logs/rsem/quant_{sample}.log")
         threads: 10
         wrapper:
             get_wrapper("rsem", "calculate-expression")
@@ -41,7 +43,7 @@ elif QUANTIFY_TOOL == "salmon":
         SALMON_INDEX = opj(OUTDIR, "quantity/index/reference")
         rule salmon_index:
             input:
-                sequences = REFERENCE,
+                sequences = REFERENCE if not RNA else RNA,
             output:
                 directory(SALMON_INDEX),
             params:
@@ -55,15 +57,15 @@ elif QUANTIFY_TOOL == "salmon":
         SALMON_INDEX = QUANTIFY_INDEX
     rule salmon:
         input:
-            # If you have multiple fastq files for a single sample (e.g. technical replicates)
-            # use a list for r1 and r2.
             r1 = opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R1.fq.gz"),
             r2 = opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R2.fq.gz"),
             index = SALMON_INDEX,
+            # aln = opj(OUTDIR, "mapped/{sample}/Aligned.toTranscriptome.out.bam"),
+            # targeted = RNA,
         output:
-            quant = directory(opj(OUTDIR, "quantity/{sample}")),
+            quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
             # quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant.sf"),
-            lib = opj(OUTDIR, "quantity/{sample}/{sample}.lib_format_counts.json"),
+            # lib = opj(OUTDIR, "quantity/{sample}/{sample}.lib_format_counts.json"),
         log:
             opj(OUTDIR, "logs/salmon/{sample}.log"),
         threads: 10
@@ -78,7 +80,7 @@ elif QUANTIFY_TOOL == "kallisto":
         KALLISTO_INDEX = opj(OUTDIR, "quantity/index/reference")
         rule kallisto_index:
             input:
-                fasta = REFERENCE,
+                fasta = REFERENCE if not RNA else RNA,
             output:
                 index = KALLISTO_INDEX,
             params:
@@ -95,7 +97,8 @@ elif QUANTIFY_TOOL == "kallisto":
             fastq = expand(opj(OUTDIR, "trimmed/{{sample}}/{{sample}}.clean.{run}.fq.gz"), run=RUN),
             index = KALLISTO_INDEX,
         output:
-            directory(opj(OUTDIR, "quantity/{sample}/")),
+            # directory(opj(OUTDIR, "quantity/{sample}/")),
+            quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
         log:
             opj(OUTDIR, "logs/kallisto/{sample}.log"),
         threads: 10
@@ -107,26 +110,49 @@ elif QUANTIFY_TOOL == "kallisto":
 elif QUANTIFY_TOOL == "featurecounts":
     rule feature_counts:
         input:
-            # list of sam or bam files
-            samples = opj(OUTDIR, "dedup/{sample}/{sample}.rmdup.bam"),
+            samples = opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
             annotation = GTF,
-            # optional input
-            #chr_names="",           # implicitly sets the -A flag
-            #fasta="genome.fasta"    # implicitly sets the -G flag
         output:
-            directory(opj(OUTDIR, "quantity/{sample}"))
+            quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
         threads: 10
         params:
+            extra = config["parameters"]["featurecounts"]["extra"],
             strand = config["parameters"]["featurecounts"]["strand"],  
             r_path = config["parameters"]["featurecounts"]["r_path"],
-            extra = config["parameters"]["featurecounts"]["extra"],
             paired = PAIRED
         log:
             opj(OUTDIR, "logs/featurecounts/{sample}.log"),
         wrapper:
             get_wrapper("subread", "featurecounts")
+elif QUANTIFY_TOOL == "htseq":
+    rule htseq:
+        input:
+            bam = opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
+            anno = GTF
+        output:
+            quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
+        threads: 10
+        params:
+            extra = config["parameters"]["htseq"]["extra"],
+            mode = "intersection-nonempty",  # union, intersection-strict and intersection-nonempty
+            stranded = "no",  # yes/no/reverse
+            order = "pos",    # name or pos
+        log:
+            opj(OUTDIR, "logs/htseq/{sample}.log")
+        wrapper:
+            get_wrapper("htseq")
 else:
     raise ValueError("QUANTIFY_TOOL must be one of 'rsem', 'salmon', 'featurecounts', or 'kallisto'")
 
-rule normalization:
-    pass
+rule merge_expression:
+    input:
+        quant = expand(opj(OUTDIR, "quantity/{sample}/{sample}.quant"), sample=SAMPLES),
+    output:
+        exp = opj(OUTDIR, "expression/expression.tsv"),
+    params:
+        quantifier = QUANTIFY_TOOL,
+    log:
+        opj(OUTDIR, "logs/merge_counts.log")
+    threads: 1
+    wrapper:
+        get_wrapper("scripts", "Python", "merge_expression")

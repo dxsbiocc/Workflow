@@ -1,0 +1,7 @@
+name: plot volcano
+description: |
+  Draw differential gene volcano diagram
+authors:
+  - dengxsh
+output:
+  - volcano.pdf

@@ -1,0 +1,14 @@
+name: preseq gc_extrap
+description: >
+  The gc_extrap command is used to extrapolate the expected number of bases covered at least once for theoretical 
+  larger experiments. This is useful for single cell or low input sequencing experiments. Input format is required 
+  to be in mapped read format and we have provided the tool to-mr to convert BAM format files to the mr format. 
+  The output is a text file with four columns.
+url: https://github.com/smithlabcode/preseq
+authors:
+  - Antonie Vietor
+input:
+  - bed files containing duplicates and sorted by chromosome, start position, strand position and finally strand OR
+  - bam files containing duplicates and sorted by using bamtools or samtools sort.
+output:
+  - gc_extrap (.gc_extrap)

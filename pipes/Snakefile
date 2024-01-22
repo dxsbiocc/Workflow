@@ -13,6 +13,8 @@ configfile: os.path.join(workflow.basedir, "../config/config.yaml")
 
 # project dir
 PATH = config.get('root_dir')
+# output
+OUTPUT = []
 # ---------------------- prepare data ---------------------- #
 include: os.path.join(PATH, "rules/common/prepare.smk")
 # ---------------------- include rules --------------------- #
@@ -21,21 +23,22 @@ include: os.path.join(PATH, f"rules/{PIPENAME}/{PIPENAME}.smk")
 
 onstart:
     if "verbose" in config and config["verbose"]:
-        print("Workflow Parameters".center(80, '-'))
-        print("Workflow:", PIPELINE)
-        print("Sample list:", DATA.index.tolist())
-        print("Number of samples:", len(SAMPLES))
-        print("-" * 81, "\n")
+        print(" Workflow Parameters ".center(80, '-'))
+        print("Workflow:          ", PIPELINE)
+        print("Sample list:       ", DATA.index.tolist())
+        print("Number of samples: ", len(SAMPLES))
+        print("-" * 80, "\n")
 
-        print("Environment".center(80, '-'))
-        print("Username: ", getpass.getuser())
-        print("Project Directory:", os.path.abspath(PATH))
-        print("Work Directory: ", config['workdir'])
-        print("-" * 81, "\n")
+        print(" Environment ".center(80, '-'))
+        print("Username:          ", getpass.getuser())
+        print("Project Directory: ", os.path.abspath(PATH))
+        print("Work Directory:    ", config['workdir'])
+        print("Output Directory:  ", config['outdir'])
+        print("-" * 80, "\n")
 
 rule all:
-        input: 
-            rules.use_all.input
+    input: 
+        rules.use_all.input
 
 onsuccess:
     if "verbose" in config and config["verbose"]:

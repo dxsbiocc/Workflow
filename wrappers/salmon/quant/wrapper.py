@@ -25,11 +25,11 @@ class MixedPairedUnpairedInput(Exception):
         )
 
 
-class MissingMateError(Exception):
+class MissingInputError(Exception):
     def __init__(self):
         super().__init__(
             "Salmon requires an equal number of paired reads in `r1` and `r2`,"
-            " or a list of unpaired reads `r`"
+            " or a list of unpaired reads `r`, or aligned reads `aln`"
         )
 
 
@@ -74,28 +74,31 @@ class Wrapper(WrapperBase):
         r2 = self.snakemake.input.get("r2")
         r = self.snakemake.input.get("r")
 
+        aln = self.snakemake.output.get("aln")
+        targets = self.snakemake.output.get("targets")
+
         if all(mate is not None for mate in [r1, r2]):
             r1, self.max_threads = uncompress_bz2(r1, self.max_threads)
             r2, self.max_threads = uncompress_bz2(r2, self.max_threads)
 
             if len(r1) != len(r2):
-                raise MissingMateError()
+                raise MissingInputError()
             if r is not None:
                 raise MixedPairedUnpairedInput()
 
             r1_cmd = " --mates1 {}".format(" ".join(r1))
             r2_cmd = " --mates2 {}".format(" ".join(r2))
-            self.read_cmd = " ".join([r1_cmd, r2_cmd])
-
+            self.input = " ".join([r1_cmd, r2_cmd])
         elif r is not None:
             if any(mate is not None for mate in [r1, r2]):
                 raise MixedPairedUnpairedInput()
 
             r, self.max_threads = uncompress_bz2(r, self.max_threads)
-            self.read_cmd = " --unmatedReads {}".format(" ".join(r))
-
+            self.input = " --unmatedReads {}".format(" ".join(r))
+        elif aln and targets:
+            self.input = f"--alignments {aln} --targets {targets}"
         else:
-            raise MissingMateError()
+            raise MissingInputError()
 
         self.gene_map = self.snakemake.input.get("gtf", "")
         if self.gene_map:
@@ -105,7 +108,8 @@ class Wrapper(WrapperBase):
         if self.bam:
             self.bam = f"--writeMappings {self.bam}"
 
-        self.outdir = self.snakemake.output.get("quant")
+        self.output = self.snakemake.output.get("quant")
+        self.outdir = dirname(self.output)
         self.index = self.snakemake.input["index"]
 
 
@@ -120,10 +124,19 @@ class Wrapper(WrapperBase):
         
     def run(self):
         shell(
-            "salmon quant --index {self.index} "
-            " --libType {self.libtype} {self.read_cmd} --output {self.outdir} {self.gene_map} "
-            " --threads {self.max_threads} {self.extra} {self.bam} {self.log}"
+            "salmon quant"
+            " --index {self.index} "
+            " --libType {self.libtype}"
+            " {self.input}"
+            " --output {self.outdir}"
+            " {self.gene_map} "
+            " --threads {self.max_threads}"
+            " {self.extra}"
+            " {self.bam}"
+            " {self.log}"
         )
+        # mv
+        shell("mv {self.outdir}/quant.sf {self.output}")
 
 
 if __name__ == "__main__":

@@ -33,6 +33,7 @@ class Wrapper(WrapperBase):
         if not isinstance(self.output_file, str) and len(self.snakemake.output) != 1:
             raise ValueError("Output should be one file: " + str(self.output_file) + "!")
 
+    def run(self):
         shell(
             "coverageBed"
             " -a {self.input_a}"

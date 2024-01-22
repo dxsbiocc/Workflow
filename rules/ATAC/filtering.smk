@@ -1,8 +1,7 @@
 if SHIFT:
-
     rule shift:
         input:
-            rules.mark_duplicates.output.bam,
+            rules.markduplicates.output.bam,
             rules.rmdup_index.output,
         output:
             opj(OUTDIR, "dedup/{sample}/{sample}.shift.bam"),
@@ -11,20 +10,18 @@ if SHIFT:
         threads: 4
         params:
             # optional parameters
-            extra="{shift} --samFlagInclude {flag} --blackListFileName {bl} --minMappingQuality {mapq}".format(
-                shift=config["parameters"]["alignmentSieve"]["shift"],
-                flag=config["parameters"]["alignmentSieve"]["flag"],
+            extra = "{shift} --samFlagInclude {flag} --blackListFileName {bl} --minMappingQuality {mapq}".format(
+                shift=config["parameters"]['deeptools']["alignmentSieve"]["shift"],
+                flag=config["parameters"]['deeptools']["alignmentSieve"]["flag"],
                 bl=BLACKLIST,
-                mapq=config["parameters"]["alignmentSieve"]["mapq"],
+                mapq=config["parameters"]['deeptools']["alignmentSieve"]["mapq"],
             ),
         wrapper:
             get_wrapper("deeptools", "alignmentsieve")
-
 else:
-
     rule noshift:
         input:
-            rules.mark_duplicates.output.bam,
+            rules.markduplicates.output.bam,
             rules.rmdup_index.output,
         output:
             opj(OUTDIR, "dedup/{sample}/{sample}.shift.bam"),
@@ -32,12 +29,11 @@ else:
             opj(OUTDIR, "logs/dedup/dedup_no_shift_{sample}.log"),
         threads: 4
         params:
-            blacklist=BLACKLIST,
+            blacklist = BLACKLIST,
         conda:
             lambda wildcards: get_environment("bedtools", "intersect")
         shell:
             "bedtools intersect -v -abam {input[0]} -b {params.blacklist} > {output}"
-
 
 rule shift_sort:
     input:
@@ -63,3 +59,22 @@ rule filterChrM:
     shell:
         "(samtools view -h {input} | grep -v chrM | samtools view -bS -F 0x4 -q 30 | samtools sort -@ 4 -o {output}) "
         "&& (samtools index {output})"
+
+if DOWNSAMPLE:
+    rule downsample:
+        input:
+            rules.filterChrM.output
+        output:
+            opj(OUTDIR, "dedup/{sample}/{sample}.sampled.bam"),
+        conda:
+            lambda wildcards: get_environment("samtools", "view")
+        params:
+            counts = DOWNSAMPLE
+        threads: 8
+        shell:
+            """
+            total=$(samtools view -c {input})
+            frac=$(echo "scale=4; {params.counts} / $total" | bc)
+            samtools view -bs $frac {input} | samtools sort -@ {threads} -o {output}
+            samtools index {output}
+            """

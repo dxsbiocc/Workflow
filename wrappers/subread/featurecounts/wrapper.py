@@ -42,11 +42,7 @@ class Wrapper(WrapperBase):
         if paired:
             self.extra += " -p --countReadPairs"
 
-        output = str(self.snakemake.output)
-        if not os.path.exists(output):
-            os.makedirs(output)
-        sample = self.snakemake.wildcards.sample
-        self.out = os.path.join(output, f"{sample}.featureCounts")
+        self.out = self.snakemake.output.get("quant")
 
     def run(self):
         with tempfile.TemporaryDirectory() as tmpdir:

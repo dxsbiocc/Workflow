@@ -12,7 +12,6 @@
 
 
 import os
-import glob
 from tempfile import TemporaryDirectory
 from snakemake.shell import shell
 from snakemake_wrapper_utils.base import WrapperBase
@@ -26,32 +25,21 @@ class Wrapper(WrapperBase):
     def parser(self):
         self.log = self.snakemake.log_fmt_shell(stdout=False, stderr=True)
 
-        # same parameters default value
-        params = {
-            "--twopassMode": "Basic",
-            "--quantMode": "TranscriptomeSAM GeneCounts",
-            "--outSAMstrandField": "intronMotif",       # include for potential use with StringTie for assembly
-            "--outSAMunmapped": "Within",
-            "--outFilterMultimapScoreRange": 1,
-            "--outFilterMultimapNmax": 20,
-            "--outFilterMismatchNmax": 10,
-            "--sjdbScore": 2,
-            "--genomeLoad": "NoSharedMemory",
-            "--limitBAMsortRAM": 0,
-            "--outFilterMatchNminOverLread": 0.33,
-            "--outFilterScoreMinOverLread": 0.33,
-            "--sjdbOverhang": 100,
-            "--outSAMattributes": "NH HI NM MD AS XS",
-            "--outSAMtype": "BAM SortedByCoordinate",
-            "--outSAMheaderHD": "@HD VN:1.4",
-            # fusion parameters
-            "--chimSegmentMin": 12,                     # ** essential to invoke chimeric read detection & reporting **
+        arriba_params = {
+            "--outBAMcompression": 0,
+            "--peOverlapNbasesMin": 10,
+            "--alignSplicedMateMapLminOverLmate": 0.5,
+            "--alignSJstitchMismatchNmax": "5 -1 5 5",
+            "--chimScoreDropMax": 30,
+            "--chimScoreJunctionNonGTAG": 0,
+            "--chimScoreSeparation": 1,
+            "--chimSegmentReadGapMax": 3,
+            "--chimMultimapNmax": 50
+        }
+        star_fusion_params = {
+            "--chimSegmentMin": 12, # ** essential to invoke chimeric read detection & reporting **
             "--chimJunctionOverhangMin": 8,
-            "--chimOutJunctionFormat": 1,               # **essential** includes required metadata in Chimeric.junction.out file.
-            "--alignSJDBoverhangMin": 10,
-            "--alignMatesGapMax": 100000,              # avoid readthru fusions within 100k
-            "--alignIntronMax": 100000,
-            "--alignSJstitchMismatchNmax": "5 -1 5 5",  # settings improved certain chimera detections
+            "--alignSJstitchMismatchNmax": "5 -1 5 5",
             "--outSAMattrRGline": "ID:GRPundef",
             "--chimMultimapScoreRange": 3,
             "--chimScoreJunctionNonGTAG": -4,
@@ -61,10 +49,46 @@ class Wrapper(WrapperBase):
             "--peOverlapMMp": 0.1,
             "--alignInsertionFlush": "Right",
             "--alignSplicedMateMapLminOverLmate": 0,
-            "--alignSplicedMateMapLmin": 30
+            "--alignSplicedMateMapLmin": 30,
         }
+        tcga_params = {
+            "--chimOutJunctionFormat": 1,   # **essential** includes required metadata in Chimeric.junction.out file.
+            "--sjdbOverhang": 100,
+            "--alignIntronMax": 1000000,
+            "--alignIntronMin": 20,
+            "--alignMatesGapMax": 1000000,
+            "--alignSJDBoverhangMin": 1,
+            "--alignSJoverhangMin": 8,
+            "--alignSoftClipAtReferenceEnds": "Yes",
+            "--chimJunctionOverhangMin": 15,
+            "--chimMainSegmentMultNmax": 1,
+            "--chimOutType": "Junctions SeparateSAMold WithinBAM SoftClip",
+            "--chimSegmentMin": 15,
+            "--genomeLoad": "NoSharedMemory",
+            "--limitSjdbInsertNsj": 1200000,
+            "--outFilterIntronMotifs": "None",
+            "--outFilterMatchNminOverLread": 0.33,
+            "--outFilterMismatchNmax": 999,
+            "--outFilterMismatchNoverLmax": 0.1,
+            "--outFilterMultimapNmax": 20,
+            "--outFilterScoreMinOverLread": 0.33,
+            "--outFilterType": "BySJout",
+            "--outSAMattributes": "NH HI NM MD AS XS",
+            "--outSAMstrandField": "intronMotif",       # include for potential use with StringTie for assembly
+            "--outSAMtype": "BAM SortedByCoordinate",
+            "--outSAMunmapped": "Within",
+            "--quantMode": "TranscriptomeSAM GeneCounts",
+            "--twopassMode": "Basic",
+            "--outSAMheaderHD": "@HD VN:1.4",
+        }
+        
+        fusion = self.snakemake.params.get('fusion')
+        if fusion and fusion == "arriba":
+            tcga_params.update(arriba_params)
+        elif fusion and fusion == "star-fusion":
+            tcga_params.update(star_fusion_params)
         default_value = ""
-        for k, v in params.items():
+        for k, v in tcga_params.items():
             if k not in self.extra:
                 default_value += f" {k} {v}"
         self.extra += default_value
@@ -134,7 +158,10 @@ class Wrapper(WrapperBase):
                         shell("{cmd} {tmpdir}/Unmapped.out.mate{i} > {out_unmapped}")
             if not os.path.exists(self.output):
                 os.makedirs(self.output)
-            shell(f"find {tmpdir} -maxdepth 1 -type f -exec mv {{}} {self.output} \;")
+            # There have format string in shell function, so it can't be used
+            # shell(f"find {tmpdir} -maxdepth 1 -type f -exec mv {{}} {self.output} \\;")
+            cmd = f"find {tmpdir} -maxdepth 1 -type f -exec mv {{}} {self.output} \\;"
+            os.system(cmd)
 
 
 if __name__ == '__main__':

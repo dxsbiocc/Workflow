@@ -1,0 +1,16 @@
+name: macs2 randsample
+description:
+  The randsample command is part of the MACS2 suite of tools and is used to randomly 
+  sample a certain number or percentage of tags from alignment files. This can be 
+  useful in ChIP-Seq analysis when a subset of the data is required for downstream 
+  analysis.
+authors:
+  - dengxsh
+input:
+  - alignment files(-i or --ifile): SAM, BAM, BED, ELAND, ELANDMULTI, ELANDEXPORT, BOWTIE, BAMPE or BEDPE files
+  - percentage(-p or --percentage): Percentage of tags you want to keep. 
+  - number(-n or --number): Number of tags you want to keep
+  - seed(--seed): Set the random seed while downsampling data
+output:
+  - Output BED file name(-o or --ofile)
+  - Outdir(--outdir) If specified, all output files will be written to that directory.

@@ -1,0 +1,19 @@
+name: HTSeq
+description: 
+  A Python library to facilitate programmatic analysis of data from high-throughput 
+  sequencing (HTS) experiments. A popular component of HTSeq is htseq-count, a script 
+  to quantify gene expression in bulk and single-cell RNA-Seq and similar experiments.
+url: https://github.com/htseq/htseq
+authors:
+  - Givanna Putri at UNSW Sydney (g dot putri at unsw dot edu dot au)
+  - Simon Anders (anders at embl dot de) at EMBL Heidelberg (Genome Biology Unit).
+  - Fabio Zanini at UNSW Sydney (fabio dot zanini at unsw dot edu dot au)
+input:
+  - a list of .sam or .bam files
+  - GTF, GFF or SAF annotation file
+  - optional a tab separating file that determines the sorting order and contains the chromosome names in the first column
+  - optional a fasta index file
+output:
+  - Feature counts file including read counts (tab separated)
+  - Summary file including summary statistics (tab separated)
+  - Junction counts file including count number of reads supporting each exon-exon junction (tab separated)
