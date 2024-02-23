@@ -31,9 +31,9 @@ parameters:
       flag: 2
       shift: --ATACshift
     multibigwigsummary:
-      extra: --binSize 500
+      extra: --binSize 10000
     plotcorrelation:
-      extra: --skipZeros --whatToPlot heatmap --colorMap RdYlBu --plotNumbers
+      extra: --skipZeros --whatToPlot heatmap --colorMap YlGnBu --plotNumbers
       cor: spearman
       title: Spearman Correlation of Read Counts
     bamcoverage:
@@ -41,8 +41,8 @@ parameters:
     computematrix:
       tss: -a 3000 -b 3000 -p 1
       genbody: -a 3000 -b 3000 -p 1 --regionBodyLength 5000 --skipZeros --missingDataAsZero
-    plotheatmap: --plotType=fill --colorMap Reds Blues
-    plotprofile: --plotType=fill --perGroup --dpi 150
+    plotheatmap: --plotType=fill --colorMap YlGnBu
+    plotprofile: --plotType=lines --perGroup --dpi 150
   macs2:
     randsample:
       extra: --seed 1234

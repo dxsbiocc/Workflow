@@ -30,7 +30,7 @@ def get_paired_bam(wildcards):
     suffix = '.filtered.bam'
     if DOWNSAMPLE:
         suffix = f'.sampled.bam'
-    paired = {'treatment': opj(OUTDIR, f"dedup/{wildcards.pair}/{wildcards.pair}{sufix}")}
+    paired = {'treatment': opj(OUTDIR, f"dedup/{wildcards.pair}/{wildcards.pair}{suffix}")}
     if SAMPLE_MAP and SAMPLE_MAP.get(wildcards.pair):
         paired['control'] = opj(OUTDIR, "dedup/{sp}/{sp}" + suffix).format(sp=SAMPLE_MAP[wildcards.pair])
     return paired

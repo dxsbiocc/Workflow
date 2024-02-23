@@ -13,12 +13,21 @@ data:
   index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
   gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
   db: local
+  colors:
+    - "#ffffd9"
+    - "#edf8b1"
+    - "#c7e9b4"
+    - "#7fcdbb"
+    - "#41b6c4"
+    - "#1d91c0"
+    - "#225ea8"
+    - "#0c2c84"
 
 # ------------------- output folder ------------------
 outdir: null
 workdir: null
 # ------------------ wrapper folder ------------------
-root_dir: /Users/dengxsh/Documents/WorkSpace/VSCode/Workflow # "{PLACEHOLDER}"  # project dir (example: xxx/Workflow), must be set
+root_dir: {PLACEHOLDER}  # project dir (example: xxx/Workflow), must be set
 wrappers: local
 scripts: local
 # --------------- programs parameters ----------------

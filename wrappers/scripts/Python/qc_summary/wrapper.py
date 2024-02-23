@@ -61,7 +61,7 @@ class Wrapper(WrapperBase):
     def parse_FRIP(self, file_list):
         frip = []
         for file in file_list:
-            name = os.path.basename(file).strip('.txt')
+            name = os.path.basename(file).replace('.txt', '')
             df = pd.read_csv(file, sep='\t')
             df.index = [name]
             frip.append(df)
@@ -72,7 +72,7 @@ class Wrapper(WrapperBase):
     def parse_region_frac(self, file_list):
         region = []
         for file in file_list:
-            name = os.path.basename(file).strip('.txt')
+            name = os.path.basename(file).replace('.txt', '')
             df = pd.read_csv(file, sep='\t')
             df.index = [name]
             region.append(df)
@@ -83,7 +83,7 @@ class Wrapper(WrapperBase):
     def parse_library_complexity(self, file_list):
         libs = []
         for file in file_list:
-            name = os.path.basename(file).strip('.txt')
+            name = os.path.basename(file).replace('.txt', '')
             df = pd.read_csv(file, sep='\t')
             df.index = [name]
             libs.append(df)

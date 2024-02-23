@@ -48,7 +48,6 @@ rule shift_sort:
     wrapper:
         get_wrapper("samtools", "sort")
 
-
 rule filterChrM:
     input:
         rules.shift_sort.output,
