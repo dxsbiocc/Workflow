@@ -22,15 +22,8 @@ rule frip:
         opj(OUTDIR, "QC/frip/{pair}.txt")
     log:
         opj(OUTDIR, "logs/qc/frip_{pair}.log")
-    shell:
-        """
-        total=$(samtools view -c {input.bam})
-        pc=$(bedtools sort -i {input.bed} | bedtools merge -i stdin | bedtools intersect -u -a {input.bam} -b stdin -ubam | samtools view -c)
-        ratio=$(echo "scale=4; $pc / $total" | bc)
-
-        echo -e "Total reads\tPeak reads\tRatio" > {output}
-        echo -e "$total\t$pc\t$ratio" >> {output}
-        """
+    wrapper:
+        get_wrapper('scripts', 'Python', 'frip')
 
 # preseq
 rule preseq:

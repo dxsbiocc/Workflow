@@ -1,34 +1,15 @@
-rule enrichment_go:
+rule enrichment:
     input:
-        "path/to/diff_genes.txt"
+        degs = rules.DEA.output.degs,
+        db = PATHWAYDB,
     output:
-        "path/to/enrichment_results.txt"
-    script:
-        """
-        library(clusterProfiler)
-        diff_genes <- read.table({{input}}, header = TRUE)
-        ego <- enrichGO(gene = diff_genes$gene_id,
-                        universe = universe,
-                        OrgDb = org.Hs.eg.db,
-                        keyType = "ENSEMBL",
-                        ont = "BP",
-                        pAdjustMethod = "BH",
-                        qvalueCutoff = 0.05,
-                        readable = TRUE)
-        write.table(ego, file = {{output}}, sep = "\t")
-        """
-
-rule enrichment_kegg:
-    pass
-
-rule enrichment_MSigDB:
-    pass
-
-rule gsea_go:
-    pass
-
-rule gsea_kegg:
-    pass
-
-rule gsea_MSigDB:
-    pass
+        rda = opj(OUTDIR, "enrichment/enrichment.rda")
+    log:
+        opj(OUTDIR, "logs/enrichment/enrichment.log")
+    params:
+        species = config['parameters']['enrichment'].get('orgdb', 'org.Hs.eg.db'),
+        go = config['parameters']['enrichment'].get('go'),
+        pvalueCutoff = config['parameters']['enrichment'].get('pvalueCutoff', 0.05),
+        qvalueCutoff = config['parameters']['enrichment'].get('qvalueCutoff', 0.2),
+    wrapper:
+        get_wrapper('scripts', 'R', 'enrichment')

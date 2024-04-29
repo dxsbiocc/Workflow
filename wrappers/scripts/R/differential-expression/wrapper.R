@@ -8,7 +8,6 @@ suppressWarnings(suppressMessages(library("tidyverse")))
 suppressWarnings(suppressMessages(library("DESeq2")))
 
 parse_condition <- function(condition) {
-    condition <- '{"Cd": ["Cd-1", "Cd-2", "Cd-3"], "Ctrl": ["Ctrl-1", "Ctrl-2", "Ctrl-3"]}'
     condition <- fromJSON(condition)
 
     ctrl <- c("Ctrl", "ctrl", "Control", "control", "Normal", "normal")

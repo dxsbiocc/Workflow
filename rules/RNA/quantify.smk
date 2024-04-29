@@ -147,6 +147,7 @@ else:
 rule merge_expression:
     input:
         quant = expand(opj(OUTDIR, "quantity/{sample}/{sample}.quant"), sample=SAMPLES),
+        gtf = GTF
     output:
         exp = opj(OUTDIR, "expression/expression.tsv"),
     params:

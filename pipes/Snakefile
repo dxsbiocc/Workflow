@@ -38,7 +38,8 @@ onstart:
 
 rule all:
     input: 
-        rules.use_all.input
+        rules.use_all.input,
+        OUTPUT
 
 onsuccess:
     if "verbose" in config and config["verbose"]:

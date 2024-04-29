@@ -8,11 +8,8 @@ import json
 ############################################################
 # sample groups
 if 'type' in DATA.columns:
-    GROUPS = DATA.groupby('type').apply(lambda x: x.index.to_list()).to_dict()
     OUTPUT.append(opj(OUTDIR, "expression/DGEs.csv"))
     OUTPUT.append(opj(OUTDIR, "expression/volcano.pdf"))
-else:
-    GROUPS = None
 # differential analysis metohd
 DIFF_TOOL = config['control']['differential_analysis'].lower()
 # star parameters
@@ -36,6 +33,18 @@ GENOME_LIB = config['parameters']['star-fusion']['genome_lib_dir']  # https://da
 BLACKLIST = config['parameters']['arriba'].get('blacklist', None)
 KNOWN_FUSIONS = config['parameters']['arriba'].get('known_fusions', None)
 SV_FILE = config['parameters']['arriba'].get('sv', None)
+# enrichment
+DBMAP = {
+    'kegg': PATH + '/data/pathway/kegg.pathway.csv',
+    'hsa': PATH + '/data/pathway/c2.cp.v2023.1.Hs.symbols.gmt',
+    'mmu': PATH + '/data/pathway/m2.cp.v2023.2.Mm.symbols.gmt'
+}
+ORGDB = config['parameters']['enrichment'].get('orgdb')
+pathway = config['parameters']['enrichment'].get('pathway')
+if os.path.isfile(pathway):
+    PATHWAYDB = pathway
+else:
+    PATHWAYDB = DBMAP.get(pathway.lower(), '')
 ############################################################
 #                          Include                         #
 ############################################################
@@ -46,6 +55,7 @@ include: os.path.join(PATH, "rules/common/dedup.smk")
 include: os.path.join(PATH, "rules/RNA/quantify.smk")
 include: os.path.join(PATH, "rules/RNA/fusion.smk")
 include: os.path.join(PATH, "rules/RNA/expression.smk")
+include: os.path.join(PATH, "rules/RNA/enrichment.smk")
 ############################################################
 #                           Runing                         #
 ############################################################
@@ -59,6 +69,6 @@ rule use_all:
         expand(opj(OUTDIR, "quantity/{sample}/{sample}.quant"), sample=SAMPLES),
         opj(OUTDIR, "expression/expression.tsv"),
         opj(OUTDIR, "expression/PCA.pdf"),
-        OUTPUT
+        opj(OUTDIR, "enrichment/enrichment.rda")
     message:
         print('RNA-seq pipeline is runing!')

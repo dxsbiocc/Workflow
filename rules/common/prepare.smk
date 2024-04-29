@@ -65,6 +65,10 @@ RNA = config['data'].get('rna', None)
 include: "utils.smk"
 if (not INDEX) or (not os.path.exists(INDEX)) or (os.listdir(os.path.dirname(INDEX)) == []):
     include: "index.smk"
+# ---------------------- SRA project ------------------------ #
+SRP = config['sra']
+if SRP and isinstance(SRP, str):
+    include: "download.smk"
 # --------------------- Local Database ---------------------- #
 REF_GC = os.path.join(DATABASE, 'GC', f'{GENOME}.gc')
 # ---------------------- Samples Info ----------------------- #
@@ -72,12 +76,18 @@ REF_GC = os.path.join(DATABASE, 'GC', f'{GENOME}.gc')
 # create index using the sample name
 DATA = pd.read_csv(config['data']['sample_file'], sep='\t', index_col=0)
 SAMPLES = DATA.index.to_list()
+# paired information
 if config['data']['sample_info']:
     SAMPLE_MAP = json.load(open(config['data']['sample_info']))
     PAIRS = list(SAMPLE_MAP.keys())
 else:
     SAMPLE_MAP = None
     PAIRS = SAMPLES
+# sample grouping, for differential analysis
+if 'type' in DATA.columns:
+    GROUPS = DATA.groupby('type').apply(lambda x: x.index.to_list()).to_dict()
+else:
+    GROUPS = None
 # ---------------------- Workflow Envs ---------------------- #
 # workdir
 if not config.get('workdir'):

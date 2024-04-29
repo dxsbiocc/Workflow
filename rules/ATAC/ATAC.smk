@@ -3,8 +3,8 @@ from collections import defaultdict
 
 # macs2 parameters
 MACS2_MAP = {}
-if 'type' in DATA.columns:
-    MACS2_MAP = DATA['type'].to_dict()
+if 'experiment' in DATA.columns:
+    MACS2_MAP = DATA['experiment'].to_dict()
 # downsample to the same depth
 DOWNSAMPLE = config['control'].get('downsample')
 if DOWNSAMPLE and isinstance(DOWNSAMPLE, int):
@@ -80,7 +80,6 @@ rule use_all:
         # correlation heatmap
         opj(OUTDIR, "macs2/bigwig/heatmap_spearman_corr_readCounts.pdf"),
         # QC
-        # stats
         expand(opj(OUTDIR, "QC/{bam}/stats/{sample}.{stats}"), bam=["mapped", "dedup"], sample=SAMPLES, stats=['stats', 'idxstats', 'flagstats']),
         expand(opj(OUTDIR, "QC/{bam}/plot/{sample}"), bam=["mapped", "dedup"], sample=SAMPLES),
         expand(opj(OUTDIR, "QC/chromosome_coverage/{sample}.pdf"), sample=SAMPLES),

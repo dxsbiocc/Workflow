@@ -47,7 +47,7 @@ involves
 * subsequently, all dependency packages are installed.
 * finally, the file [base.py](scripts/base.py) from the utils folder is copied to the installed path of the `snakemake-wrapper-utils` package.
 
-In the global configuration file, named [config.py](config/config.yaml), both the ***`pipeline`*** and ***`outdir`*** parameters require manual configuration.
+In the global configuration file, named [config.yaml](config/config.yaml), both the ***`pipeline`*** and ***`outdir`*** parameters require manual configuration.
 
 * the ***`pipeline`*** parameter is used to specify the execution workflow.
 * the ***`outdir`*** parameter is employed to define the path for saving the output results.
@@ -68,16 +68,20 @@ workflow include:
 
 example files in directory `example`, you need to modify the path of the files `sample_info.json` and `sample_list.txt`
 
-* *sample_list.txt*, use `generate_setting.py`
+* *sample_list.txt*: using script `generate_setting.py` to generate or manally create
 
-| sample | fastq1 | fastq2(optional) | type(optional) |
+```sh
+python generate_setting.py path/to/fastq.gz
+```
+
+| sample | fastq1 | fastq2(optional) | type(optional) | experiment(optional) |
 | ------ | ------ | ------ | -------------- |
-|   sp1  | path/to/sp1.R1.fq.gz | path/to/sp1.R2.fq.gz | chip/control |
-|   sp2  | path/to/sp2.R1.fq.gz | path/to/sp2.R2.fq.gz | chip/control |
-|   sp3  | path/to/sp3.R1.fq.gz | path/to/sp1.R2.fq.gz | atac/test |
-|   sp4  | path/to/sp4.R1.fq.gz | path/to/sp2.R2.fq.gz | atac/test |
+|   sp1  | path/to/sp1.R1.fq.gz | path/to/sp1.R2.fq.gz | control | chip |
+|   sp2  | path/to/sp2.R1.fq.gz | path/to/sp2.R2.fq.gz | control | chip |
+|   sp3  | path/to/sp3.R1.fq.gz | path/to/sp1.R2.fq.gz | test | atac |
+|   sp4  | path/to/sp4.R1.fq.gz | path/to/sp2.R2.fq.gz | test | atac |
 
-* *sample_info.json*
+* *sample_info.json*: paired samples
 
 ```json
 {

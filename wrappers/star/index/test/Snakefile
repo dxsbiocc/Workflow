@@ -1,6 +1,7 @@
 rule star_index:
     input:
         fasta = "{genome}.fasta",
+        gtf = GTF,
     output:
         directory("{genome}"),
     message:

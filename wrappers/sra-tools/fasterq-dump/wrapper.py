@@ -24,6 +24,11 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
+        # input
+        input_acc = self.snakemake.input.get('sra', None)
+        acc = self.snakemake.params.get("accession", None)
+        assert input_acc ^ acc, "Please specify either input.sra or params.accession"
+        self.accession = input_acc or acc
         # Parse memory
         mem_mb = get_mem(self.snakemake, "MiB")
 
@@ -44,6 +49,7 @@ class Wrapper(WrapperBase):
 
         self.mem = f"--mem {mem_mb}M" if mem_mb else ""
 
+
     def run(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             shell(
@@ -51,7 +57,7 @@ class Wrapper(WrapperBase):
                 " {self.outdir}"
                 " {self.extra}"
                 " --temp {tmpdir} --threads {self.snakemake.threads} {self.mem}"
-                " {self.snakemake.wildcards.accession};"
+                " {self.accession};"
                 " {self.compress}"
                 ") {self.log}"
             )

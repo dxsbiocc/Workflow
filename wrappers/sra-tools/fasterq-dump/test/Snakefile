@@ -9,7 +9,7 @@ rule get_fastq_pe:
         extra = "--skip-technical"
     threads: 6  # defaults to 6
     wrapper:
-        "file:../../fasterq-dump"
+        "file:../../fastq-dump"
 
 
 rule get_fastq_pe_gz:
@@ -23,7 +23,7 @@ rule get_fastq_pe_gz:
         extra = "--skip-technical"
     threads: 6  # defaults to 6
     wrapper:
-        "file:../../fasterq-dump"
+        "file:../../fastq-dump"
 
 
 rule get_fastq_pe_bz2:
@@ -37,7 +37,7 @@ rule get_fastq_pe_bz2:
         extra="--skip-technical"
     threads: 6  # defaults to 6
     wrapper:
-        "file:../../fasterq-dump"
+        "file:../../fastq-dump"
 
 
 rule get_fastq_se:
@@ -49,7 +49,7 @@ rule get_fastq_se:
         extra="--skip-technical"
     threads: 6
     wrapper:
-        "file:../../fasterq-dump"
+        "file:../../fastq-dump"
 
 
 rule get_fastq_se_gz:
@@ -61,7 +61,7 @@ rule get_fastq_se_gz:
         extra="--skip-technical"
     threads: 6
     wrapper:
-        "file:../../fasterq-dump"
+        "file:../../fastq-dump"
 
 
 rule get_fastq_se_bz2:
@@ -73,4 +73,4 @@ rule get_fastq_se_bz2:
         extra="--skip-technical"
     threads: 6
     wrapper:
-        "file:../../fasterq-dump"
+        "file:../../fastq-dump"

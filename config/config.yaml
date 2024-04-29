@@ -1,6 +1,7 @@
 # --------------------- pipeline ---------------------
 pipeline: "Cut&Tag"  # Chip-seq、ATAC-seq、DNA-seq、RNA-seq、Assembly
 verbose: false
+sra: false  # SRA project (SRPnnnn)
 # -------------------- input data --------------------
 data:
   # sample list

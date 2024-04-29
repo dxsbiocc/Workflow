@@ -47,6 +47,12 @@ parameters:
   star-fusion:
     extra:
     genome_lib_dir: /cluster/facility/yzhang/WorkSpace/data/ctat_genome_lib_build_dir
+  enrichment:
+    orgdb: org.Hs.eg.db
+    pathway: msigdb
+    go: all
+    pvalueCutoff: 0.05
+    qvalueCutoff: 0.05
 
 # ---------------- control parameters ----------------
 control:

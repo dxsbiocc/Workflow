@@ -147,15 +147,14 @@ class Wrapper(WrapperBase):
                 " {self.log}"
             )
             # unmapped reads
-            unmapped = self.snakemake.output.get("unmapped")
+            unmapped = list(self.snakemake.output.get("unmapped"))
             if unmapped:
-                # SE
-                if not self.right:
-                    unmapped = [unmapped]
                 for i, out_unmapped in enumerate(unmapped, 1):
                     if os.path.exists(f"{tmpdir}/Unmapped.out.mate{i}"):
                         cmd = "gzip -c" if out_unmapped.endswith("gz") else "cat"
                         shell("{cmd} {tmpdir}/Unmapped.out.mate{i} > {out_unmapped}")
+                    else:
+                        shell("touch {out_unmapped}")
             if not os.path.exists(self.output):
                 os.makedirs(self.output)
             # There have format string in shell function, so it can't be used
