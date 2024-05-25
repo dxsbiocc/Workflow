@@ -23,7 +23,8 @@ if QUANTIFY_TOOL == "rsem":
         input:
             bam = opj(OUTDIR, "mapped/{sample}/Aligned.toTranscriptome.out.bam"),
             fq_one = opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R1.fq.gz"),
-            fq_two = opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R2.fq.gz") if PAIRED else "",
+            fq_two = opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R2.fq.gz") if PAIRED else \
+                     opj(OUTDIR, "trimmed/{sample}/{sample}.clean.R1.fq.gz"),
             reference = multiext(RSEM_INDEX, ".grp", ".ti", ".seq"),
         output:
             quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")

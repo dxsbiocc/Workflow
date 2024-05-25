@@ -35,9 +35,7 @@ class Wrapper(WrapperBase):
                 "Reads parameter must contain at least 1 and at most 2" " input files."
             )
         # index prefix
-        index = self.snakemake.input.get("index")
-        prefix = self.snakemake.params.get("prefix", "hisat2_index")
-        self.index = os.path.join(index, prefix)
+        self.index = os.path.commonprefix(self.snakemake.input.get("index"))
         # sort bam
         sort = self.snakemake.params.get("sort", "samtools")
         sort_order = self.snakemake.params.get("sort_order", "coordinate")

@@ -22,7 +22,10 @@ class Wrapper(WrapperBase):
         super().__init__(snakemake)
 
     def parser(self):
-        self.index = os.path.commonprefix(self.snakemake.output).rstrip(".")
+        self.index = os.path.commonprefix(self.snakemake.output.get('index'))
+        dirname = os.path.dirname(self.index)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
 
 
     def run(self):

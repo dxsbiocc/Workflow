@@ -29,10 +29,10 @@ class Wrapper(WrapperBase):
         # mode
         mode = self.snakemake.params.get("mode", "fastq")
         assert mode in ["fastq", "bam"], "You must choose one of 'bam' or 'fastq'"
+        paired_end = self.snakemake.params.get("paired_end", False)
         if mode == "bam":
             self.input_bam = "--alignments"
             self.input_string = bam
-            paired_end = self.snakemake.params.get("paired_end", False)
         else:
             self.input_bam = ""
             if fq_one:
@@ -51,8 +51,7 @@ class Wrapper(WrapperBase):
                     elif fq_one.endswith('bz2'):
                         self.extra += " --star-bzipped-read-file"
                 
-                if fq_two:
-                    paired_end = True
+                if paired_end:
                     if isinstance(fq_two, list):
                         num_fq_two = len(fq_two)
                         if num_fq_one != num_fq_two:
@@ -62,8 +61,6 @@ class Wrapper(WrapperBase):
                     else:
                         fq_two = [fq_two]
                     self.input_string += " " + ",".join(fq_two)
-                else:
-                    paired_end = False
         if paired_end:
             self.paired_end_string = "--paired-end"
         else:

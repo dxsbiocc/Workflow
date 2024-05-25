@@ -75,7 +75,7 @@ python generate_setting.py path/to/fastq.gz
 ```
 
 | sample | fastq1 | fastq2(optional) | type(optional) | experiment(optional) |
-| ------ | ------ | ------ | -------------- |
+| ------ | ------ | ------ | ------ | ------ |
 |   sp1  | path/to/sp1.R1.fq.gz | path/to/sp1.R2.fq.gz | control | chip |
 |   sp2  | path/to/sp2.R1.fq.gz | path/to/sp2.R2.fq.gz | control | chip |
 |   sp3  | path/to/sp3.R1.fq.gz | path/to/sp1.R2.fq.gz | test | atac |
@@ -97,6 +97,16 @@ python generate_setting.py path/to/fastq.gz
 snakemake -s path/to/Snakefile --use-conda -c4
 # or run in the slurm task management system
 snakemake -s path/to/Snakefile --profile path/to/config/slurm
+```
+
+If you use the slurm task management system, you can write the parameters of `sbatch` command as the value of `SBATCH_DEFAULTS` in the [settings.json](./config/slurm/settings.json) file. such as
+
+```json
+{
+    "SBATCH_DEFAULTS": "--nodelist=node1",
+    "CLUSTER_NAME": "",
+    "CLUSTER_CONFIG": ""
+}
 ```
 
 ## **Description**

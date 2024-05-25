@@ -53,3 +53,63 @@ rule annotatePeaks:
         opj(OUTDIR, "logs/anno/peak_anno_{pair}.log")
     wrapper:
         get_wrapper('scripts', 'R', 'annoPeaks')
+
+rule peak2saf:
+    input:
+        peakfile = opj(OUTDIR, "macs2/broad/{pair}_peaks.broadPeak") if PEAKMODE == 'broad' else \
+                   opj(OUTDIR, "macs2/narrow/{pair}_peaks.narrowPeak"),
+    output:
+        saf = opj(OUTDIR, 'macs2/quantify/{pair}.saf')
+    log:
+        opj(OUTDIR, "logs/anno/peak2saf_{pair}.log")
+    shell:
+        """
+        awk 'OFS="\t" {{print $4, $1, $2, $3, "."}}' {input.peakfile} > {output.saf}
+        """
+
+rule quantifyPeaks:
+    input:
+        samples = opj(OUTDIR, 'dedup/{pair}/{pair}.filtered.bam'),
+        annotation = opj(OUTDIR, 'macs2/quantify/{pair}.saf'),
+    output:
+        quant = opj(OUTDIR, 'macs2/quantify/{pair}.counts')
+    log:
+        opj(OUTDIR, "logs/anno/quantifyPeaks_{pair}.log")
+    threads: 10
+    params:
+        extra = '-F SAF',
+        paired = PAIRED
+    wrapper:
+        get_wrapper('subread', 'featurecounts')
+
+rule merge_peaks:
+    input:
+        expand(opj(OUTDIR, "macs2/broad/{pair}_peaks.broadPeak"), pair=PAIRS) if PEAKMODE == 'broad' else \
+        expand(opj(OUTDIR, "macs2/narrow/{pair}_peaks.narrowPeak"), pair=PAIRS)
+    output:
+        bed = opj(OUTDIR, 'macs2/quantify/merged_peaks.bed'),
+        saf = opj(OUTDIR, 'macs2/quantify/merged.saf')
+    log:
+        opj(OUTDIR, 'logs/anno/merge_peaks.log')
+    conda:
+        get_environment('bedtools', 'merge')
+    shell:
+        """
+        cat {input} | bedtools sort -i - | bedtools merge -i - > {output.bed}
+        awk 'OFS="\t" {print $1":"$2"-"$3, $1, $2, $3, "."}' {output.bed} > {output.saf}
+        """
+
+rule quantifyMerged:
+    input:
+        samples = expand(opj(OUTDIR, 'dedup/{pair}/{pair}.filtered.bam'), pair=PAIRS),
+        annotation = opj(OUTDIR, 'macs2/quantify/merged.saf'),
+    output:
+        quant = opj(OUTDIR, 'macs2/quantify/merged.quants')
+    log:
+        opj(OUTDIR, "logs/anno/quantifyMerged.log")
+    threads: 10
+    params:
+        extra = '-F SAF',
+        paired = PAIRED
+    wrapper:
+        get_wrapper('subread', 'featurecounts')

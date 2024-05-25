@@ -11,7 +11,7 @@ data:
   # genome files
   genome: hg19
   ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
-  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
+  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19  # dir + prefix
   gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
   db: local
   colors:
@@ -53,10 +53,10 @@ parameters:
     extra: "-R '@RG\\tID:{sample}\\tSM:{sample}\\tPL:Illumina'"
     sort: samtools  # Can be 'none', 'samtools' or 'picard'.
     sort_order: coordinate  # Can be 'queryname' or 'coordinate'.
-    sort_extra:
+    sort_extra: ""
     threads: 20
   hisat2:
-    extra:
+    extra: ""
     threads: 20
   star:
     extra: --outSAMtype BAM SortedByCoordinate
@@ -64,15 +64,12 @@ parameters:
   minimap2:
     extra: -x map-pb
     sorting: coordinate
-    sort_extra:
+    sort_extra: ""
     threads: 20
   # dedup
   picard:
     markduplicates: --REMOVE_DUPLICATES true
     mem: 4090
-  gatk:
-    baserecalibrator:
-    applybqsr:
 
 # ----------------- control argument -----------------
 control:

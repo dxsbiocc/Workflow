@@ -30,10 +30,10 @@ class Wrapper(WrapperBase):
             raise ValueError("Only one reference genome can be inputed!")
 
         # Prefix that should be used for the database
-        self.prefix = self.snakemake.params.get("prefix", os.path.splitext(self.snakemake.output.idx[0])[0])
-
-        if len(self.prefix) > 0:
-            self.prefix = "-p " + self.prefix
+        self.prefix = os.path.commonprefix(self.snakemake.output.get('index'))
+        dirname = os.path.dirname(self.prefix)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
 
         # Contrunction algorithm that will be used to build the database, default is bwtsw
         self.algorithm = self.snakemake.params.get("algorithm", "")
@@ -44,7 +44,7 @@ class Wrapper(WrapperBase):
     def run(self):
         shell(
             "bwa index" 
-            " {self.prefix}" 
+            " -p {self.prefix}" 
             " {self.algorithm}" 
             " {self.snakemake.input.fasta}" 
             " {self.log}"

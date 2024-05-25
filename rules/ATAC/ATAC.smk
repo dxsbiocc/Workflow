@@ -55,7 +55,7 @@ include: os.path.join(PATH, "rules/ATAC/report.smk")
 # local
 localrules:
     mapped_stats, mapped_plotBamStats, mapped_idxstats, mapped_flagstat, \
-    dedup_stats, dedup_plotBamStats, dedup_idxstats, dedup_flagstat, \
+    dedup_stats, dedup_plotBamStats, dedup_idxstats, dedup_flagstat, peak2saf, \
     rmdup_index, get_peak, plot_chromosome_coverage, plot_preseq, plot_insertsizemetrics, \
     plot_gcbiasmetrics, frip, preseq, frac_anno_regions, collectinsertsizemetrics, qc_summary
 

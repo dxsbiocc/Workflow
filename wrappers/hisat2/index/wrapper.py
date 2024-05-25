@@ -30,10 +30,10 @@ class Wrapper(WrapperBase):
             self.input_seq += "-c "
         self.input_seq += ",".join(fasta) if isinstance(fasta, list) else fasta
 
-        self.output = self.snakemake.output[0]
-        if not os.path.exists(self.output):
-            os.makedirs(self.output)
-        self.prefix = os.path.join(self.output, self.snakemake.params.get("prefix", "hisat2_index"))
+        self.prefix = os.path.commonpath(self.snakemake.output.get("index"))
+        dirname = os.path.dirname(self.prefix)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
         
 
     def run(self):

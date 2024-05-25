@@ -47,7 +47,7 @@ else:
 # trimming tool
 TRIMMING = config['control']['trimming']
 # mapping tool
-MAPPING = config['control']['mapping']
+MAPPING = config['control']['mapping'].lower()
 # deduplication tool
 DEDUP = config['control']['dedup']
 # --------------------- Reference Data ---------------------- #
@@ -63,7 +63,20 @@ GTF = config['data']['gtf']
 RNA = config['data'].get('rna', None)
 # ----------------------- Util rules ------------------------ #
 include: "utils.smk"
+# index not exists, create index
 if (not INDEX) or (not os.path.exists(INDEX)) or (os.listdir(os.path.dirname(INDEX)) == []):
+    if not INDEX:
+        INDEX = opj(os.path.dirname(REFERENCE), MAPPING)  # save at the same directory as reference
+    if MAPPING in ['star', 'minimap2']:
+        OUTPUT.append(INDEX)                                  # add to output list
+    elif MAPPING in ['bwa', 'bwa-mem2']:
+        OUTPUT.append(INDEX + '.amb')
+    elif MAPPING == 'hisat2':
+        OUTPUT.append(INDEX + '.1.ht2')
+    elif MAPPING == 'bowtie2':
+        OUTPUT.append(INDEX + '.1.bt2')
+    else:
+        raise ValueError(f"Unknown mapping tool: {MAPPING}")
     include: "index.smk"
 # ---------------------- SRA project ------------------------ #
 SRP = config['sra']

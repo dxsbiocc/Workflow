@@ -43,7 +43,7 @@ elif MAPPING == 'bowtie2':
         input:
             fasta = REFERENCE
         output:
-            multiext(
+            index = multiext(
                 INDEX,
                 ".1.bt2",
                 ".2.bt2",
@@ -54,7 +54,7 @@ elif MAPPING == 'bowtie2':
             ),
         threads: 20
         params:
-            extra = ""
+            extra = "",
         log:
             opj(OUTDIR, "logs/mapped/bowtie2_index.log"),
         wrapper:
@@ -64,11 +64,13 @@ elif MAPPING == 'hisat2':
         input:
             fasta = REFERENCE
         output:
-            directory(INDEX),
+            index = multiext(
+                INDEX,
+                ".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"
+            ),
         threads: 20
         params:
             extra = "",
-            prefix = GENOME
         log:
             opj(OUTDIR, "logs/mapped/hisat2_index.log"),
         wrapper:
@@ -93,7 +95,7 @@ elif MAPPING == 'minimap2':
         input:
             fasta = REFERENCE
         output:
-            INDEX,
+            directory(INDEX),
         threads: 20
         params:
             extra = ""

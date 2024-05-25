@@ -14,8 +14,8 @@ data:
 parameters:
   vep:
     local:
-      cache:
-      plugins:
+      cache: ""
+      plugins: ""
     online:
       species: homo_sapiens  # ensembl species name
       release: 98            # ensembl release

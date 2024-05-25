@@ -16,7 +16,7 @@ outdir: null
 # --------------- programs parameters ----------------
 parameters:
   star:
-    extra:
+    extra: ""
     read_length: 150
   hisat2:
     extra: "--rg-id ID:{sample} --rg SM:{sample}"
@@ -25,27 +25,27 @@ parameters:
     sort_extra: ""
   rsem:
     extra: --estimate-rspd --calc-ci --seed 123456 --no-bam-output
-    index: null
+    index: ""
   kallisto:
-    extra:   # SE parameters: --single -l 200 -s 80
-    index: null
+    extra: ""  # SE parameters: --single -l 200 -s 80
+    index: ""
   salmon:
-    extra:
+    extra: ""
     libtype: A
-    index: null
+    index: ""
   featurecounts:
     extra: -O --fracOverlap 0.2 -J -g gene_id  # attribute in the last column GTF file
-    r_path:       # implicitly sets the --Rpath flag
-    strand: 0     # optional; strandness of the library (0: unstranded [default], 1: stranded, and 2: reversely stranded)
+    r_path: ""      # implicitly sets the --Rpath flag
+    strand: 0       # optional; strandness of the library (0: unstranded [default], 1: stranded, and 2: reversely stranded)
   htseq:
     extra: -i gene_id  # Use the attributes of the last column in the GTF file as the basis for counting
   arriba:
-    extra:
-    blacklist: null
-    known_fusions: null
-    sv: null
+    extra: ""
+    blacklist: ""
+    known_fusions: ""
+    sv: ""
   star-fusion:
-    extra:
+    extra: ""
     genome_lib_dir: /cluster/facility/yzhang/WorkSpace/data/ctat_genome_lib_build_dir
   enrichment:
     orgdb: org.Hs.eg.db
@@ -60,5 +60,5 @@ control:
   mapping: star                  # bowtie2 | hisat2 | star | minimap2
   quantify: htseq                # rsem | salmon | kallisto | featurecounts | htseq
   differential_analysis: deseq2  # edger | deseq2 | limma
-  fusion: arriba                 # arriba, star-fusion, null
+  fusion: ""                 # arriba, star-fusion, ""
   merge: false

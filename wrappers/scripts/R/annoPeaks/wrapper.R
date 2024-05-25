@@ -36,7 +36,7 @@ annotate_peaks <- function(snakemake) {
   dev.off()
 
   cat("Save result to", anno_txt)
-  write.table(as.data.frame(peak_anno@anno), file = anno_txt, sep = "\t", row.names = FALSE)
+  write.table(as.data.frame(peak_anno@anno), file = anno_txt, sep = "\t", row.names = FALSE, quote = FALSE)
   cat("Annotation done!")
 }
 

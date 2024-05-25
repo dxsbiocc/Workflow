@@ -22,11 +22,12 @@ if QUANTIFY_TOOL in ['salmon', 'kallisto']:
 else:
     QUANTIFY_INDEX = config['parameters'][QUANTIFY_TOOL].get("index", None)
 # fusion
-FUSION =  config['control']['fusion'].lower()
-if FUSION == "arriba":
-    OUTPUT.append(expand(opj(OUTDIR, "fusion/arriba/{sample}.tsv"), sample=SAMPLES))
-elif FUSION == "star-fusion":
-    OUTPUT.append(expand(opj(OUTDIR, "fusion/star-fusion/{sample}"), sample=SAMPLES))
+FUSION =  config['control']['fusion']
+if isinstance(FUSION, str):
+    if FUSION.lower() == "arriba":
+        OUTPUT.append(expand(opj(OUTDIR, "fusion/arriba/{sample}.tsv"), sample=SAMPLES))
+    elif FUSION.lower() == "star-fusion":
+        OUTPUT.append(expand(opj(OUTDIR, "fusion/star-fusion/{sample}"), sample=SAMPLES))
 ## star fusion
 GENOME_LIB = config['parameters']['star-fusion']['genome_lib_dir']  # https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/
 ## arriba

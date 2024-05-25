@@ -74,7 +74,9 @@ class Wrapper(WrapperBase):
         gtf = pd.read_csv(anno_file, skiprows=5, sep="\t", usecols=[0, 2, 3, 4, 8], 
                             header=None, names=['chrom', 'type', 'start', 'end', 'attr'])
         if quant in ["rsem", "htseq", "featurecounts"]:
-            attr = gtf.query('type == "gene"')['attr']
+            attr = gtf.query('type == "gene"')['attr']  # gencode
+            if attr.empty:
+                attr = gtf.query('type == "transcript"')['attr']  # refGene
             info = attr.str.extractall(
                 r'gene_id "(?P<gene_id>.*?)";.*gene_name "(?P<gene_name>.*?)";').set_index('gene_id')
             # dupliactes gene name
