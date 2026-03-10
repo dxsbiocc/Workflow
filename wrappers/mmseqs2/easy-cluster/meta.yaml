@@ -1,0 +1,10 @@
+name: mmseqs2
+description: |
+  MMseqs2 is a suite of programs for fast and sensitive search and clustering of protein or nucleotide sequences.
+url: https://github.com/soedinglab/MMseqs2
+authors:
+  - Söding J.
+input:
+  - protein or nucleotide sequences in fasta format or database
+output:
+  - clustered sequences in fasta format

@@ -1,0 +1,13 @@
+rule pairtools_flip:
+    input:
+        bam = "mock.4flip.pairs",
+        chromsizes = "mock.chrom.sizes"
+    output:
+        "mock.flip.gz",
+    log:
+        "logs/pairtools/flip.log"
+    params:
+        extra = ""
+    threads: 2
+    wrapper:
+        "file:../../../pairtools/flip"

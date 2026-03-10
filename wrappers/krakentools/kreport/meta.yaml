@@ -1,0 +1,10 @@
+name: kreport
+description: |
+  KrakenTools script for converting Kraken/KrakenUniq/Kraken2/Bracken results to MPA format.
+url: https://github.com/DerrickWood/KrakenTools
+authors:
+  - Derrick Wood
+input:
+  - Kraken/KrakenUniq/Kraken2/Bracken report
+output:
+  - Kraken/KrakenUniq/Kraken2/Bracken MPA file

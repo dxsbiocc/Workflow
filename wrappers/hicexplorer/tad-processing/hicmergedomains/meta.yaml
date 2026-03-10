@@ -1,0 +1,17 @@
+name: HicExplorer hicMergeDomains
+description: |
+  hicMergeDomains takes as input multiple TAD domain files from hicFindTads. 
+  It merges TADs from different resolutions to one TAD domains file, considers 
+  protein peaks from known TAD binding sites and computes a dependency graph 
+  of the TADs.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The domain files of the different resolutions
+output:
+  - merged domains list
+  - relationship list of the TADs
+params:
+  extra: Any additional arguments to pass
+notes:

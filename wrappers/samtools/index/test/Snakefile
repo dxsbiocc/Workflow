@@ -1,0 +1,12 @@
+rule samtools_index:
+    input:
+        "mapped/{sample}.sorted.bam",
+    output:
+        "mapped/{sample}.sorted.bam.bai",
+    log:
+        "logs/samtools_index/{sample}.log",
+    params:
+        extra = "",  # optional params string
+    threads: 4  # This value - 1 will be sent to -@
+    wrapper:
+        "file:../../index"

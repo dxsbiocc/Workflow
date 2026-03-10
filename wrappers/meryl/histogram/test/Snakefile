@@ -1,0 +1,12 @@
+rule meryl_hist:
+    input:
+        "genome",
+    output:
+        "genome.hist"
+    log:
+        "logs/genome.hist.log",
+    params:
+        extra = "",
+    threads: 3,
+    wrapper:
+        "file:../../../meryl/histogram"

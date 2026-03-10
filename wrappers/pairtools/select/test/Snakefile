@@ -1,0 +1,13 @@
+rule pairtools_select:
+    input:
+        "{sample}.pairs.gz",
+    output:
+        selected = "{sample}.selected.pairs.gz",
+        unselected = "{sample}.unselected.pairs.gz",
+    log:
+        "logs/pairtools/select/{sample}.log"
+    params:
+        extra = "'(pair_type == \"UU\") or (pair_type == \"UR\") or (pair_type == \"RU\")'"
+    threads: 2
+    wrapper:
+        "file:../../../pairtools/select"

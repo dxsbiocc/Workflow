@@ -1,0 +1,13 @@
+name: HicExplorer hicInfo
+description: |
+  Prints information about a matrix or matrices including matrix size, number of elements, sum of elements
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - .h5 and .cool file
+output:
+  - text information
+params:
+  extra: Any additional arguments to pass
+notes:

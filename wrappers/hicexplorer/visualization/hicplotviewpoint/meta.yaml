@@ -1,0 +1,13 @@
+name: HicExplorer hicPlotViewpoint
+description: |
+  Plots the number of interactions around a given reference point in a region.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - HiC-Matrix file
+output:
+  - File name of the image to save.
+params:
+  extra: Any additional arguments to pass
+notes:

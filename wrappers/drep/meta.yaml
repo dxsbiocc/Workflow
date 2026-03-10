@@ -1,0 +1,9 @@
+name: drep
+description: De-replication of microbial genomes assembled from multiple samples.
+url: https://github.com/MrOlm/drep
+authors:
+  - Oliver Kosaka
+input:
+  - fasta file(s)
+output:
+  - fasta file(s)

@@ -1,0 +1,14 @@
+rule quant:
+    input:
+        reads1 = "",
+        reads2 = "",
+        index = ""
+    output:
+        directory("output")
+    threads: 8
+    log: "logs/quant.log"
+    params:
+        extra = "-c 10xv3 -u"
+        resolution = "cr-like"  # possible values: cr-like, cr-like-em, parsimony, parsimony-em, parsimony-gene, parsimony-gene-em
+    wrapper:
+        "file:../../../simpleaf/quant"

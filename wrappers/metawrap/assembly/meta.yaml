@@ -1,0 +1,6 @@
+name: metawrap
+description: |
+  MetaWrap is a computational tool for analyzing metagenomic data.
+url: https://github.com/bxlab/MetaWrap
+authors:
+  - Xiangyu Liu

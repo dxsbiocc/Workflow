@@ -1,0 +1,10 @@
+rule graphlan_annotate:
+    input:
+        tree = "graphlan.tree",
+        annotation = "graphlan.annotation",
+    output:
+        "graphlan.annotated.xml",
+    log:
+        "logs/graphlan_annotate.log",
+    wrapper:
+        "graphlan_annotate"

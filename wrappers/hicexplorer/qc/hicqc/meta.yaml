@@ -1,0 +1,13 @@
+name: HicExplorer hicQC
+description: |
+  Tabulates and plots QC measures from hicBuildMatrix log files within an HTML output
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - log files
+output:
+  - folder: A table containing the results and a html file with several images.
+params:
+  extra: Any additional arguments to pass
+notes:

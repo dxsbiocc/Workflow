@@ -1,0 +1,10 @@
+rule plot_insertsizemetrics:
+    input:
+        "a.hist_data.txt"
+    output:
+        qc = "insertsize/a.isize_dist.txt",
+        pdf = "insertsize/a.isize_dist.pdf"
+    log:
+        "logs/qc/insertsizemetrics.log"
+    wrapper:
+        "file:../../../Python/plot_insertsizemetrics"

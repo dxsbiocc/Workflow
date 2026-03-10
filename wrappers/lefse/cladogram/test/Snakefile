@@ -1,0 +1,9 @@
+rule lefse_cladogram:
+    input:
+        "data/res.txt",
+    output:
+        "data/cladogram.pdf",
+    params:
+        extra = "--format pdf",
+    wrapper:
+        "lefse_cladogram"

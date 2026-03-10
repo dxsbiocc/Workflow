@@ -1,0 +1,8 @@
+channels:
+  - ursky
+  - bioconda
+  - conda-forge
+  - anaconda
+dependencies:
+  - metawrap-mg=1.3.2
+  - salmon=0.13.1

@@ -1,0 +1,13 @@
+rule samtools_stats:
+    input:
+        bam = "mapped/{sample}.bam",
+        bed = "design.bed",              #Optional input, specify target regions
+    output:
+        "stats/{sample}.txt",
+    params:
+        extra = "",  # Optional: extra arguments.
+        region = "xx:1000000-2000000",  # Optional: region string.
+    log:
+        "logs/samtools_stats/{sample}.log",
+    wrapper:
+        "file:../../stats"

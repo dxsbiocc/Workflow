@@ -1,0 +1,15 @@
+name: macs2 callpeak
+description: >
+  This is the main function in MACS3. It will take alignment files in various format
+  (please check the detail below) and call the significantly enriched regions in the 
+  genome as 'peaks'. It can be invoked by macs3 callpeak . If you type this command 
+  with -h, you will see a full description of command-line options. Here we only list 
+  the essentials.
+
+authors:
+  - dengxsh
+input:
+  -  SAM, BAM, BED, ELAND, ELANDMULTI, ELANDEXPORT, BOWTIE, BAMPE or BEDPE files
+output:
+  - tabular file in excel format (.xls) AND
+  - different optional metrics in bedGraph or BED formats

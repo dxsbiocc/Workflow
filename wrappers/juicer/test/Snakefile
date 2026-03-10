@@ -1,0 +1,20 @@
+rule juicer:
+    input:
+        genome = "/data/dengxsh/WorkSpace/genome/hg19/hg19.fa",  # must have bwa index in the same directory, and have the same prefix
+        restriction_sites = "/data/dengxsh/WorkSpace/genome/hg19/hg19_DpnII.txt",
+        chromsizes = "/data/dengxsh/WorkSpace/genome/hg19/hg19.chrom.sizes",
+        fastq = expand("/data/dengxsh/data/CTCF_ATAC_SW480/ATAC/ATAC_seq_{h}_{run}.fq.gz", h=['0h', '6h'], run=['R1', 'R2']),
+        # fastq1 = expand("/data/dengxsh/data/CTCF_ATAC_SW480/ATAC/ATAC_seq_{h}_R1.fq.gz", h=['0h', '6h']),
+        # fastq2 = expand("/data/dengxsh/data/CTCF_ATAC_SW480/ATAC/ATAC_seq_{h}_R2.fq.gz", h=['0h', '6h']),
+        juicer = "/data/dengxsh/software/juicer/",  # juicer path, have been added juicer_tools.jar to script path
+    output:
+        protected(directory("output/")),
+    log:
+        "logs/juicer/a.log"
+    params:
+        extra = "",
+        restriction_type = "DpnII",
+        gname = "PlaTyr",
+    threads: 10
+    wrapper:
+        "file:../../juicer"

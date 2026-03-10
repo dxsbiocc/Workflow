@@ -1,0 +1,15 @@
+rule shift:
+    input:
+         # matrix file from deepTools computeMatrix tool
+         "rmdup.bam"
+    output:
+        "shift.bam"
+    log:
+        "logs/deeptools/shift.log"
+    threads:
+        4
+    params:
+        # optional parameters
+        extra = ""
+    wrapper:
+        "file:../../alignmentsieve"

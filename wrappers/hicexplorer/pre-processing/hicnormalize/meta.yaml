@@ -1,0 +1,14 @@
+name: hicNormalize 
+description: >
+  Normalizes given matrices either to the smallest given read number of all matrices 
+  or to 0 - 1 range. However, it does NOT compute the contact probability.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The matrix (or multiple matrices) to get information about. 
+output:
+  - Hi-C matrix.
+params:
+  extra: Any additional arguments to pass
+notes:

@@ -1,0 +1,64 @@
+# --------------------- pipeline ---------------------
+pipeline: RNA-seq
+verbose: false
+
+# -------------------- input data --------------------
+data:
+  genome: hg19
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/gencode/GRCh38.primary_assembly.genome.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/gencode/index/star/GRCh38
+  rna: /cluster/facility/yzhang/WorkSpace/Reference/gencode/gencode.v42.transcripts.fa
+  rna_index: null
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/gencode/gencode.v42.annotation.gtf
+
+outdir: null
+
+# --------------- programs parameters ----------------
+parameters:
+  star:
+    extra: ""
+    read_length: 150
+  hisat2:
+    extra: "--rg-id ID:{sample} --rg SM:{sample}"
+    sort: samtools          # Can be 'none', 'samtools' or 'picard'.
+    sort_order: coordinate  # Can be 'queryname' or 'coordinate'.
+    sort_extra: ""
+  rsem:
+    extra: --estimate-rspd --calc-ci --seed 123456 --no-bam-output
+    index: ""
+  kallisto:
+    extra: ""  # SE parameters: --single -l 200 -s 80
+    index: ""
+  salmon:
+    extra: ""
+    libtype: A
+    index: ""
+  featurecounts:
+    extra: -O --fracOverlap 0.2 -J -g gene_id  # attribute in the last column GTF file
+    r_path: ""      # implicitly sets the --Rpath flag
+    strand: 0       # optional; strandness of the library (0: unstranded [default], 1: stranded, and 2: reversely stranded)
+  htseq:
+    extra: -i gene_id  # Use the attributes of the last column in the GTF file as the basis for counting
+  arriba:
+    extra: ""
+    blacklist: ""
+    known_fusions: ""
+    sv: ""
+  star-fusion:
+    extra: ""
+    genome_lib_dir: /cluster/facility/yzhang/WorkSpace/data/ctat_genome_lib_build_dir
+  enrichment:
+    orgdb: org.Hs.eg.db
+    pathway: msigdb
+    go: all
+    pvalueCutoff: 0.05
+    qvalueCutoff: 0.05
+
+# ---------------- control parameters ----------------
+control:
+  trimming: fastp
+  mapping: star                  # bowtie2 | hisat2 | star | minimap2
+  quantify: htseq                # rsem | salmon | kallisto | featurecounts | htseq
+  differential_analysis: deseq2  # edger | deseq2 | limma
+  fusion: ""                 # arriba, star-fusion, ""
+  merge: false

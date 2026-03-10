@@ -1,0 +1,11 @@
+rule kraken2:
+    input:
+        fastq = expand("data/reads_{run}.fastq.gz", run=["R1", "R2"]),
+        db = "data/db",
+    output:
+        report = "data/kraken2.report",
+        output = "data/kraken2.output",
+    params:
+        extra = "--use-names --report-zero-counts",
+    wrapper:
+        "kraken2"

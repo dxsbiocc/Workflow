@@ -1,0 +1,9 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+
+dependencies:
+  - bwa-mem2 =2.2.1
+  - samtools = 1.17
+  - picard-slim = 3.0.0

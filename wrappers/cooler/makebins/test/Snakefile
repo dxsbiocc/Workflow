@@ -1,0 +1,13 @@
+rule cooler_makebins:
+    input:
+        "test.chrom.sizes"
+    output:
+        "bins.bed"
+    log:
+        "logs/cooler/makebins.log",
+    params:
+        binsize = 3000,
+        extra = "",
+    threads: 8
+    wrapper:
+        "file:../../../cooler/makebins"

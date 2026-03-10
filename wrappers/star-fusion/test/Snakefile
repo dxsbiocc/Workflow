@@ -1,0 +1,12 @@
+rule star_fusion:
+    input:
+        reads = expand("reads/reads_{run}.fq.gz", run=[1, 2]),
+        index = "/cluster/facility/yzhang/WorkSpace/data/ctat_genome_lib_build_dir"
+    output:
+        directory("result")
+    params:
+        extra = ""
+    log:
+        "logs/test.log"
+    wrapper:
+        "file:../../star-fusion"

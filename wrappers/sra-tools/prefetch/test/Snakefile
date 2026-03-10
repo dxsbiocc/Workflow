@@ -1,0 +1,26 @@
+rule all:
+    input:
+        expand("sci-RNA-seq/{accession}.sra", accession=["SRR9167440"]),
+
+rule sra_accession:
+    output:
+        output_file = "sci-RNA-seq/{accession}.sra",
+    log:
+        "logs/{accession}.log",
+    params:
+        extra = "",
+        accessions = "{accession}",
+    wrapper: 
+        "file:../../prefetch"
+
+# rule sra_accession_list:
+#     input: 
+#         infile = "SRR_Acc_List.txt",
+#     output:
+#         output_dir = directory("Smart-seq2"),
+#     log:
+#         "logs/accession.log",
+#     params:
+#         extra = "",
+#     wrapper: 
+#         "file:../../prefetch"

@@ -1,0 +1,12 @@
+rule hicQC:
+    input:
+        ["a.log", "a.log"],
+    output:
+        directory("qc")
+    log:
+        "logs/hicQC.log"
+    params:
+        extra = "--dpi 200",
+        labels = ["a", "b"]
+    wrapper:
+        "file:../../../../hicexplorer/qc/hicqc"

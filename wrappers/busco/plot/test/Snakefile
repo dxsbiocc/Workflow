@@ -1,0 +1,11 @@
+rule run_busco:
+    input:
+        ["."],
+    log:
+        "logs/busco/plot.log",
+    params:
+        # optional parameters
+        extra = "",
+    threads: 8
+    wrapper:
+        "file:../../../busco/plot"

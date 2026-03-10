@@ -1,0 +1,17 @@
+rule deeptools_multibigwigsummary:
+    input:
+        # Required input.
+        bigwig = ['a.bw', 'b.bw'],
+    output:
+        # Required output.
+        out = 'scores_per_bin.npz',
+        # raw_count = ''
+    params:
+        # Optional parameters.
+        subcommand = 'bins',
+        extra = ''
+    threads: 1
+    log: 
+        'logs/deeptools_multibigwigsummary.log'
+    wrapper: 
+        'file:../../../deeptools/multibigwigsummary'

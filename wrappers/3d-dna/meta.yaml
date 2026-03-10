@@ -1,0 +1,15 @@
+name: 3d-dna pipeline
+description: >
+  This is a script to assemble draft assemblies (represented in input by 
+  draft fasta and deduplicated list of alignments of Hi-C reads to this 
+  fasta as produced by the Juicer pipeline) into chromosome-length scaffolds. 
+  The script will produce an output fasta file, a Hi-C map of the final 
+  assembly, and a few supplementary annotation files to help review the result 
+  in Juicebox.
+
+input:
+  - draft assembly fasta file
+output:
+  - merged_nodups.txt
+authors:
+  - dengxsh

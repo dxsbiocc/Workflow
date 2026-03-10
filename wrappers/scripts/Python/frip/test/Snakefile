@@ -1,0 +1,10 @@
+rule frip:
+    input:
+        bam = 'a.bam',
+        bed = 'a.bed'
+    output:
+        'a.frip'
+    log:
+        'a.log'
+    wrapper:
+        "file:../../frip"

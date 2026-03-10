@@ -1,0 +1,9 @@
+__default__:
+    mem: 64G
+    partition: "cpu"
+    time: "72:00:00"
+    nodelist: "node1"
+    cores: 5
+    jobname: "{rule}"
+    error: "jobs/{rule}_%j.err"
+    out: "jobs/{rule}_%j.out"

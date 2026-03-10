@@ -1,0 +1,17 @@
+name: rgi
+description: |
+  This tool provides a preliminary annotation of your DNA sequence(s) based upon the 
+  data available in The Comprehensive Antibiotic Resistance Database (CARD). Hits to 
+  genes tagged with Antibiotic Resistance ontology terms will be highlighted. As CARD 
+  expands to include more pathogens, genomes, plasmids, and ontology terms this tool 
+  will grow increasingly powerful in providing first-pass detection of antibiotic 
+  resistance associated genes. See license at CARD website.
+url: https://card.mcmaster.ca/analyze
+authors:
+  - dengxsh
+input:
+  - fasta file(s)
+output:
+  - rgi file(s)
+notes: |
+  * For more information see, https://card.mcmaster.ca/analyze

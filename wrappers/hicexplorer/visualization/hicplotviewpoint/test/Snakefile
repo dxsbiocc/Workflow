@@ -1,0 +1,13 @@
+rule hicPlotViewpoint:
+    input:
+        "Li_et_al_2015.h5"
+    output:
+        "viewpoint1.png"
+    log:
+        "logs/hicPlotViewpoint.log"
+    params:
+        region = "X:3000000-3500000",
+        referencePoint = "X:3200000",
+        extra = "--dpi 300",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicplotviewpoint" 

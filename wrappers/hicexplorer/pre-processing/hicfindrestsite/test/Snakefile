@@ -1,0 +1,13 @@
+rule hicfindrestsite:
+    input:
+        "dm3_chrM.fasta.gz"
+    output:
+        "hindIII_DpnII.bed"
+    log:
+        "logs/hicexplorer/hicfindrestsite.log"
+    params:
+        pattern = ["AAGCTT", "GATC"],
+        extra = ""
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre-processing/hicfindrestsite"

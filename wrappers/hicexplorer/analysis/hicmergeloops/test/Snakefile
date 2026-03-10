@@ -1,0 +1,12 @@
+rule hicMergeLoops:
+    input:
+        expand("gm12878_{r}kb.bedgraph", r=[5, 10, 25])
+    output:
+        "all.bedgraph"
+    log:
+        "logs/hicMergeLoops.log"
+    params:
+        lowestResolution = 5000,
+        extra = ""
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hicmergeloops"

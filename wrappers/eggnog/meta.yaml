@@ -1,0 +1,11 @@
+name: eggnog-mapper
+description: EggNOG-Mapper is a tool for functional annotation of genomes and metagenomes.
+url: https://github.com/eggnogdb/eggnog-mapper
+authors:
+  - dengxsh
+input:
+  - fasta file(s)
+output:
+  - eggnog-mapper file(s)
+notes: |
+  * For more inforamtion see, https://emboss.sourceforge.net/

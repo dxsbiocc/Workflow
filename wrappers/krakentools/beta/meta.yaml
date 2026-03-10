@@ -1,0 +1,10 @@
+name: beta_diversity
+description: |
+  KrakenTools script for analyzing beta diversity of Kraken/KrakenUniq/Kraken2/Bracken results.
+url: https://github.com/DerrickWood/KrakenTools
+authors:
+  - Derrick Wood
+input:
+  - Kraken/KrakenUniq/Kraken2/Bracken results
+output:
+  - Kraken/KrakenUniq/Kraken2/Bracken beta diversity file

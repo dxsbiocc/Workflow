@@ -1,0 +1,13 @@
+name: HicExplorer hicHyperoptDetectLoops
+description: | 
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - matrix file
+  - protein file
+output:
+  - txt file
+params:
+  extra: Any additional arguments to pass
+notes:

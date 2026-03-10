@@ -1,0 +1,109 @@
+# --------------------- pipeline ---------------------
+pipeline: Meta
+verbose: true
+
+# -------------------- input data --------------------
+data:
+  # sample list
+  sample_file: ../example/sample_list.txt
+  # sample info, json file
+  sample_info: ../example/sample_info.json
+
+outdir:
+
+# --------------- programs parameters ----------------
+parameters:
+  host:
+    tool: kneaddata
+    db: /Reference/databases/host_genome/hg19
+    threads: 16
+    extra: "--bypass-trim --bypass-trf --reorder --bowtie2-options '--very-sensitive --dovetail' --remove-intermediate-output -v"
+  humann:
+    tool: humann
+    threads: 16
+    reads: 20000000 # reads number for downsampling
+    nucleotide: /cluster/facility/yzhang/WorkSpace/Reference/meta/humann4/chocophlan_ec
+    protein: /cluster/facility/yzhang/WorkSpace/Reference/meta/humann4/uniref
+    utility_mapping: /cluster/facility/yzhang/WorkSpace/Reference/meta/humann4/utility_mapping
+    metaphlan:
+      db: /cluster/facility/yzhang/WorkSpace/Reference/meta/metaphlan4
+      index: mpa_vOct22_CHOCOPhlAnSGB_202403
+      extra: "--input_type fastq --offline -t rel_ab_w_read_stats --nproc 8"
+    barplot: 10
+  graphlan:
+    extra: "--skip_rows 1,2 --most_abundant 100 --abundance_threshold 20 --least_biomarkers 10 --annotations 3,4 --external_annotations 7"
+  kraken2:
+    db: /Reference/meta/kraken2/pluspf16g
+  bracken:
+    readLength: 150 # The length of the reads
+    proportion: 0.2 # Only those present in 20% of the samples are retained
+    taxonomy: ["P", "G", "S"] # Classification is set into D, P, C, O, F, G, S, with commonly used categories being Kingdom (D), Phylum (P), Genus (G), and Species (S).
+    threshold: 0 # The threshold for the bracken output
+
+  megahit:
+    threads: 8
+    extra: "--min-count 10 --k-list 21,29,39,59,79,99,119,141"
+    memory: 5000 # MiB
+  metaspades:
+    threads: 8
+    extra: "--only-assembler"
+    memory: 5000 # MiB
+    k: "auto"
+    mode: "meta"
+  quast:
+    extra: ""
+  prodigal:
+    extra: "-p meta -f gff"
+  seqkit:
+    complete_gene: "-n -r -p 'partial=00'"
+    replace: "-p '\\*' -r ''"
+  mmseqs2:
+    threads: 8
+    easy-cluster: "--min-seq-id 0.9 -c 0.9 --cov-mode 1"
+  salmon:
+    index:
+      threads: 8
+      extra: ""
+    quant:
+      threads: 8
+      extra: "--meta"
+  eggnog:
+    db: /Reference/meta/eggnog/eggnog-mapper-2.1.13
+    extra: "--override --cpu 8 -m diamond --tax_scope auto --excel"
+  rgi:
+    extra: "--include_loose --clean"
+    aligner: DIAMOND
+    intype: protein
+    thread: 8
+  metawrap:
+    assembly_method: megahit
+    assembly_threads: 8
+    assembly_memory: 20 # GB
+    assembly_extra: ""
+    binning_threads: 8
+    binning_memory: 20 # GB
+    binning_method: ["metabat2", "maxbin2"]
+    binning_extra: ""
+    refinement_threads: 8
+    refinement_memory: 20 # GB
+    refinement_extra: "-c 50 -x 10"
+    checkm_db: /Reference/meta/checkm
+  drep:
+    extra: "-sa 0.95 -nc 0.30 -comp 50 -con 10"
+    threads: 8
+  coverm:
+    extra: "-x fa"
+    threads: 8
+
+# ---------------- control parameters ----------------
+control:
+  adapters: Truseq # Truseq(Illumina)、Nextera, use in cut&tag
+  trimming: trimmomatic # choose: fastp(default), cutadapt, trimmomatic and trim_galore
+  mapping: bowtie2 # bwa-mem2, bowtie2, hisat2, star, minimap2
+  dedup: markduplicates # sambamba
+  paired: true
+  remove_host: false
+  assembly: megahit # options: megahit, metaspades or both (MetaSPAdes is designed primarily for single-sample metagenomic assembly)
+  quast: quast # options: quast, metaquast (More comprehensive assessment but slower)
+  full_gene: true # options: true, false
+  binning_without_assembly: true # options: true, false (If true, the assembly step will be skipped)

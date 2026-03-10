@@ -1,0 +1,13 @@
+rule krakentools_beta_diversity:
+    input:
+        fasta = ["data/kraken.report", "data/kraken2.report"],
+    output:
+        beta = "data/beta.txt",
+    log:
+        "logs/beta_diversity.log",
+    params:
+        type = "bracken",  # single,simple,bracken,kreport,kreport2,krona
+        level = "all",     # all,S,G,F,
+        extra = ""
+    wrapper:
+        "beta_diversity.py"

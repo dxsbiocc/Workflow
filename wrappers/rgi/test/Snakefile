@@ -1,0 +1,14 @@
+rule quast:
+    input:
+        fasta = "genome.fasta",
+    output:
+        "rgi.txt"
+    log:
+        "logs/rgi.log"
+    threads: 16
+    params:
+        extra = "--include_loose --clean",
+        aligner = "DIAMOND",  # BLAST and DIAMOND
+        intype = "contig",    # contig, protein and read
+    wrapper:
+        "file:../../rgi"

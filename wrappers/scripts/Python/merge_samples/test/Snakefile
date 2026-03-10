@@ -1,0 +1,27 @@
+rule merge_mpa:
+    input:
+        expand("kraken2/{sample}/{sample}.mpa", sample=["A", "B"]),
+    output:
+        "merged.mpa",
+    log:
+        "merged.log",
+    params:
+        usecols = [0, 6],  # [0] is the index column, [6] is the count column
+        header = 'infer',
+        column_name = ["A", "B"],
+    wrapper:
+        "file:../../merge_samples"
+
+rule merge_bracken:
+    input:
+        expand("bracken/{{taxonomy}}/{sample}.bracken", sample=["A", "B"]),
+    output:
+        "merged.bracken",
+    log:
+        "merged.log",
+    params:
+        usecols = [0, 6],  # [0] is the index column, [6] is the count column
+        header = 'infer',
+        column_name = ["A", "B"],
+    wrapper:
+        "file:../../merge_samples"

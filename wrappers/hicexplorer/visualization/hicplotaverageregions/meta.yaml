@@ -1,0 +1,16 @@
+name: HicExplorer hicPlotAverageRegions
+description: |
+  hicPlotAverage regions plots the data computed by hicAverageRegions. 
+  It shows the summed up and averaged regions around all given reference 
+  points. This tool is useful to plot differences at certain reference 
+  points as for example TAD boundaries between samples.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The averaged regions file computed by hicAverageRegions (npz file).
+output:
+  - The averaged regions plot.
+params:
+  extra: Any additional arguments to pass
+notes:

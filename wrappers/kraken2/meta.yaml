@@ -1,0 +1,9 @@
+name: kraken2
+description: |
+  Kraken2 is a system for assigning taxonomic labels to short DNA sequences, usually 
+  obtained through metagenomic studies.
+url: https://github.com/DerrickWood/kraken2
+authors:
+  - Derrick Wood
+input:
+output:

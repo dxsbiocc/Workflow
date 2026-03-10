@@ -1,0 +1,14 @@
+name: HicExplorer hicTrainTADClassifier
+description: |
+  Check out hicTADClassifier for calling TADs using our default classifiers or your trained classifier.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - HiC-Matrix file or list of files for input. Only COOLER files are supported!
+  - domain file or list of files containing tad boundaries
+output:
+  - output file for either the classification report or the saved classifier
+params:
+  extra: Any additional arguments to pass
+notes:

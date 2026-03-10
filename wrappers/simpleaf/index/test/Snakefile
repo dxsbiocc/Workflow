@@ -1,0 +1,12 @@
+rule index:
+    input:
+        fasta = "data/seqs.fasta",
+        gtf = "data/genes.gtf"
+    output:
+        "index"
+    threads: 8
+    log: "index.log"
+    params:
+        extra = "-r 90 -t 8"
+    wrapper:
+        "file:../../../simpleaf/index"

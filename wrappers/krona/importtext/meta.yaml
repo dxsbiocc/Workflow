@@ -1,0 +1,10 @@
+name: ktImportText
+description: |
+  KtImportText is a tool for importing text files into Krona.
+url: https://github.com/marbl/Krona/releases/tag/v2.8.1
+authors:
+  - M. Z. Jernigan
+input:
+  - Krona text file
+output:
+  - Krona text file

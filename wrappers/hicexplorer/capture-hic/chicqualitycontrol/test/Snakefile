@@ -1,0 +1,16 @@
+rule chicQualityControl:
+    input:
+        matrices = ["FL-E13-5_chr1.cool", "MB-E10-5_chr1.cool"],
+        reference = "referencePoints_qc.bed"
+    output: 
+        reference = "plot/new_referencepoints.bed",
+        histogram = "plot/histogram.png",
+        sparsity = "plot/sparsity.png",
+    log:
+        "logs/chicQualityControl.log"
+    params:
+        sparsity = 0.05,
+        extra = ""
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/capture-hic/chicqualitycontrol"

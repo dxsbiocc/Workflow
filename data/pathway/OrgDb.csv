@@ -1,0 +1,20 @@
+Package,Title
+org.Hs.eg.db,Human
+org.Mm.eg.db,Mouse
+org.Rn.eg.db,Rat
+org.Dm.eg.db,Fly
+org.Dr.eg.db,Zebrafish
+org.At.tair.db,Arabidopsis
+org.Sc.sgd.db,Yeast
+org.Ce.eg.db,Worm
+org.Bt.eg.db,Bovine
+org.Ss.eg.db,Pig
+org.Gg.eg.db,Chicken
+org.Cf.eg.db,Canine
+org.Mmu.eg.db,Rhesus
+org.Xl.eg.db,Xenopus
+org.EcK12.eg.db,E coli strain K12
+org.Pt.eg.db,Chimp
+org.Ag.eg.db,Anopheles
+org.EcSakai.eg.db,E coli strain Sakai
+org.Mxanthus.db,Myxococcus xanthus DK 1622

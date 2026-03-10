@@ -1,0 +1,19 @@
+rule hisat2_align:
+    input:
+      reads = ["reads/{sample}_R1.fastq", "reads/{sample}_R2.fastq"],
+      index = multiext(
+        "index/genome",
+        ".1.ht2", ".2.ht2", ".3.ht2", ".4.ht2", ".5.ht2", ".6.ht2", ".7.ht2", ".8.ht2"
+      ),
+    output:
+      "mapped/{sample}.sorted.bam"
+    log:
+        "logs/hisat2_align_{sample}.log"
+    params:
+      extra = "",
+      sort = "samtools",  # Can be 'none', 'samtools' or 'picard'.
+      sort_order = "coordinate",  # Can be 'queryname' or 'coordinate'.
+      sort_extra = "",
+    threads: 2
+    wrapper:
+      "file:../../../hisat2/align"

@@ -1,0 +1,13 @@
+rule chicViewpointBackgroundModel:
+    input:
+        matrices = ["FL-E13-5_chr1.cool", "MB-E10-5_chr1.cool"],
+        reference = "referencePoints.bed"
+    output: 
+        "background.txt"
+    log:
+        "logs/chicViewpointBackgroundModel.log"
+    params:
+        extra = ""
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/capture-hic/chicviewpointbackgroundmodel"

@@ -1,0 +1,11 @@
+rule krakentools_alpha_diversity:
+    input:
+        fasta = ["data/kraken.report", "data/kraken2.report"],
+    output:
+        alpha = "data/alpha.txt",
+    log:
+        "logs/alpha_diversity.log",
+    params:
+        metrics = ["Sh", "BP", "Si", "ISi", "F"],
+    wrapper:
+        "alpha_diversity.py"

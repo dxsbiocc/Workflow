@@ -1,0 +1,12 @@
+rule genomescope:
+    input:
+        "ara_F1_21.hist.txt"
+    output:
+        directory("output")
+    log:
+        "logs/genomescope.log"
+    params:
+        kmer = 31,
+        extra = ""
+    wrapper:
+        "file:../../genomescope2"

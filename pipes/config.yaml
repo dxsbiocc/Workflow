@@ -1,0 +1,108 @@
+pipeline: DNA-seq
+verbose: true
+sra: false
+data:
+  sample_file: ../example/sample_list.txt
+  sample_info: null
+  genome: hg19
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/genome/hg19.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/bowtie2/hg19/hg19
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/annotation/hg19.refGene.gtf
+  db: local
+  colors:
+  - '#ffffd9'
+  - '#edf8b1'
+  - '#c7e9b4'
+  - '#7fcdbb'
+  - '#41b6c4'
+  - '#1d91c0'
+  - '#225ea8'
+  - '#0c2c84'
+  dict: /cluster/facility/yzhang/WorkSpace/GATK/hg19/Homo_sapiens_assembly19.dict
+  known_site:
+    dbsnp: /cluster/facility/yzhang/WorkSpace/GATK/hg19/dbsnp_138.b37.vcf.gz
+    indels: /cluster/facility/yzhang/WorkSpace/GATK/hg19/Homo_sapiens_assembly19.known_indels.vcf
+    gold_standard: /cluster/facility/yzhang/WorkSpace/GATK/hg19/Mills_and_1000G_gold_standard.indels.b37.vcf.gz
+outdir: ./
+workdir: ./work
+root_dir: /Users/dengxsh/Documents/WorkSpace/VSCode/Workflow
+wrappers: local
+scripts: local
+parameters:
+  fastp:
+    extra: -g -q 30 -u 50 -n 15 -l 36 -w 4
+  trimmomatic:
+    trimmer:
+    - LEADING:20
+    - TRAILING:20
+    - SLIDINGWINDOW:4:15
+    - MINLEN:25
+    compression_level: -9
+    mem: 2048
+  cutadapt:
+    extra: --minimum-length 1 -q 20
+  trim_galore:
+    extra: --illumina -q 20
+  bowtie2:
+    sort: samtools
+    extra: --end-to-end --very-sensitive --no-mixed --no-discordant --phred33 -I 10
+      -X 700
+    threads: 20
+  bwa:
+    extra: -R '@RG\tID:{sample}\tSM:{sample}\tPL:Illumina'
+    sort: samtools
+    sort_order: coordinate
+    sort_extra: ''
+    threads: 20
+  hisat2:
+    extra: ''
+    threads: 20
+  star:
+    extra: --outSAMtype BAM SortedByCoordinate
+    threads: 20
+  minimap2:
+    extra: -x map-pb
+    sorting: coordinate
+    sort_extra: ''
+    threads: 20
+  picard:
+    markduplicates: --REMOVE_DUPLICATES true
+    mem: 4090
+  vep:
+    local:
+      cache: ''
+      plugins: ''
+    online:
+      species: homo_sapiens
+      release: 98
+      build: GRCh37
+    plugins: LoFtool
+  delly:
+    exclude: /cluster/facility/yzhang/WorkSpace/WGS/pipe/human.hg19.excl.tsv
+  gatk:
+    vqsr:
+      mills: /cluster/facility/yzhang/WorkSpace/GATK/hg19/Mills_and_1000G_gold_standard.indels.b37.vcf.gz
+      mills_idx: /cluster/facility/yzhang/WorkSpace/GATK/hg19/Mills_and_1000G_gold_standard.indels.b37.vcf.gz.tbi
+      omni: /cluster/facility/yzhang/WorkSpace/GATK/hg19/1000G_omni2.5.b37.vcf.gz
+      omni_idx: /cluster/facility/yzhang/WorkSpace/GATK/hg19/1000G_omni2.5.b37.vcf.gz.tbi
+      g1k: /cluster/facility/yzhang/WorkSpace/GATK/hg19/1000G_phase1.snps.high_confidence.b37.vcf.gz
+      g1k_idx: /cluster/facility/yzhang/WorkSpace/GATK/hg19/1000G_phase1.snps.high_confidence.b37.vcf.gz.tbi
+      dbsnp: /cluster/facility/yzhang/WorkSpace/GATK/hg19/dbsnp_138.b37.vcf.gz
+      dbsnp_idx: /cluster/facility/yzhang/WorkSpace/GATK/hg19/dbsnp_138.b37.vcf.gz
+      QD: 2.0
+      QUAL: 30.0
+      ExcessHet: 54.69
+    hard_filter:
+      snp_filter: QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum
+        < -8.0
+      indel_filter: QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0
+control:
+  adapters: Nextera
+  trimming: fastp
+  mapping: bwa
+  dedup: markduplicates
+  spike_in: false
+  paired: true
+  shift: false
+  filter: hard
+delete_temporary_files: true

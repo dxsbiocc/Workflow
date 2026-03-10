@@ -1,0 +1,12 @@
+rule quast:
+    input:
+        input_file = "contigs.fa",
+    output:
+        output_file="gene.gff",
+        nuc_file="gene.fa",
+    log:
+        "logs/prodigal.log",
+    params:
+        extra = "-p meta -f gff",
+    wrapper:
+        "file:../../prodigal"

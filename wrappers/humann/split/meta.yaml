@@ -1,0 +1,14 @@
+name: humann
+description:
+  MetaPhlAn is a computational tool for profiling the composition of microbial
+  communities (Bacteria, Archaea and Eukaryotes) from metagenomic shotgun sequencing
+  data with species level resolution. From version 2.0 MetaPhlAn is also able to
+  identify specific strains (in the not-so-frequent cases in which the sample
+  contains a previously sequenced strains) and to track strains across samples for
+  all species.
+url: https://github.com/biobakery/metaphlan2
+authors:
+  - Christian J. Ludwig
+input:
+  - fastq file(s)
+output:

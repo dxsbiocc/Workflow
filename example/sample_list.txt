@@ -1,0 +1,7 @@
+sample	fastq1	fastq2
+Anti_IgG	SW480_anti_IgG_1.fq.gz	SW480_anti_IgG_2.fq.gz
+Anti_CTCF	SW480_CTCF_HiBiT_anti_CTCF_1.fq.gz	SW480_CTCF_HiBiT_anti_CTCF_2.fq.gz
+Anti_RPB1	SW480_RPB1_HiBiT_anti_RPB1_1.fq.gz	SW480_RPB1_HiBiT_anti_RPB1_2.fq.gz
+LgBiT-Tn5	SW480_LgBiT-Tn5_1.fq.gz	facSW480_LgBiT-Tn5_2.fq.gz
+Tn5_CTCF	SW480_CTCF_HiBiT_LgBiT_Tn5_1.fq.gz	SW480_CTCF_HiBiT_LgBiT_Tn5_2.fq.gz
+Tn5_RPB1	SW480_RPB1_HiBiT_LgBiT_Tn5_1.fq.gz	SW480_RPB1_HiBiT_LgBiT_Tn5_2.fq.gz

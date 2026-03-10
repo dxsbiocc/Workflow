@@ -1,0 +1,16 @@
+name: HicExplorer hicBuildMatrix
+description: |
+  Using an alignment from a program that supports local 
+  alignment (eg. Bowtie2) where both PE reads are mapped 
+  using the –local option, this program reads such file 
+  and creates a matrix of interactions.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The two PE alignment sam files
+output:
+  - Hi-C matrix
+params:
+  extra: Any additional arguments to pass
+notes:

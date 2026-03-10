@@ -1,0 +1,15 @@
+name: HicExplorer hicMergeMatrixBins
+description: >
+  Merges bins from a Hi-C matrix, For example, using a matrix containing 5kb bins, 
+  a matrix of 50kb bins can be derived using –numBins 10.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - Matrix file
+  - number of bins
+output:
+  - Matrix file
+params:
+  extra: Any additional arguments to pass
+notes:

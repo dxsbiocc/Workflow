@@ -1,0 +1,11 @@
+name: deepTools plotProfile
+description: >
+  This tool filters alignments in a BAM/CRAM file according the the specified parameters. 
+  It can optionally output to BEDPE format.
+
+authors:
+  - dengxsh
+input:
+  - bam file
+output:
+  - shifted bam

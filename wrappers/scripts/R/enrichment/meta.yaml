@@ -1,0 +1,7 @@
+name: enrichment
+description: |
+  Differential gene expression enrichment analysis using clusterProfiler.
+authors:
+  - dengxsh
+output:
+  - pathway result

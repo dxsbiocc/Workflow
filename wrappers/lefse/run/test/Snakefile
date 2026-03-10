@@ -1,0 +1,9 @@
+rule lefse_format:
+    input:
+        "data/features.txt",
+    output:
+        "data/features.lefse",
+    params:
+        extra = "",
+    wrapper:
+        "lefse_format"

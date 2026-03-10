@@ -1,0 +1,12 @@
+rule hicPlotDistVsCounts:
+    input:
+        ["small_test_matrix_50kb_res.h5"],
+    output:
+        "small.png"
+    log:
+        "logs/hicPlotDistVsCounts.log"
+    params:
+        extar = "--maxdepth 1000000 --plotsize 8 4",
+        labels = ["small"]
+    wrapper:
+        "file:../../../../hicexplorer/qc/hicplotdistvscounts"

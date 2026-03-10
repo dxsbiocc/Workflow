@@ -1,0 +1,13 @@
+rule samtools_depth:
+    input:
+        bams = ["mapped/A.bam", "mapped/B.bam"],
+        bed = "regionToCalcDepth.bed",  # optional
+    output:
+        "depth.txt",
+    log:
+        "depth.log",
+    params:
+        # optional bed file passed to -b
+        extra = "",  # optional additional parameters as string
+    wrapper:
+        "file:../../depth"

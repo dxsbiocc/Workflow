@@ -1,0 +1,14 @@
+rule pairtools_stats:
+    input:
+        "mock.pairs.gz",
+    output:
+        "mock.pairs.stats",
+    log:
+        "logs/pairtools/stats.log"
+    params:
+        extra = ""
+    threads: 2
+    resources:
+        ncpus = 3
+    wrapper:
+        "file:../../../pairtools/stats"

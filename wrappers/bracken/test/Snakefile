@@ -1,0 +1,11 @@
+rule bracken:
+    input:
+        report = "data/kraken.report",
+        db = "data/species.txt",
+    output:
+        output = "data/bracken.output",
+        report = "data/bracken.report",
+    params:
+        extra = "-t 0 -r 100 -l S",
+    wrapper:
+        "bracken"

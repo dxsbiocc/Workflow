@@ -1,0 +1,10 @@
+name: cd-hit
+description: >
+  Clusters and compares protein or nucleotide sequences
+
+input:
+  - protein or nucleotide sequences in fasta format
+output:
+  - clustered sequences in fasta format
+authors:
+  - dengxsh

@@ -1,0 +1,11 @@
+name: sra-tools prefetch
+description: Download FASTQ files from SRA.
+authors:
+  - dengxsh
+output:
+  - sra file or directory
+notes: |
+  * Can download sra file from NCBI SRA database by accession or 
+  * a file of accessions list
+  * The `extra` param alllows for additional program arguments.
+  * More information in, https://github.com/ncbi/sra-tools

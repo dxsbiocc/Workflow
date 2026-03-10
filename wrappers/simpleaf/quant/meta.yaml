@@ -1,0 +1,5 @@
+name: "simpleaf"
+description: simpleaf is a rust framework to make using alevin-fry even simpler.
+url: https://github.com/COMBINE-lab/simpleaf
+authors:
+notes: |

@@ -1,0 +1,23 @@
+rule metadata:
+    output:
+        "metadata.txt"
+    log:
+        "logs/metadata.log"
+    params:
+        command = "metadata",
+        query = "SRP000941",
+        extra = "--detailed",
+    wrapper:
+        "file:../../pysradb"
+
+# rule srrtogsm:
+#     output:
+#         "srrtogsm.txt"
+#     log:
+#         "logs/srrtogsm.log"
+#     params:
+#         command = "srr-to-gsm",
+#         query = ["SRR400557", "SRR400558", "SRR400559", "SRR400560"],
+#         extra = "",
+#     wrapper:
+#         "file:../../pysradb"

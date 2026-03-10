@@ -1,0 +1,9 @@
+rule lefse_res:
+    input:
+        "data/res.txt",
+    output:
+        "data/res.pdf",
+    params:
+        extra = "--format pdf",
+    wrapper:
+        "lefse_res"

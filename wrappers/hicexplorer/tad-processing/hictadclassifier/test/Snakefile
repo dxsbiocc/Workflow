@@ -1,0 +1,29 @@
+rule hicTrainTADClassifier1:
+    input:
+        matrices = "gm12878_chr1.cool",
+    output:
+        out = "test.txt",
+        # classifier = "trained1.bin.BIN"
+    log:
+        "logs/hicTrainTADClassifier.log"
+    params:
+        normalization_method = "obs_exp",
+        extra = ""
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hictadclassifier"
+
+rule hicTrainTADClassifier2:
+    input:
+        matrices = ["gm12878_chr1.cool", "gm12878_chr1.cool"],
+        classifier = "trained_model.bin.BIN"
+    output:
+        out = ["test1.txt", "test2.txt"],
+    log:
+        "logs/hicTrainTADClassifier.log"
+    threads: 4
+    params:
+        normalization_method = "range",
+        extra = "--estimators_per_step 10"
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hictadclassifier"

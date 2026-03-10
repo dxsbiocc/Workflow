@@ -1,0 +1,20 @@
+rule printreads:
+    input:
+        bam="{sample}.bam",
+        bai="{sample}.bai",
+        bqsr="{sample}.recal_data_table",
+        ref="genome.fasta",
+        fai="genome.fasta.fai",
+        dict="genome.dict",
+    output:
+        bam="{sample}.bqsr.bam",
+        bai="{sample}.bqsr.bai",
+    log:
+        "logs/gatk/bqsr/{sample}.log",
+    params:
+        extra="--defaultBaseQualities 20 --filter_reads_with_N_cigar",  # optional
+    resources:
+        mem_mb=1024,
+    threads: 16
+    wrapper:
+        "file:../../../gatk3/printreads"

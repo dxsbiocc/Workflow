@@ -1,0 +1,13 @@
+name: HicExplorer hicPCA
+description: |
+  Computes PCA eigenvectors for a Hi-C matrix.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - HiCExplorer matrix in h5 format.
+output:
+  - pca.Number of output files must match the number of computed eigenvectors.
+params:
+  extra: Any additional arguments to pass
+notes:

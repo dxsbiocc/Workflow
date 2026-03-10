@@ -1,0 +1,12 @@
+rule cooler_merge:
+    input:
+        expand("odd.{suffix}.cool", suffix=[1, 2])
+    output:
+        "merge.cool"
+    log:
+        "logs/cooler/merge.log",
+    params:
+        extra = "",
+    threads: 8
+    wrapper:
+        "file:../../../cooler/merge"

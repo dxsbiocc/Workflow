@@ -1,0 +1,14 @@
+rule cooler_balance:
+    input:
+        "hg19.2000kb.cool"
+    output:
+        "hg19.2000kb.balanced.cool"
+    log:
+        "logs/cooler/balance.log",
+    params:
+        extra = "--ignore-diags 2",
+    threads: 8
+    resources:
+        ncpus = 4
+    wrapper:
+        "file:../../../cooler/balance"

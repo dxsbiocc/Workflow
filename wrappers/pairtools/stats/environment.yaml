@@ -1,0 +1,7 @@
+channels:
+  - bioconda
+  - conda-forge
+  - nodefaults
+dependencies:
+  - pairtools =0.3.0
+  - numpy =1.17

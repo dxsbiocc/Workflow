@@ -1,0 +1,60 @@
+rule summarize_abundance:
+    input:
+        abundance = "abundance.tsv",
+        map = "map.tsv",
+    output:
+        "summarized.Symbol.raw.txt",
+    params:
+        output_prefix = "summarized",
+        grp_column = "2",  # Use column 2 (Symbol) from map file
+        grp_sep = ",",
+        subitem_keep = "all",
+        abundance_keep = "sum",
+        norm_type = "raw",
+        dropkeycol = False,
+        verbose = True,
+    log:
+        "logs/summarize_abundance.log",
+    wrapper:
+        "file:../../summarize_abundance"
+
+rule summarize_abundance_category:
+    input:
+        abundance = "abundance.tsv",
+        map = "map.tsv",
+    output:
+        "summarized_category.Category.raw.txt",
+    params:
+        output_prefix = "summarized_category",
+        grp_column = "3",  # Use column 3 (Category) from map file
+        grp_sep = ",",
+        subitem_keep = "all",
+        abundance_keep = "sum",
+        norm_type = "raw",
+        dropkeycol = False,
+        verbose = True,
+    log:
+        "logs/summarize_abundance_category.log",
+    wrapper:
+        "file:../../summarize_abundance"
+
+rule summarize_abundance_multiple:
+    input:
+        abundance = "abundance.tsv",
+        map = "map.tsv",
+    output:
+        "summarized_multiple.Symbol.raw.txt",  # Will generate multiple files: Symbol.raw, Symbol.cpm, Category.raw, Category.cpm
+    params:
+        output_prefix = "summarized_multiple",
+        grp_column = "2,3",  # Use both column 2 (Symbol) and column 3 (Category)
+        grp_sep = ",+*",  # Comma for Symbol, any character (*) for Category
+        subitem_keep = "all",
+        abundance_keep = "sum",
+        norm_type = "raw,cpm",  # Will generate both raw and cpm normalized files
+        dropkeycol = False,
+        verbose = True,
+    log:
+        "logs/summarize_abundance_multiple.log",
+    wrapper:
+        "file:../../summarize_abundance"
+

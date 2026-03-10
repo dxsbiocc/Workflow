@@ -1,0 +1,16 @@
+name: yak
+description: |
+  Yak is initially developed for two specific use cases: 1) to robustly estimate 
+  the base accuracy of CCS reads and assembly contigs, and 2) to investigate the 
+  systematic error rate of CCS reads. It achieves the goals by comparing sequences 
+  to the k-mer spectrum of short reads or by comparing spectra. No reference genome 
+  or truth data is needed.
+url: https://github.com/lh3/yak
+authors:
+  - dengxsh
+input:
+  - parental reads(fastq)
+output:
+  - yak file
+notes: |
+  * The `extra` param allows for additional program arguments.

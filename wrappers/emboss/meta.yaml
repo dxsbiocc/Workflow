@@ -1,0 +1,10 @@
+name: emboss
+description: The European Molecular Biology Open Software Suite
+authors:
+  - dengxsh
+input:
+  - fasta file(s)
+output:
+  - fasta file(s)
+notes: |
+  * For more inforamtion see, https://emboss.sourceforge.net/

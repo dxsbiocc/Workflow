@@ -1,0 +1,18 @@
+name: HicExplorer hicAggregateContacts
+description: |
+  hicAggregateContacts is a tool that allows plotting of aggregated Hi-C 
+  sub-matrices of a specified list of positions. Positions of interest 
+  can for example be binding sites of a specific protein that were 
+  determined by ChIP-seq or genetic elements as transcription start sites 
+  of active genes.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - Path of the Hi-C matrix to plot.
+  - Interactions between regions in this BED file are plotted.
+output:
+  - File name to save the image.
+params:
+  extra: Any additional arguments to pass
+notes:

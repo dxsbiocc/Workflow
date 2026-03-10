@@ -1,0 +1,12 @@
+rule mmseqs2_easy_cluster:
+    input:
+        fasta = "{assembly}.fasta",
+    output:
+        cluster = "{assembly}.cluster.fa",
+    log:
+        "logs/mmseqs2_easy_cluster.log",
+    params:
+        extra = "--min-seq-id 0.9 -c 0.9 --cov-mode 1",
+    threads: 8
+    wrapper:
+        get_wrapper("mmseqs2", "easy-cluster")

@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - minimap2 =2.24
+  - samtools
+  # - snakemake-wrapper-utils =0.5.0

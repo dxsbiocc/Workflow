@@ -1,0 +1,33 @@
+rule mutect2:
+    input:
+        fasta="genome/genome.fasta",
+        map="mapped/{sample}.bam",
+    output:
+        vcf="variant/{sample}.vcf",
+    message:
+        "Testing Mutect2 with {wildcards.sample}"
+    threads: 1
+    resources:
+        mem_mb=1024,
+    log:
+        "logs/mutect_{sample}.log",
+    wrapper:
+        "file:../../../gatk/mutect"
+
+
+rule mutect2_bam:
+    input:
+        fasta="genome/genome.fasta",
+        map="mapped/{sample}.bam",
+    output:
+        vcf="variant_bam/{sample}.vcf",
+        bam="variant_bam/{sample}.bam",
+    message:
+        "Testing Mutect2 with {wildcards.sample}"
+    threads: 1
+    resources:
+        mem_mb=1024,
+    log:
+        "logs/mutect_{sample}.log",
+    wrapper:
+        "file:../../../gatk/mutect"

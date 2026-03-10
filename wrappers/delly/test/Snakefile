@@ -1,0 +1,33 @@
+rule delly_bcf:
+    input:
+        ref="genome.fasta",
+        alns=["mapped/a.bam"],
+        # optional
+        exclude="human.hg19.excl.tsv",
+    output:
+        "sv/calls.bcf",
+    params:
+        uncompressed_bcf=True,
+        extra="",  # optional parameters for delly (except -g, -x)
+    log:
+        "logs/delly.log",
+    threads: 2  # It is best to use as many threads as samples
+    wrapper:
+        "file:../../delly"
+
+
+rule delly_vcfgz:
+    input:
+        ref="genome.fasta",
+        alns=["mapped/a.bam"],
+        # optional
+        exclude="human.hg19.excl.tsv",
+    output:
+        "sv/calls.vcf.gz",
+    params:
+        extra="",  # optional parameters for delly (except -g, -x)
+    log:
+        "logs/delly.log",
+    threads: 2  # It is best to use as many threads as samples
+    wrapper:
+        "file:../../delly"

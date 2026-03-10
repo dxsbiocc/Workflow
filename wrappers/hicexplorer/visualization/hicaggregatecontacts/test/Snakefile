@@ -1,0 +1,31 @@
+rule hicAggregateContacts:
+    input:
+        matrix = "Li_et_al_2015.h5",
+        bed = "test_regions.bed",
+    output:
+        agg = "plot/master_aggregate1.png"
+    log:
+        "logs/hicAggregateContacts1.log"
+    params:
+        mode = "all",  # inter-chr, intra-chr, all
+        premat = "",
+        contact = "",
+        extra = "--numberOfBins 30 --range 50000:900000 --disable_bbox_tight",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicaggregatecontacts" 
+
+rule hicAggregateContacts2:
+    input:
+        matrix = "Li_et_al_2015.h5",
+        bed = "test_regions.bed",
+    output:
+        agg = "plot/master_aggregate2.png",
+        heatmap = "plot/master_heatmap.png",
+        # obsexp = "",
+    log:
+        "logs/hicAggregateContacts2.log"
+    params:
+        mode = "all",
+        extra = "--numberOfBins 30 --range 50000:900000 --hclust 4 --howToCluster diagonal --disable_bbox_tight",
+    wrapper:
+        "file:../../../../hicexplorer/visualization/hicaggregatecontacts" 

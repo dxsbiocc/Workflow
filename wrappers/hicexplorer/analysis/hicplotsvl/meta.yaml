@@ -1,0 +1,15 @@
+name: HicExplorer hicPlotSVL
+description: |
+  Plots the relation between short and long range interactions as 
+  boxplots and if more than one matrix is given, p-values of the 
+  distributions are computed.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - The matrix (or multiple matrices) to use for the comparison
+output:
+  - figure
+params:
+  extra: Any additional arguments to pass
+notes:

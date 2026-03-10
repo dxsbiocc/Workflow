@@ -1,0 +1,39 @@
+rule star_se_multi:
+    input:
+        # use a list for multiple fastq files for one sample
+        # usually technical replicates across lanes/flowcells
+        reads = expand("reads/{{sample}}_{run}.1.fastq", run=['R1']),
+        # path to STAR reference genome index
+        index = "genome",
+    output:
+        # see STAR manual for additional output files
+        aln = "result/{sample}.sorted.bam",
+        unmapped = expand("result/{{sample}}.unmapped.{run}.fastq", run=['R1', 'R2']),
+    log:
+        "logs/se/{sample}.log",
+    params:
+        # optional parameters
+        extra = "--outSAMattrRGline ID:{sample} SM:{sample}",
+    threads: 8
+    wrapper:
+        "file:../../align"
+
+# rule star_pe_multi:
+#     input:
+#         # use a list for multiple fastq files for one sample
+#         # usually technical replicates across lanes/flowcells
+#         reads = expand("reads/{{sample}}_{run}.{num}.fastq", run=['R1', 'R2'], num=[1, 2]),
+#         # path to STAR reference genome index
+#         index = "genome",
+#     output:
+#         # see STAR manual for additional output files
+#         aln = "result/{sample}.sorted.bam",
+#         # unmapped = expand("result/{{sample}}.unmapped.{run}.fastq", run=['R1', 'R2']),
+#     log:
+#         "logs/pe/{sample}.log",
+#     params:
+#         # optional parameters
+#         extra = "--outSAMattrRGline ID:{sample} SM:{sample}",
+#     threads: 8
+#     wrapper:
+#         "file:../../align"

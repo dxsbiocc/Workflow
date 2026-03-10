@@ -1,0 +1,13 @@
+rule hicInterIntraTAD:
+    input:
+        matrix = "GSM2644947_Auxin2days-R1.100000_chr1.cool",
+        domains = "untreated_R1_domains.bed"
+    output:
+        out = "out/small_interintra_tad.txt",
+        ratioplot = "out/ratio.png",
+    log:
+        "logs/hicInterIntraTAD.log"
+    params:
+        extra = "--fontsize 15 --dpi 300"
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hicinterintratad"

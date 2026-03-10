@@ -1,0 +1,13 @@
+name: deepTools computeMatrix
+description: >
+  
+
+authors:
+  - dengxsh
+input:
+  - BED or GTF files (.bed or .gtf) AND
+  - bigWig files (.bw)
+output:
+  - gzipped matrix file (.gz) AND/OR
+  - tab-separated table of matrix file (.tab) AND/OR
+  - BED matrix file with sorted regions after skiping zeros or min/max threshold values (.bed)

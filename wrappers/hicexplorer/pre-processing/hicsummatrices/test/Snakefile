@@ -1,0 +1,12 @@
+rule hicsummatrices:
+    input:
+        expand("smallest_{sample}.cool", sample=["one", "two"])
+    output:
+        "result.cool"
+    log:
+        "logs/hicsummatrices.log"
+    params:
+        extra = ""
+    threads: 2
+    wrapper:
+        "file:../../../../hicexplorer/pre-processing/hicsummatrices"

@@ -1,0 +1,16 @@
+name: megahit
+description: >
+  MEGAHIT: An ultra-fast single-node solution for large and complex metagenomics 
+  assembly via succinct de Bruijn graph
+
+authors:
+  - Xiaoyan Zhu
+url: https://github.com/voutcn/megahit
+input:
+  - reads files(fastq.gz, fastq, fasta, fasta.gz)
+output:
+  - assembly file in fasta format
+  - log file in log format
+  - statistics file in txt format
+  - contigs file in gfa format
+  - contigs file in gfa format

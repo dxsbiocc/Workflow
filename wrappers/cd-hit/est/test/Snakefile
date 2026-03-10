@@ -1,0 +1,19 @@
+rule cd-hit-est:
+    input:
+        "genome.fasta",
+    output:
+        "genome.fasta.clstr",
+    log:
+        "logs/cd-hit-est/genome.log"
+    wrapper:
+        "file:../../cd-hit"
+
+rule cd-hit-est-pair:
+    input:
+        ["a.fasta", "b.fasta"],
+    output:
+        ["a.fasta.clstr", "b.fasta.clstr"],
+    log:
+        "logs/cd-hit-est-pair/b.log"
+    wrapper:
+        "file:../../cd-hit"

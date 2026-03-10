@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - r-base = 4.1.0
+  - r-tidyverse  = 1.3.2
+  - bioconductor-clusterprofiler
+  - bioconductor-org.hs.eg.db
+  - bioconda::bioconductor-org.mm.eg.db

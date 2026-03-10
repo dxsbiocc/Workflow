@@ -1,0 +1,12 @@
+rule sambamba_sort:
+    input:
+        "mapped/{sample}.bam"
+    output:
+        "mapped/{sample}.sorted.bam"
+    params:
+        ""  # optional parameters
+    log:
+        "logs/sambamba-sort/{sample}.log"
+    threads: 8
+    wrapper:
+        "file:../../../sambamba/sort"

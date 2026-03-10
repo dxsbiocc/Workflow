@@ -1,0 +1,15 @@
+rule hicDetectLoops:
+    input:
+        "matrix.cool",
+    output:
+        "loops.bedgraph"
+    log:
+        "logs/hicDetectLoops.log"
+    params:
+        expected = "mean",  #  mean, mean_nonzero, mean_nonzero_ligation
+        peakWidth = 2,
+        windowSize = 5,
+        extra = "--maxLoopDistance 3000000 -pit 1 -p 0.5 -pp 0.55 --chromosomes 1 2 -tpc 4"
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/analysis/hicdetectloops"

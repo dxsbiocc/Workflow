@@ -1,0 +1,12 @@
+name: bamToFastq
+description: >
+  bedtools bamtofastq is a conversion utility for extracting FASTQ records from sequence alignments in BAM format.
+url: https://bedtools.readthedocs.io/en/latest/content/tools/bamtofastq.html
+authors:
+  - dengxsh
+input:
+  - BAM file
+output:
+  - FASTQ file
+notes: |
+  * The `extra` param allows for additional program arguments.

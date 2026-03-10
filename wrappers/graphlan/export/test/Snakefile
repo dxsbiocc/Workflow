@@ -1,0 +1,12 @@
+rule export2graphlan:
+    input:
+        taxonomy = "data/taxonomy.tsv",
+    output:
+        tree = "graphlan.tree",
+        annotation = "graphlan.annotation",
+    log:
+        "logs/export2graphlan.log",
+    params:
+        extra = "--skip_rows 1,2 --most_abundant 100 --abundance_threshold 20 --least_biomarkers 10 --annotations 3,4 --external_annotations 7",
+    wrapper:
+        "export2graphlan"

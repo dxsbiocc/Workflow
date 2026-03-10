@@ -1,0 +1,19 @@
+name: genomescope2
+description: >
+  We have developed GenomeScope 2.0, which applies classical insights from combinatorial 
+  theory to establish a detailed mathematical model of how k-mer frequencies will be 
+  distributed in heterozygous and polyploid genomes. GenomeScope 2.0 employs a polyploid-aware 
+  mixture model that, within seconds, accurately infers genome properties from unassembled 
+  sequencing data. GenomeScope 2.0 uses the k-mer count distribution, e.g. from KMC or Jellyfish, 
+  and produces a report and several informative plots describing the genome properties. We 
+  validate the approach on simulated polyploid data created using a generative model with 
+  parameters for genome size, heterozygosity, repetitiveness, ploidy, and sequencing coverage, 
+  and find GenomeScope 2.0 retains accuracy across a broad range of realistic and extreme 
+  parameter values. We also validate GenomeScope 2.0 by analyzing genuine sequence data from 
+  11 diverse polyploid genomes with known genome characteristics.
+authors:
+  - dengxsh
+input:
+  - the k-mer count distribution, e.g. from KMC or Jellyfish
+output:
+  - several informative plots describing the genome properties

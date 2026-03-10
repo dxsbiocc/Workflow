@@ -1,0 +1,11 @@
+name: preseq bound_pop
+description: >
+  The bound_pop command is a method for estimating species richness, the total number of species or classes in the sampled population.
+url: https://github.com/smithlabcode/preseq
+authors:
+  - Antonie Vietor
+input:
+  - bed files containing duplicates and sorted by chromosome, start position, strand position and finally strand OR
+  - bam files containing duplicates and sorted by using bamtools or samtools sort.
+output:
+  - bound_pop (.bound_pop)

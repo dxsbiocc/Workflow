@@ -1,0 +1,9 @@
+name: "star-fusion"
+description: STAR-Fusion uses the STAR aligner to identify candidate fusion transcripts supported by Illumina reads.
+url: https://github.com/STAR-Fusion/STAR-Fusion/wiki
+authors:
+  - dengxsh
+notes: |
+  * The `extra` param allows for additional program arguments.
+  * The typical case is that you're staring with FASTQ files. Alternatively, 
+  * running STAR yourself, and then running STAR-Fusion using the existing outputs

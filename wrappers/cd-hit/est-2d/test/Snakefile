@@ -1,0 +1,21 @@
+rule cd-hit-est-2d:
+    input:
+        R1=["genome.fasta", "genome.fasta"],
+    output:
+        output=["genome.fasta.clstr", "genome.fasta.clstr"],
+    log:
+        "logs/cd-hit-est-2d/genome.log"
+    wrapper:
+        "file:../../cd-hit"
+
+rule cd-hit-est-2d-pair:
+    input:
+        R1=["genome.fasta", "genome.fasta"],
+        R2=["genome.fasta", "genome.fasta"],
+    output:
+        output=["genome.fasta.clstr", "genome.fasta.clstr"],
+        paired=["genome.fasta.clstr", "genome.fasta.clstr"],
+    log:
+        "logs/cd-hit-est-2d-pair/genome.log"
+    wrapper:
+        "file:../../cd-hit"

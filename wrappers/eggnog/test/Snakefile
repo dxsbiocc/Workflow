@@ -1,0 +1,12 @@
+rule fastp_pe_wo_trimming:
+    input:
+        input = "contigs.fa",
+        data_dir = "data_dir",
+    output:
+        "eggnog-mapper.emapper.seed_orthologs.gz"
+    log:
+        "logs/eggnog-mapper.log"
+    params:
+        extra = "--cpu 3 -m diamond --override"
+    wrapper:
+        "file:../../eggnog-mapper"

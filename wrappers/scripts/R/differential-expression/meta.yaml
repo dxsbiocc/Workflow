@@ -1,0 +1,7 @@
+name: edgeR
+description: |
+  Differential gene expression analysis using edgeR.
+authors:
+  - dengxsh
+output:
+  - Differential expression Gene list in excel format

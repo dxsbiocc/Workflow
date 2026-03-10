@@ -1,0 +1,8 @@
+name: bcftools sort
+description: Sort vcf/bcf file.
+url: http://www.htslib.org/doc/bcftools.html#sort
+authors:
+  - Filipe G. Vieira
+notes: |
+  * The `uncompressed_bcf` param allows to specify that a BCF output should be uncompressed (ignored otherwise).
+  * The `extra` param allows for additional program arguments (not `--threads`, `-o/--output`, `-O/--output-type`, `-m/--max-mem`, or `-T/--temp-dir`).

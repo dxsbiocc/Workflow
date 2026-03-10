@@ -1,0 +1,13 @@
+rule pairtools_restrict:
+    input:
+        "mock.pairs.gz"
+    output:
+        "mock.restrict.pairs.gz",
+    log:
+        "logs/pairtools/restrict.log"
+    params:
+        frag = "mock.rsite.bed",
+        extra = "",
+    threads: 2
+    wrapper:
+        "file:../../../pairtools/restrict"

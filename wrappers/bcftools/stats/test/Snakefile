@@ -1,0 +1,11 @@
+rule bcf_stats:
+    input:
+        "{prefix}.bcf",
+    output:
+        "{prefix}.stats.txt",
+    log:
+        "{prefix}.bcftools.stats.log",
+    params:
+        "",
+    wrapper:
+        "file:../../stats"

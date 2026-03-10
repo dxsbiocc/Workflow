@@ -1,0 +1,40 @@
+# --------------------- pipeline ---------------------
+pipeline: RNA-seq
+verbose: false
+
+# -------------------- input data --------------------
+data:
+  genome: hg19
+  ref: /cluster/facility/yzhang/WorkSpace/Reference/gencode/GRCh38.primary_assembly.genome.fa
+  index: /cluster/facility/yzhang/WorkSpace/Reference/gencode/index/star/GRCh38
+  rna: /cluster/facility/yzhang/WorkSpace/Reference/gencode/gencode.v42.transcripts.fa
+  rna_index: null
+  gtf: /cluster/facility/yzhang/WorkSpace/Reference/gencode/gencode.v42.annotation.gtf
+
+outdir: null
+
+# --------------- programs parameters ----------------
+parameters:
+  star:
+    extra: ""
+    platform: "10xv2"
+    cblen: 8
+    umilen: 8
+    adapter:
+  cellranger:
+    extra: ""
+    executable: cellranger  # path to cellranger
+    platform: "10xv2"
+  simpleaf:
+    extra: ""
+    platform: "10xv2"
+  kbpython:
+    extra: ""
+    mode: "standard"
+    platform: "10xv2"
+
+# ---------------- control parameters ----------------
+control:
+  trimming: trimmomatic  # cutadapt, trimmomatic, fastp
+  mapping: star          # star, cellranger, simpleaf, kbpython
+  dedup:

@@ -1,0 +1,17 @@
+rule chicPlotViewpoint:
+    input:
+        interaction = "two_matrices.hdf5",
+        background = "background.txt",
+        differential = "differential.hdf5",
+        siginteractions = "significantInteractions_dual.hdf5",
+    output: 
+        "plots.tar.gz"
+    log:
+        "logs/chicPlotViewpoint.log"
+    params:
+        output_format = "png",
+        range = "200000 200000",
+        extra = "--combinationMode dual --plotSignificantInteractions"
+    threads: 4
+    wrapper:
+        "file:../../../../hicexplorer/capture-hic/chicplotviewpoint"

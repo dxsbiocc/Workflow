@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+  - biobakery
+dependencies:
+  - humann = 4.0.0a1
+  - metaphlan = 4.1.1

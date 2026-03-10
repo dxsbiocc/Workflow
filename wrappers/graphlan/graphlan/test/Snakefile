@@ -1,0 +1,11 @@
+rule graphlan:
+    input:
+        "graphlan.xml",
+    output:
+        "graphlan.pdf",
+    log:
+        "logs/graphlan.log",
+    params:
+        extra = "--external_legends",
+    wrapper:
+        "graphlan"

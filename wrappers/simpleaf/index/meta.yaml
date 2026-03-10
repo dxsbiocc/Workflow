@@ -1,0 +1,11 @@
+name: simpleaf index
+description: 
+  The index command has two forms of input; either it will take a reference genome 
+  FASTA and GTF as input, from which it can build a spliced+intronic (splici) 
+  reference or a spliced+unspliced (spliceu) reference using roers (which is used 
+  as a library directly from simpleaf, and so need not be installed independently), 
+  or it will take a single reference sequence file (i.e. FASTA file) as input 
+  (direct-ref mode).
+url: https://github.com/COMBINE-lab/simpleaf
+authors:
+notes: |

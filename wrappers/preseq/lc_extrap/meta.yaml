@@ -1,0 +1,11 @@
+name: preseq lc_extrap
+description: >
+  ``preseq`` estimates the library complexity of existing sequencing data to then estimate the yield of future experiments based on their design.
+url: https://github.com/smithlabcode/preseq
+authors:
+  - Antonie Vietor
+input:
+  - bed files containing duplicates and sorted by chromosome, start position, strand position and finally strand OR
+  - bam files containing duplicates and sorted by using bamtools or samtools sort.
+output:
+  - lc_extrap (.lc_extrap)

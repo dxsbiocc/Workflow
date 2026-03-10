@@ -1,0 +1,12 @@
+rule norm_vcf:
+    input:
+        "{prefix}.bcf",
+    output:
+        "{prefix}.norm.vcf",
+    log:
+        "{prefix}.norm.log",
+    params:
+        #        uncompressed_bcf=False,
+        extra="--rm-dup none",  # optional
+    wrapper:
+        "file:../../norm"

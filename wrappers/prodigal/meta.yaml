@@ -1,0 +1,14 @@
+name: Prodigal
+description: |
+  Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a microbial 
+  (bacterial and archaeal) gene finding program
+url: https://github.com/hyattpd/Prodigal
+authors:
+  - Filipe G. Vieira
+input:
+  - Sequences in FASTA format
+  - GFF (optional)
+output:
+  - GFF file
+notes: |
+  * The `gff` param allows for additional program arguments.

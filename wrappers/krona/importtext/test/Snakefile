@@ -1,0 +1,9 @@
+rule krakentools_kreport2mpa:
+    input:
+        krona = "data/kraken2.krona",
+    output:
+        txt = "data/kraken2.krona.txt",
+    params:
+        extra = "",
+    wrapper:
+        "ktImportText"

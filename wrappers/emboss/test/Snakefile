@@ -1,0 +1,13 @@
+rule fastp_pe_wo_trimming:
+    input:
+        reads = ["reads/pe/{sample}.1.fastq", "reads/pe/{sample}.2.fastq"]
+    output:
+        html = "report/pe_wo_trimming/{sample}.html",
+        json = "report/pe_wo_trimming/{sample}.json"
+    log:
+        "logs/fastp/pe_wo_trimming/{sample}.log"
+    params:
+        extra = ""
+    threads: 2
+    wrapper:
+        "file:../../fastp"

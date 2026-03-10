@@ -1,0 +1,14 @@
+name: cutadapt
+description: |
+  Trim single-end and paired-end reads using cutadapt.
+url: https://github.com/marcelm/cutadapt
+authors:
+  - dengxsh
+input:
+  - one (single-end) or two (paired-end) fastq files
+output:
+  - one or two trimmed fastq files
+  - text file containing trimming statistics
+notes: |
+  * The `extra` param allows for additional program arguments.
+  * The `adapters` param allows for separatelly specifying adapter options (optional).

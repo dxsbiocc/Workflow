@@ -1,0 +1,97 @@
+# -*- encoding: utf-8 -*-
+# ============================================================
+# File        : wrapper.py
+# Time        : 2023/04/21 14:12:19
+# Author      : dengxsh
+# Version     : 1.0
+# Contact     : 920466915@qq.com
+# License     : MIT
+# Copyright   : Copyright (c) 2022, dengxsh
+# Description : The role of the current file 
+# ============================================================
+
+
+import os
+from snakemake.shell import shell
+from snakemake_wrapper_utils.base import WrapperBase
+
+
+class Wrapper(WrapperBase):
+
+    def __init__(self, snakemake) -> None:
+        super().__init__(snakemake)
+
+    def parser(self):
+        # input files
+        bam = self.snakemake.input.get("bam", "")
+        fastq = self.snakemake.input.get("fastq", "")
+        assert bam or fastq, "You must provide either a BAM or FASTQ file"
+        if fastq:
+            fq_one = sorted(file for file in fastq if 'R1' in file)
+            fq_two = sorted(file for file in fastq if 'R2' in file)
+        # mode
+        mode = self.snakemake.params.get("mode", "fastq")
+        assert mode in ["fastq", "bam"], "You must choose one of 'bam' or 'fastq'"
+
+        paired_end = self.snakemake.params.get("paired_end", False)
+        if mode == "bam":
+            self.input_bam = "--alignments"
+            self.input_string = bam
+        else:
+            self.input_bam = ""
+            self.input_string = ""
+            if fq_one:
+                num_fq_one = len(fq_one)
+                self.input_string = ",".join(fq_one)
+                if all([1 if fq.endswith('gz') else 0 for fq in fq_one]):
+                    self.extra += " --star-gzipped-read-file"
+                elif all([1 if fq.endswith('bz2') else 0 for fq in fq_one]):
+                    self.extra += " --star-bzipped-read-file"
+                
+                if paired_end:
+                    num_fq_two = len(fq_two)
+                    if num_fq_one != num_fq_two:
+                        raise Exception(
+                            "Got {} R1 FASTQs, {} R2 FASTQs.".format(num_fq_one, num_fq_two)
+                        )
+                    self.input_string += " " + ",".join(fq_two)
+        if paired_end:
+            self.paired_end_string = "--paired-end"
+        else:
+            self.paired_end_string = ""
+
+        self.output = self.snakemake.output.get('quant')
+        outdir = os.path.dirname(self.output)
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+        self.outprefix = os.path.join(outdir, self.snakemake.wildcards.sample)
+        
+        mapping = self.snakemake.params.get("mapping")
+        if bam and mapping:
+            mapping = False
+        if mapping == "bowtie2":
+            self.extra += " --bowtie2"
+        elif mapping == "star":
+            self.extra += " --star"
+        elif mapping == "hisat2":
+            self.extra += " --hisat2-hca"
+
+        self.reference_prefix = os.path.splitext(self.snakemake.input.reference[0])[0]
+
+    def run(self):
+        shell(
+            "rsem-calculate-expression"
+            " --num-threads {self.snakemake.threads}"
+            " {self.extra}"
+            " {self.paired_end_string}"
+            " {self.input_bam}"
+            " {self.input_string}"
+            " {self.reference_prefix}"
+            " {self.outprefix}"
+            " {self.log}"
+        )
+        shell("mv {self.outprefix}.genes.results {self.output}")
+
+
+if __name__ == '__main__':
+    Wrapper(snakemake)

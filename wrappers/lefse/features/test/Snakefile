@@ -1,0 +1,10 @@
+rule lefse_cladogram:
+    input:
+        dataset = "data/dataset.txt",
+        lefse = "data/features.txt",
+    output:
+        "data/cladogram.pdf",
+    params:
+        extra = "-f one --format pdf --feature_name 'k__Bacteria.p__Actinobacteria'",
+    wrapper:
+        "lefse_cladogram"

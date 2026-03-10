@@ -1,0 +1,17 @@
+name: HicExplorer chicAggregateStatistic
+description: |
+  chicAggregateStatistic is a preprocessing tool for chicDifferentialTest. 
+  It takes two consecutive viewpoint files and one target file and creates 
+  one file containing all locations which should be tested for differential 
+  interactions. Either one target file for two consecutive viewpoint files 
+  or one target file for all viewpoints is accepted.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - path to the interaction files which should be used for aggregation of the statistics.
+output:
+  - path to the target files which contains the target regions to prepare data for differential analysis.
+params:
+  extra: Any additional arguments to pass
+notes:

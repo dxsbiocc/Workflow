@@ -1,0 +1,11 @@
+rule samtools_index:
+    input:
+        "{sample}.fa",
+    output:
+        "{sample}.fa.fai",
+    log:
+        "{sample}.log",
+    params:
+        extra="",  # optional params string
+    wrapper:
+        "file:../../faidx"

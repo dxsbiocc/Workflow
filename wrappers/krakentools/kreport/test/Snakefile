@@ -1,0 +1,22 @@
+rule krakentools_kreport2mpa:
+    input:
+        kraken = "data/kraken.report",
+    output:
+        mpa = "data/kraken2.mpa.txt",
+    params:
+        subcommand = "kreport2mpa",
+        extra = "--display-header --percentages ",
+    wrapper:
+        "kreport2mpa.py"
+
+
+rule krakentools_kreport2krona:
+    input:
+        kraken = "data/kraken.report",
+    output:
+        mpa = "data/kraken2.mpa.txt",
+    params:
+        subcommand = "kreport2krona",
+        extra = "--display-header --percentages ",
+    wrapper:
+        "kreport2krona.py"

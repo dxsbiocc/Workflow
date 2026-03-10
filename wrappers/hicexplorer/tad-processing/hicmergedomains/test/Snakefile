@@ -1,0 +1,14 @@
+rule hicMergeDomains:
+    input:
+        ["10kbtad_domains.bed", "50kbtad_domains.bed", "100kbtad_domains.bed"]
+    output:
+        merged_domains = "out/mergedDomains.bed",
+        relation_list = "out/relationList.txt",
+        tree_plot = directory("out/treeplot")
+    log:
+        "logs/hicMergeDomains.log"
+    params:
+        tree_plot_format = "pdf",
+        extra = ""
+    wrapper:
+        "file:../../../../hicexplorer/tad-processing/hicmergedomains"

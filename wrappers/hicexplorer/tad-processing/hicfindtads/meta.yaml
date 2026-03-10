@@ -1,0 +1,22 @@
+name: HicExplorer hicFindTADs
+description: |
+  Uses a measure called TAD-separation score to identify the degree of separation 
+  between the left and right regions at each Hi-C matrix bin. This is done for a 
+  running window of different sizes. Then, TADs are called as those positions 
+  having a local TAD-separation score minimum. The TAD-separation score is measured 
+  using the z-score of the Hi-C matrix and is defined as the mean zscore of all the 
+  matrix contacts between the left and right regions (diamond). To find the TADs, 
+  the program needs to compute first the TAD scores at different window sizes. Then, 
+  the results of that computation are used to call the TADs. This is convenient to 
+  test different filtering criteria quickly as the demanding step is the computation 
+  of TAD-separation scores.
+url: https://github.com/deeptools/HiCExplorer
+authors:
+  - dengxsh
+input:
+  - Corrected Hi-C matrix to use for the computations.
+output:
+  - File prefix to save the resulting files
+params:
+  extra: Any additional arguments to pass
+notes:
