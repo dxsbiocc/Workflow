@@ -39,7 +39,7 @@ if QUANTIFY_TOOL == "rsem":
     else:
         rule rsem_quant_bam:
             input:
-                bam = opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
+                bam = opj(OUTDIR, "dedup/{sample}/{sample}.rmdup.bam"),
                 reference = multiext(RSEM_INDEX, ".grp", ".ti", ".seq"),
             output:
                 quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
@@ -125,7 +125,7 @@ elif QUANTIFY_TOOL == "kallisto":
 elif QUANTIFY_TOOL == "featurecounts":
     rule feature_counts:
         input:
-            samples = opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
+            samples = opj(OUTDIR, "dedup/{sample}/{sample}.rmdup.bam"),
             annotation = GTF,
         output:
             quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
@@ -142,7 +142,7 @@ elif QUANTIFY_TOOL == "featurecounts":
 elif QUANTIFY_TOOL == "htseq":
     rule htseq:
         input:
-            bam = opj(OUTDIR, "mapped/{sample}/{sample}.sorted.bam"),
+            bam = opj(OUTDIR, "dedup/{sample}/{sample}.rmdup.bam"),
             anno = GTF
         output:
             quant = opj(OUTDIR, "quantity/{sample}/{sample}.quant")
